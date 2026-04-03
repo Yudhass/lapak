@@ -1192,8 +1192,7 @@
         </div>
         <div class="col-lg-2 col-6">
           <p class="ft-head">Navigasi</p>
-          <a href="index.html" class="ft-link">Beranda</a>
-          <a href="semua_produk.html" class="ft-link">Semua Produk</a>
+          <div id="footerNavContainer"></div>
         </div>
         <div class="col-lg-6">
           <p class="ft-head">Tentang Lapak Yudhas</p>
@@ -1376,6 +1375,7 @@
 
     document.addEventListener('DOMContentLoaded', () => {
       initNav();
+      loadFooterNavigation();
       const params = new URLSearchParams(window.location.search);
       const productId = params.get('id');
 
@@ -1433,6 +1433,52 @@
         hideLoading();
         showToast('Gagal memuat produk: ' + e.message, 'danger');
       });
+    }
+
+    /* ══════════════════════════════════════════════════════
+       FOOTER NAVIGATION
+    ══════════════════════════════════════════════════════ */
+    function loadFooterNavigation() {
+      api('getNavigation').then(res => {
+        if (!res.success) {
+          console.warn('Failed to load footer navigation:', res.message);
+          renderFooterNavigation([
+            { name: 'Beranda', action: 'home' },
+            { name: 'Semua Produk', action: 'products' },
+            { name: 'Unggulan', action: 'featured' }
+          ]);
+          return;
+        }
+        renderFooterNavigation(res.data || []);
+      }).catch(e => {
+        console.error('Error loading footer navigation:', e);
+        renderFooterNavigation([
+          { name: 'Beranda', action: 'home' },
+          { name: 'Semua Produk', action: 'products' },
+          { name: 'Unggulan', action: 'featured' }
+        ]);
+      });
+    }
+
+    function renderFooterNavigation(navItems) {
+      const container = document.getElementById('footerNavContainer');
+      if (!container) return;
+
+      container.innerHTML = navItems.map(item => {
+        let href = '#';
+
+        if (item.action === 'home') {
+          href = 'index.html';
+        } else if (item.action === 'products' || item.action === 'semua-produk') {
+          href = 'semua_produk.html';
+        } else if (item.action === 'featured' || item.action === 'unggulan') {
+          href = 'index.html#featured';
+        } else if (item.url) {
+          href = item.url;
+        }
+
+        return `<a href="${href}" class="ft-link">${item.name}</a>`;
+      }).join('');
     }
 
     function renderProductDetail(product, variants, reviews) {
