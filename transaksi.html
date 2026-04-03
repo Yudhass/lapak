@@ -1,0 +1,1857 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Detail Transaksi — Lapak Yudhas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <style>
+    :root {
+      --brand: #4F46E5;
+      --brand-dark: #312E81;
+      --brand-light: #667eea;
+      --brand-purple: #764ba2;
+      --accent: #F59E0B;
+      --green: #10B981;
+      --surface: #F8FAFC;
+      --surface-2: #F1F5F9;
+      --border: #E2E8F0;
+      --text-1: #0F172A;
+      --text-2: #475569;
+      --text-3: #94A3B8;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f8f9fa;
+      color: var(--text-1);
+      line-height: 1.6;
+    }
+
+    /* Navbar */
+    .top-navbar {
+      background: linear-gradient(135deg, var(--brand-light) 0%, var(--brand-purple) 100%);
+      padding: 16px 0;
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .navbar-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .navbar-brand {
+      color: white;
+      font-size: 1.3rem;
+      font-weight: 700;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .back-btn-nav {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+    }
+
+    .back-btn-nav:hover {
+      background: rgba(255, 255, 255, 0.3);
+      border-color: rgba(255, 255, 255, 0.5);
+      color: white;
+      transform: translateX(-4px);
+    }
+
+    /* Mobile Drawer */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      width: 40px;
+      height: 40px;
+      border: none;
+      background: rgba(255, 255, 255, .15);
+      border-radius: 10px;
+      cursor: pointer;
+      padding: 0;
+      transition: background .2s;
+      z-index: 1201;
+    }
+
+    .nav-hamburger:hover {
+      background: rgba(255, 255, 255, .25);
+    }
+
+    .nav-hamburger .bar {
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: #fff;
+      border-radius: 2px;
+      transition: transform .3s, opacity .3s, width .3s;
+      transform-origin: center;
+    }
+
+    .nav-hamburger.open .bar:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+
+    .nav-hamburger.open .bar:nth-child(2) {
+      opacity: 0;
+      width: 0;
+    }
+
+    .nav-hamburger.open .bar:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+
+    .nav-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, .5);
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+      z-index: 1199;
+      opacity: 0;
+      transition: opacity .3s;
+    }
+
+    .nav-backdrop.visible {
+      display: block;
+    }
+
+    .nav-backdrop.open {
+      opacity: 1;
+    }
+
+    .nav-drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: min(320px, 85vw);
+      background: linear-gradient(160deg, #1E1B4B 0%, #312E81 55%, #1a1730 100%);
+      z-index: 1200;
+      transform: translateX(100%);
+      transition: transform .35s cubic-bezier(.4, 0, .2, 1);
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      border-left: 1px solid rgba(255, 255, 255, .07);
+      box-shadow: -12px 0 40px rgba(0, 0, 0, .35);
+    }
+
+    .nav-drawer.open {
+      transform: translateX(0);
+    }
+
+    .drawer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 1.5rem 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, .07);
+    }
+
+    .drawer-brand {
+      display: flex;
+      align-items: center;
+      gap: .55rem;
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .drawer-brand .logo-box {
+      width: 32px;
+      height: 32px;
+      border-radius: 9px;
+      background: linear-gradient(135deg, #667eea, #F59E0B);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .drawer-close {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, .08);
+      border: none;
+      color: rgba(255, 255, 255, .7);
+      font-size: 1.15rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background .2s, color .2s;
+    }
+
+    .drawer-close:hover {
+      background: rgba(255, 255, 255, .15);
+      color: #fff;
+    }
+
+    .drawer-section-label {
+      font-size: .67rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: rgba(255, 255, 255, .3);
+      padding: 1.25rem 1.5rem .4rem;
+    }
+
+    .drawer-nav {
+      display: flex;
+      flex-direction: column;
+      padding: 0 1rem;
+      gap: 2px;
+    }
+
+    .drawer-link {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      padding: .75rem 1rem;
+      border-radius: 12px;
+      color: rgba(255, 255, 255, .72);
+      text-decoration: none;
+      font-size: .93rem;
+      font-weight: 500;
+      transition: background .2s, color .2s;
+      cursor: pointer;
+    }
+
+    .drawer-link:hover {
+      background: rgba(255, 255, 255, .09);
+      color: #fff;
+    }
+
+    .drawer-link .dl-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 9px;
+      background: rgba(255, 255, 255, .08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    .drawer-divider {
+      height: 1px;
+      background: rgba(255, 255, 255, .07);
+      margin: .6rem 1.5rem;
+    }
+
+    .drawer-footer {
+      margin-top: auto;
+      padding: 1.25rem 1.5rem;
+      font-size: .75rem;
+      color: rgba(255, 255, 255, .22);
+      border-top: 1px solid rgba(255, 255, 255, .06);
+    }
+
+    @media (max-width: 991px) {
+      .nav-hamburger {
+        display: flex;
+      }
+
+      .back-btn-nav {
+        display: none;
+      }
+    }
+
+    /* Purchase Header */
+    .purchase-header {
+      background: linear-gradient(135deg, var(--brand-light) 0%, var(--brand-purple) 100%);
+      padding: 24px 0;
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+    }
+
+    .purchase-alert {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: white;
+      font-size: 1.1rem;
+      font-weight: 500;
+    }
+
+    .purchase-alert i {
+      font-size: 1.5rem;
+    }
+
+    /* Purchase Section */
+    .purchase-section {
+      background-color: #f8f9fa;
+      padding: 60px 20px;
+    }
+
+    .container-purchase {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .purchase-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    /* Prevent grid children from overflowing their columns */
+    .purchase-product,
+    .purchase-review {
+      min-width: 0;
+    }
+
+    /* Product Card */
+    .product-card-purchase {
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    .product-img-purchase {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .product-placeholder-purchase {
+      width: 100%;
+      height: 400px;
+      background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-3);
+    }
+
+    .product-placeholder-purchase i {
+      font-size: 5rem;
+    }
+
+    .product-details {
+      padding: 40px;
+    }
+
+    .product-name-purchase {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--text-1);
+      margin-bottom: 20px;
+      line-height: 1.2;
+    }
+
+    /* Rating Section */
+    .rating-section-purchase {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+      padding: 16px;
+      background: #fff9e6;
+      border-radius: 12px;
+    }
+
+    .rating-stars-purchase {
+      display: flex;
+      gap: 4px;
+      font-size: 1.3rem;
+      color: #ffc107;
+    }
+
+    .rating-avg-purchase {
+      font-weight: 700;
+      color: var(--text-1);
+      font-size: 1rem;
+      margin-left: auto;
+    }
+
+    /* Price Section */
+    .price-section-purchase {
+      margin-bottom: 24px;
+      padding-bottom: 24px;
+      border-bottom: 2px solid #f0f0f0;
+    }
+
+    .price-label {
+      font-size: 0.9rem;
+      color: #666;
+      margin: 0 0 8px 0;
+      font-weight: 600;
+    }
+
+    .price-value-purchase {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--brand);
+      margin: 0;
+    }
+
+    /* Description */
+    .description-purchase {
+      margin-bottom: 24px;
+    }
+
+    .description-purchase h5 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-1);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .description-purchase h5 i {
+      color: var(--brand);
+    }
+
+    .description-content-purchase {
+      color: #555;
+      line-height: 1.8;
+    }
+
+    .description-content-purchase ul {
+      margin: 12px 0;
+      padding-left: 20px;
+    }
+
+    .description-content-purchase li {
+      margin: 8px 0;
+      color: #555;
+    }
+
+    .description-content-purchase li::marker {
+      color: var(--green);
+    }
+
+    /* Download Section */
+    .download-section {
+      margin-bottom: 24px;
+      padding: 24px;
+      background: linear-gradient(135deg, #f0f4ff 0%, #e8edff 100%);
+      border-radius: 12px;
+      border: 2px solid #e0e7ff;
+    }
+
+    .download-section h5 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-1);
+      margin: 0 0 16px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .download-section h5 i {
+      color: var(--brand);
+    }
+
+    .download-text-display {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      border-left: 4px solid var(--brand);
+      position: relative;
+    }
+
+    .download-link-text {
+      font-family: 'Courier New', monospace;
+      font-size: 0.95rem;
+      color: #333;
+      margin: 0;
+      word-break: break-all;
+      line-height: 1.8;
+      padding-right: 60px;
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      padding: 8px 16px;
+      background: linear-gradient(135deg, var(--brand-light) 0%, var(--brand-purple) 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .copy-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+    }
+
+    .download-note {
+      margin-top: 12px;
+      font-size: 0.85rem;
+      color: #666;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Purchase Code */
+    .purchase-code-section {
+      padding: 20px;
+      background: #f5f5f5;
+      border-radius: 12px;
+    }
+
+    .code-label {
+      font-size: 0.85rem;
+      color: #666;
+      margin: 0;
+      font-weight: 600;
+    }
+
+    .code-value {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--text-1);
+      margin: 8px 0 0 0;
+      font-family: 'Courier New', monospace;
+      letter-spacing: 0.05em;
+      word-break: break-word;
+    }
+
+    /* Additional Info */
+    .info-section {
+      margin-bottom: 16px;
+    }
+
+    .info-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .info-item:last-child {
+      border-bottom: none;
+    }
+
+    .info-label-small {
+      font-size: 0.9rem;
+      color: #666;
+      font-weight: 500;
+    }
+
+    .info-value-small {
+      font-size: 0.9rem;
+      color: var(--text-1);
+      font-weight: 600;
+      text-align: right;
+    }
+
+    /* Review Card */
+    .review-card-purchase {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      position: sticky;
+      top: 20px;
+    }
+
+    .review-header-purchase {
+      background: linear-gradient(135deg, var(--brand-light) 0%, var(--brand-purple) 100%);
+      color: white;
+      padding: 30px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .review-header-purchase i {
+      font-size: 1.8rem;
+    }
+
+    .review-header-purchase h3 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .review-content {
+      padding: 40px;
+    }
+
+    .review-subtitle {
+      color: #666;
+      margin-bottom: 24px;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    /* Existing Review Display */
+    .existing-review-display {
+      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+      border-radius: 16px;
+      padding: 28px;
+      border: 2px solid #fcd34d;
+      margin-bottom: 20px;
+    }
+
+    .review-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--green);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .review-stars-display {
+      font-size: 2rem;
+      color: #f59e0b;
+      letter-spacing: 0.1em;
+      margin-bottom: 12px;
+    }
+
+    .review-meta {
+      font-size: 0.85rem;
+      color: #92400e;
+      margin-bottom: 16px;
+      font-weight: 500;
+    }
+
+    .review-comment-display {
+      color: var(--text-1);
+      line-height: 1.8;
+      font-style: italic;
+      font-size: 0.95rem;
+    }
+
+    .review-author {
+      margin-top: 16px;
+      text-align: right;
+      font-size: 0.9rem;
+      color: #666;
+    }
+
+    .review-author span {
+      font-weight: 600;
+      color: var(--text-1);
+    }
+
+    /* Form Styling */
+    .form-label {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-1);
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .required {
+      color: #dc3545;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid #ddd;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-family: 'Inter', sans-serif;
+      transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--brand);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    }
+
+    .mb-3 {
+      margin-bottom: 24px;
+    }
+
+    /* Rating Select */
+    .rating-select-section {
+      margin-bottom: 28px;
+    }
+
+    .rating-stars-input {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .rating-stars-input input[type="radio"] {
+      display: none;
+    }
+
+    .star-label {
+      font-size: 2.2rem;
+      color: #ddd;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin: 0;
+    }
+
+    .star-label:hover {
+      color: #ffc107;
+      transform: scale(1.15);
+    }
+
+    .rating-text-display {
+      font-size: 0.9rem;
+      color: #666;
+      margin: 0;
+      font-weight: 500;
+    }
+
+    /* Comment Section */
+    .comment-section {
+      margin-bottom: 24px;
+    }
+
+    .comment-section .form-control {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .form-text {
+      display: block;
+      margin-top: 8px;
+      color: #999;
+      font-size: 0.85rem;
+    }
+
+    /* Submit Button */
+    .submit-review-btn {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, var(--brand-light) 0%, var(--brand-purple) 100%);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .submit-review-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+    }
+
+    .submit-review-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    /* Loading Overlay */
+    #loadingOverlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .ld-ring {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      border: 5px solid rgba(102, 126, 234, 0.2);
+      border-top-color: var(--brand-light);
+      animation: spn 0.7s linear infinite;
+    }
+
+    @keyframes spn {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Toast */
+    #toastContainer {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.25rem;
+      left: 1.25rem;
+      z-index: 9998;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: .5rem;
+      pointer-events: none;
+    }
+
+    .toast-item {
+      background: var(--brand);
+      color: #fff;
+      padding: 14px 20px;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      animation: toastIn 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      max-width: 380px;
+      width: 100%;
+      pointer-events: auto;
+      font-size: .9rem;
+      font-weight: 500;
+    }
+
+    .toast-success {
+      background: var(--green);
+    }
+
+    .toast-danger {
+      background: #EF4444;
+    }
+
+    .toast-warning {
+      background: var(--accent);
+    }
+
+    @keyframes toastIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Error Card */
+    .error-card {
+      max-width: 600px;
+      margin: 60px auto;
+      background: white;
+      border-radius: 24px;
+      padding: 60px 40px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    }
+
+    .error-card i {
+      font-size: 4rem;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+
+    .error-card h4 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-1);
+      margin-bottom: 12px;
+    }
+
+    .error-card p {
+      color: #666;
+      margin-bottom: 24px;
+    }
+
+    .btn-outline-custom {
+      display: inline-block;
+      padding: 12px 24px;
+      background: white;
+      border: 2px solid var(--brand);
+      color: var(--brand);
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .btn-outline-custom:hover {
+      background: var(--brand);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    /* ─── Responsive ─── */
+
+    /* Medium: tablets / small laptops */
+    @media (max-width: 1024px) {
+      .purchase-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+
+      .purchase-section {
+        padding: 40px 20px;
+      }
+
+      .review-card-purchase {
+        position: relative;
+        top: 0;
+      }
+
+      .product-img-purchase,
+      .product-placeholder-purchase {
+        height: 340px;
+      }
+
+      .product-details {
+        padding: 28px;
+      }
+    }
+
+    /* Small: large phones and small tablets */
+    @media (max-width: 768px) {
+
+      /* Navbar */
+      .navbar-container {
+        padding: 0 16px;
+      }
+
+      .navbar-brand {
+        font-size: 1.1rem;
+      }
+
+      .back-btn-nav {
+        padding: 8px 14px;
+        font-size: 0.875rem;
+      }
+
+      .back-btn-nav span {
+        display: none;
+      }
+
+      /* Header banner */
+      .purchase-header {
+        padding: 16px 0;
+      }
+
+      .purchase-alert {
+        font-size: 0.875rem;
+        gap: 8px;
+        padding: 0 16px;
+      }
+
+      .purchase-alert i {
+        font-size: 1.2rem;
+      }
+
+      /* Content area */
+      .purchase-section {
+        padding: 24px 16px;
+      }
+
+      /* Product card */
+      .product-card-purchase {
+        border-radius: 12px;
+      }
+
+      .product-img-purchase,
+      .product-placeholder-purchase {
+        height: 260px;
+      }
+
+      .product-details {
+        padding: 20px 16px;
+      }
+
+      .product-name-purchase {
+        font-size: 1.35rem;
+        margin-bottom: 14px;
+      }
+
+      /* Price */
+      .price-value-purchase {
+        font-size: 1.5rem;
+      }
+
+      /* Rating section */
+      .rating-section-purchase {
+        padding: 12px;
+      }
+
+      /* Download section */
+      .download-section {
+        padding: 16px;
+      }
+
+      .download-text-display {
+        padding: 16px;
+      }
+
+      .download-link-text {
+        font-size: 0.83rem;
+        padding-right: 0;
+        word-break: break-all;
+      }
+
+      .copy-btn {
+        position: static;
+        width: 100%;
+        margin-top: 12px;
+        justify-content: center;
+      }
+
+      /* Info items */
+      .info-item {
+        flex-direction: column;
+        gap: 2px;
+        padding: 10px 0;
+      }
+
+      .info-value-small {
+        text-align: left;
+      }
+
+      /* Review card */
+      .review-header-purchase {
+        padding: 20px 16px;
+      }
+
+      .review-content {
+        padding: 20px 16px;
+      }
+
+      /* Star rating — bigger tap targets */
+      .rating-stars-input {
+        gap: 4px;
+      }
+
+      .star-label {
+        font-size: 2rem;
+        padding: 4px;
+      }
+
+      /* Error card */
+      .error-card {
+        margin: 24px 16px;
+        padding: 40px 24px;
+      }
+
+      /* Toast wide on mobile */
+      #toastContainer {
+        align-items: stretch;
+      }
+
+      .toast-item {
+        max-width: 100%;
+      }
+    }
+
+    /* Extra small: small phones */
+    @media (max-width: 480px) {
+      .top-navbar {
+        padding: 12px 0;
+      }
+
+      .navbar-brand {
+        font-size: 1rem;
+        gap: 7px;
+      }
+
+      .product-img-purchase,
+      .product-placeholder-purchase {
+        height: 220px;
+      }
+
+      .product-details {
+        padding: 16px 14px;
+      }
+
+      .product-name-purchase {
+        font-size: 1.2rem;
+      }
+
+      .price-value-purchase {
+        font-size: 1.35rem;
+      }
+
+      .code-value {
+        font-size: 1.1rem;
+      }
+
+      .review-header-purchase h3 {
+        font-size: 1.1rem;
+      }
+
+      .star-label {
+        font-size: 1.75rem;
+      }
+
+      .submit-review-btn {
+        padding: 14px;
+        font-size: 0.95rem;
+      }
+
+      .error-card {
+        padding: 32px 16px;
+        margin: 16px 12px;
+        border-radius: 16px;
+      }
+
+      .error-card i {
+        font-size: 3rem;
+      }
+
+      .error-card h4 {
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="loadingOverlay">
+    <div class="ld-ring"></div>
+  </div>
+
+  <div id="toastContainer"></div>
+
+  <!-- Backdrop for drawer -->
+  <div class="nav-backdrop" id="navBackdrop" onclick="closeDrawer()"></div>
+
+  <!-- Drawer -->
+  <div class="nav-drawer" id="navDrawer" role="dialog" aria-modal="true" aria-label="Menu Navigasi">
+    <div class="drawer-header">
+      <a class="drawer-brand" href="index.html">
+        <div class="logo-box"><i class="bi bi-shop text-white" style="font-size:.85rem;"></i></div>
+        <span>Lapak Yudhas</span>
+      </a>
+      <button class="drawer-close" onclick="closeDrawer()" aria-label="Tutup menu">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+
+    <p class="drawer-section-label">Navigasi</p>
+    <div class="drawer-nav">
+      <a class="drawer-link" href="index.html">
+        <span class="dl-icon"><i class="bi bi-house-fill"></i></span>
+        <span>Beranda</span>
+      </a>
+      <a class="drawer-link" href="semua_produk.html">
+        <span class="dl-icon"><i class="bi bi-grid-3x3-gap-fill"></i></span>
+        <span>Semua Produk</span>
+      </a>
+    </div>
+
+    <div class="drawer-divider"></div>
+    <p class="drawer-section-label">Akun</p>
+    <div class="drawer-nav">
+      <a class="drawer-link" href="login.html">
+        <span class="dl-icon"><i class="bi bi-person-circle"></i></span>
+        <span>Login</span>
+      </a>
+    </div>
+
+    <div class="drawer-footer">&copy; Lapak Yudhas &mdash; Marketplace Terpercaya</div>
+  </div>
+
+  <!-- Top Navbar -->
+  <nav class="top-navbar">
+    <div class="navbar-container">
+      <a href="index.html" class="navbar-brand">
+        <i class="bi bi-shop"></i>
+        <span>Lapak Yudhas</span>
+      </a>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <a href="index.html" class="back-btn-nav">
+          <i class="bi bi-arrow-left"></i>
+          <span>Kembali ke Beranda</span>
+        </a>
+        <button class="nav-hamburger" id="navHamburger" onclick="openDrawer()" aria-label="Buka menu"
+          aria-expanded="false" aria-controls="navDrawer">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Purchase Header -->
+  <div class="purchase-header" id="purchaseHeader" style="display:none;">
+    <div class="purchase-alert">
+      <i class="bi bi-check-circle-fill"></i>
+      <span>Terima kasih telah membeli produk kami. Akses produk Anda di bawah ini.</span>
+    </div>
+  </div>
+
+  <!-- Purchase Section -->
+  <div class="purchase-section" id="purchaseSection" style="display:none;">
+    <div class="container-purchase">
+      <div class="purchase-grid">
+        <!-- Left: Product Info -->
+        <div class="purchase-product">
+          <div class="product-card-purchase">
+            <div id="productImageContainer">
+              <!-- Will be populated by JavaScript -->
+            </div>
+
+            <div class="product-details">
+              <h2 class="product-name-purchase" id="productName">—</h2>
+
+              <!-- Rating -->
+              <div class="rating-section-purchase" id="ratingSection" style="display:none;">
+                <div class="rating-stars-purchase" id="ratingStars">
+                  <!-- Stars will be populated by JavaScript -->
+                </div>
+                <span class="rating-avg-purchase" id="ratingAvg">0/5</span>
+              </div>
+
+              <!-- Price -->
+              <div class="price-section-purchase">
+                <h3 class="price-label">Harga Pembelian</h3>
+                <h2 class="price-value-purchase" id="productPrice">Rp 0</h2>
+              </div>
+
+              <!-- Description -->
+              <div class="description-purchase" id="descriptionSection" style="display:none;">
+                <h5><i class="bi bi-card-text"></i> Deskripsi</h5>
+                <div class="description-content-purchase" id="productDescription">
+                  <!-- Will be populated by JavaScript -->
+                </div>
+              </div>
+
+              <!-- Download Link -->
+              <div class="download-section" id="downloadSection" style="display:none;">
+                <h5><i class="bi bi-download"></i> Link Akses/Download</h5>
+                <div class="download-text-display">
+                  <div class="download-link-text" id="downloadLinkText">
+                    <!-- Will be populated by JavaScript -->
+                  </div>
+                  <button class="copy-btn" onclick="copyDownloadLink()">
+                    <i class="bi bi-clipboard"></i>
+                    <span>Salin</span>
+                  </button>
+                </div>
+                <div class="download-note">
+                  <i class="bi bi-info-circle"></i>
+                  <span>Mohon review nya untuk membantu kami lebih baik. Terima kasih 🙏</span>
+                </div>
+              </div>
+
+              <!-- Additional Info -->
+              <div class="info-section">
+                <div class="info-item">
+                  <span class="info-label-small">Nama Pelanggan</span>
+                  <span class="info-value-small" id="customerName">—</span>
+                </div>
+                <div class="info-item" id="emailItem" style="display:none;">
+                  <span class="info-label-small">Email</span>
+                  <span class="info-value-small" id="customerEmail">—</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label-small">WhatsApp</span>
+                  <span class="info-value-small" id="customerWhatsapp">—</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label-small">Status</span>
+                  <span class="info-value-small" id="purchaseStatus">—</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label-small">Tanggal Pembelian</span>
+                  <span class="info-value-small" id="purchaseDate">—</span>
+                </div>
+              </div>
+
+              <!-- Purchase Code -->
+              <div class="purchase-code-section">
+                <p class="code-label">Kode Unik Pembelian</p>
+                <p class="code-value" id="uniqueCode">—</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Review Section -->
+        <div class="purchase-review">
+          <div class="review-card-purchase">
+            <div class="review-header-purchase">
+              <i class="bi bi-star-fill"></i>
+              <h3>Ulasan Produk</h3>
+            </div>
+
+            <div class="review-content">
+              <!-- Existing Review Display -->
+              <div id="existingReviewContainer" style="display:none;">
+                <div class="review-badge">
+                  <i class="bi bi-check-circle-fill"></i>
+                  <span>Ulasan Terkirim!</span>
+                </div>
+                <div class="existing-review-display">
+                  <div class="review-stars-display" id="existingReviewStars"></div>
+                  <div class="review-meta">Terima kasih atas ulasan Anda!</div>
+                  <div class="review-comment-display" id="existingReviewComment"></div>
+                  <div class="review-author">
+                    — <span id="existingReviewerName"></span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Review Form -->
+              <div id="reviewFormContainer" style="display:none;">
+                <p class="review-subtitle">
+                  Bagikan pengalaman Anda dengan produk ini untuk membantu pembeli lainnya.
+                </p>
+
+                <form id="reviewForm" onsubmit="submitReview(event)">
+                  <!-- Customer Name -->
+                  <div class="mb-3">
+                    <label for="reviewerName" class="form-label">Nama Anda <span class="required">*</span></label>
+                    <input type="text" class="form-control" id="reviewerName" name="reviewerName"
+                      placeholder="Masukkan nama Anda" required>
+                  </div>
+
+                  <!-- Customer Email (Optional) -->
+                  <div class="mb-3">
+                    <label for="reviewerEmail" class="form-label">Email Anda</label>
+                    <input type="email" class="form-control" id="reviewerEmail" name="reviewerEmail"
+                      placeholder="Masukkan email Anda (opsional)">
+                  </div>
+
+                  <!-- Rating Selection -->
+                  <div class="rating-select-section">
+                    <label class="form-label">Rating Produk <span class="required">*</span></label>
+                    <div class="rating-stars-input" id="starRatingInput">
+                      <input type="radio" name="rating" value="1" id="rating1" required>
+                      <label for="rating1" class="star-label"><i class="bi bi-star-fill"></i></label>
+                      <input type="radio" name="rating" value="2" id="rating2">
+                      <label for="rating2" class="star-label"><i class="bi bi-star-fill"></i></label>
+                      <input type="radio" name="rating" value="3" id="rating3">
+                      <label for="rating3" class="star-label"><i class="bi bi-star-fill"></i></label>
+                      <input type="radio" name="rating" value="4" id="rating4">
+                      <label for="rating4" class="star-label"><i class="bi bi-star-fill"></i></label>
+                      <input type="radio" name="rating" value="5" id="rating5">
+                      <label for="rating5" class="star-label"><i class="bi bi-star-fill"></i></label>
+                    </div>
+                    <p class="rating-text-display" id="ratingTextDisplay">Pilih rating Anda...</p>
+                  </div>
+
+                  <!-- Comment -->
+                  <div class="comment-section">
+                    <label for="reviewComment" class="form-label">Komentar Anda</label>
+                    <textarea class="form-control" id="reviewComment" name="reviewComment" rows="5"
+                      placeholder="Ceritakan pengalaman Anda dengan produk ini..."></textarea>
+                    <small class="form-text">Opsional</small>
+                  </div>
+
+                  <!-- Submit Button -->
+                  <button type="submit" class="submit-review-btn" id="submitBtn">
+                    <i class="bi bi-send-fill"></i>
+                    <span>Kirim Ulasan</span>
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Error Card -->
+  <div class="error-card" id="errorCard" style="display:none;">
+    <i class="bi bi-exclamation-triangle"></i>
+    <h4>Transaksi Tidak Ditemukan</h4>
+    <p>Kode transaksi yang Anda masukkan tidak valid atau tidak ditemukan.</p>
+    <a href="index.html" class="btn-outline-custom">
+      <i class="bi bi-arrow-left me-2"></i>Kembali ke Beranda
+    </a>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    crossorigin="anonymous"></script>
+  <script>
+    /* ══════════════════════════════════════════════════════
+       API HELPER
+    ══════════════════════════════════════════════════════ */
+    const API_URL = 'https://script.google.com/macros/s/AKfycbyb9NghBypjpt17FT6MlIAJsZvXNoa4OniIJ47kPNYicmhqAS-6kaWWN8VPHcbky4L9/exec';
+
+    /* ══════════════════════════════════════════════════════
+       MOBILE DRAWER
+    ══════════════════════════════════════════════════════ */
+    function openDrawer() {
+      const drawer = document.getElementById('navDrawer');
+      const backdrop = document.getElementById('navBackdrop');
+      const btn = document.getElementById('navHamburger');
+      backdrop.classList.add('visible');
+      requestAnimationFrame(() => {
+        backdrop.classList.add('open');
+        drawer.classList.add('open');
+      });
+      btn.classList.add('open');
+      btn.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeDrawer() {
+      const drawer = document.getElementById('navDrawer');
+      const backdrop = document.getElementById('navBackdrop');
+      const btn = document.getElementById('navHamburger');
+      drawer.classList.remove('open');
+      backdrop.classList.remove('open');
+      btn.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+      setTimeout(() => backdrop.classList.remove('visible'), 320);
+    }
+
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
+
+    async function api(action, payload = {}) {
+      const res = await fetch(API_URL, {
+        method: 'POST',
+        body: JSON.stringify({ action, payload }),
+      });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const json = await res.json();
+      json.success = json.status === 'success';
+      return json;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       STATE
+    ══════════════════════════════════════════════════════ */
+    const state = {
+      uniqueCode: null,
+      transaction: null,
+      selectedRating: 0
+    };
+
+    /* ══════════════════════════════════════════════════════
+       HELPERS
+    ══════════════════════════════════════════════════════ */
+    function showLoading() {
+      document.getElementById('loadingOverlay').style.display = 'flex';
+    }
+
+    function hideLoading() {
+      document.getElementById('loadingOverlay').style.display = 'none';
+    }
+
+    function showToast(msg, type = 'success') {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = `toast-item toast-${type}`;
+      const icons = {
+        success: 'check-circle-fill',
+        danger: 'x-circle-fill',
+        warning: 'exclamation-triangle-fill'
+      };
+      toast.innerHTML = `<i class="bi bi-${icons[type] || 'info-circle-fill'}"></i><span>${escHtml(msg)}</span>`;
+      container.appendChild(toast);
+      setTimeout(() => toast.remove(), 4000);
+    }
+
+    function escHtml(s) {
+      if (s == null) return '';
+      return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function formatRupiah(n) {
+      return 'Rp\u00A0' + Number(n).toLocaleString('id-ID');
+    }
+
+    function formatDate(ts) {
+      if (!ts) return '—';
+      try {
+        return new Date(ts).toLocaleDateString('id-ID', {
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+      } catch {
+        return ts;
+      }
+    }
+
+    function getUrlParam(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
+    }
+
+    /* ══════════════════════════════════════════════════════
+       BOOT
+    ══════════════════════════════════════════════════════ */
+    document.addEventListener('DOMContentLoaded', () => {
+      const code = getUrlParam('code');
+      if (!code) {
+        showError();
+        return;
+      }
+      state.uniqueCode = code;
+      loadTransaction();
+      initStarRating();
+    });
+
+    /* ══════════════════════════════════════════════════════
+       LOAD TRANSACTION
+    ══════════════════════════════════════════════════════ */
+    function loadTransaction() {
+      showLoading();
+      api('getPenjualanByCode', { uniqueCode: state.uniqueCode }).then(res => {
+        hideLoading();
+        if (!res.success || !res.data) {
+          showError();
+          return;
+        }
+        state.transaction = res.data;
+        displayTransaction();
+        checkAndDisplayReview();
+      }).catch(e => {
+        hideLoading();
+        console.error(e);
+        showError();
+      });
+    }
+
+    function showError() {
+      document.getElementById('errorCard').style.display = 'block';
+    }
+
+    /* ══════════════════════════════════════════════════════
+       DISPLAY TRANSACTION
+    ══════════════════════════════════════════════════════ */
+    function displayTransaction() {
+      const t = state.transaction;
+
+      // Show sections
+      document.getElementById('purchaseHeader').style.display = 'block';
+      document.getElementById('purchaseSection').style.display = 'block';
+
+      // Debug log
+      console.log('Transaction Data:', t);
+      console.log('VariantName:', t.VariantName);
+      console.log('VariantPrice:', t.VariantPrice);
+
+      // Product Image
+      const imageContainer = document.getElementById('productImageContainer');
+      if (t.ProductImage || t.ImageURL) {
+        imageContainer.innerHTML = `<img src="${escHtml(t.ProductImage || t.ImageURL)}" class="product-img-purchase" alt="${escHtml(t.ProductName)}" />`;
+      } else {
+        imageContainer.innerHTML = `<div class="product-placeholder-purchase"><i class="bi bi-box-seam"></i></div>`;
+      }
+
+      // Product Name & Variant
+      let productNameHtml = escHtml(t.ProductName || t.ProductID);
+
+      // Show variant name only if it has a proper name (not auto-generated ID)
+      const hasVariantName = t.VariantName && !t.VariantName.startsWith('VAR-');
+      if (hasVariantName) {
+        productNameHtml += `<br><small style="font-size:1rem;color:#888;font-weight:500;">${escHtml(t.VariantName)}</small>`;
+      }
+      document.getElementById('productName').innerHTML = productNameHtml;
+
+      // Price — VariantPrice dari backend (variant.Price di Variants sheet)
+      const priceValue = Number(t.VariantPrice) || 0;
+      document.getElementById('productPrice').textContent = formatRupiah(priceValue);
+
+      // Jika harga 0 dan varian punya nama, tampilkan pesan info
+      if (priceValue === 0) {
+        const priceEl = document.getElementById('productPrice').parentElement;
+        const infoEl = document.createElement('p');
+        infoEl.style.cssText = 'font-size:0.8rem;color:#999;margin:4px 0 0 0;';
+        infoEl.textContent = 'Hubungi admin untuk informasi harga';
+        if (!priceEl.querySelector('.price-info-note')) {
+          infoEl.className = 'price-info-note';
+          priceEl.appendChild(infoEl);
+        }
+      }
+
+      // Description
+      if (t.Description && t.Description.trim()) {
+        document.getElementById('descriptionSection').style.display = 'block';
+        document.getElementById('productDescription').innerHTML = t.Description;
+      }
+
+      // Download Link
+      if (t.HasilPenjualan && t.HasilPenjualan.trim()) {
+        document.getElementById('downloadSection').style.display = 'block';
+        document.getElementById('downloadLinkText').innerHTML = t.HasilPenjualan;
+      }
+
+      // Customer Info
+      document.getElementById('customerName').textContent = t.CustomerName || '—';
+      if (t.CustomerEmail && t.CustomerEmail.trim()) {
+        document.getElementById('emailItem').style.display = 'flex';
+        document.getElementById('customerEmail').textContent = t.CustomerEmail;
+      }
+
+      const whatsappEl = document.getElementById('customerWhatsapp');
+      if (t.CustomerWhatsapp) {
+        whatsappEl.innerHTML = `<a href="https://wa.me/${escHtml(t.CustomerWhatsapp)}" target="_blank" style="color:#10B981;text-decoration:none;font-weight:600;"><i class="bi bi-whatsapp"></i> ${escHtml(t.CustomerWhatsapp)}</a>`;
+      } else {
+        whatsappEl.textContent = '—';
+      }
+
+      // Status
+      const statusColors = {
+        'aktif': '#F59E0B',
+        'selesai': '#10B981',
+        'batal': '#EF4444'
+      };
+      const statusEl = document.getElementById('purchaseStatus');
+      statusEl.textContent = (t.Status || 'aktif').toUpperCase();
+      statusEl.style.color = statusColors[t.Status] || statusColors.aktif;
+
+      // Date
+      document.getElementById('purchaseDate').textContent = formatDate(t.CreatedAt);
+
+      // Unique Code
+      document.getElementById('uniqueCode').textContent = t.UniqueCode || '—';
+    }
+
+    /* ══════════════════════════════════════════════════════
+       COPY DOWNLOAD LINK
+    ══════════════════════════════════════════════════════ */
+    function copyDownloadLink() {
+      const downloadText = document.getElementById('downloadLinkText');
+      const text = downloadText.innerText || downloadText.textContent;
+
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(() => {
+          showToast('Link berhasil disalin!', 'success');
+        }).catch(() => {
+          fallbackCopy(text);
+        });
+      } else {
+        fallbackCopy(text);
+      }
+    }
+
+    function fallbackCopy(text) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand('copy');
+        showToast('Link berhasil disalin!', 'success');
+      } catch (err) {
+        showToast('Gagal menyalin teks', 'danger');
+      }
+      document.body.removeChild(textarea);
+    }
+
+    /* ══════════════════════════════════════════════════════
+       REVIEW SECTION
+    ══════════════════════════════════════════════════════ */
+    function checkAndDisplayReview() {
+      const t = state.transaction;
+
+      if (t.reviewed) {
+        // Fetch and show existing review
+        displayExistingReview();
+      } else {
+        // Show review form
+        showReviewForm();
+      }
+    }
+
+    function displayExistingReview() {
+      const t = state.transaction;
+
+      api('checkExistingReview', { penjualanId: t.PenjualanID }).then(res => {
+        if (res.success && res.data && res.data.exists && res.data.review) {
+          const review = res.data.review;
+          const stars = '★'.repeat(Number(review.Rating || 0)) + '☆'.repeat(5 - Number(review.Rating || 0));
+
+          document.getElementById('existingReviewStars').textContent = stars;
+          document.getElementById('existingReviewerName').textContent = review.ReviewerName || 'Anonim';
+
+          const commentEl = document.getElementById('existingReviewComment');
+          if (review.Comment && review.Comment.trim()) {
+            commentEl.textContent = '"' + review.Comment + '"';
+          } else {
+            commentEl.textContent = '"Terima kasih, produk sesuai dan pelayanan memuaskan!"';
+          }
+
+          document.getElementById('existingReviewContainer').style.display = 'block';
+          document.getElementById('reviewFormContainer').style.display = 'none';
+        } else {
+          // If can't fetch review, show form instead
+          showReviewForm();
+        }
+      }).catch(() => {
+        showReviewForm();
+      });
+    }
+
+    function showReviewForm() {
+      document.getElementById('reviewFormContainer').style.display = 'block';
+      document.getElementById('existingReviewContainer').style.display = 'none';
+
+      // Pre-fill customer name if available
+      if (state.transaction && state.transaction.CustomerName) {
+        document.getElementById('reviewerName').value = state.transaction.CustomerName;
+      }
+      if (state.transaction && state.transaction.CustomerEmail) {
+        document.getElementById('reviewerEmail').value = state.transaction.CustomerEmail;
+      }
+    }
+
+    /* ══════════════════════════════════════════════════════
+       STAR RATING INTERACTION
+    ══════════════════════════════════════════════════════ */
+    function initStarRating() {
+      const radios = document.querySelectorAll('.rating-stars-input input[type="radio"]');
+      const labels = document.querySelectorAll('.star-label');
+
+      radios.forEach((radio, index) => {
+        radio.addEventListener('change', function () {
+          const rating = parseInt(this.value);
+          state.selectedRating = rating;
+          updateStarDisplay(rating);
+          document.getElementById('ratingTextDisplay').textContent = rating + ' Bintang';
+        });
+      });
+
+      // Hover effect
+      labels.forEach((label, index) => {
+        label.addEventListener('mouseenter', function () {
+          const rating = index + 1;
+          updateStarDisplay(rating);
+        });
+      });
+
+      // Mouse leave - return to selected
+      const container = document.getElementById('starRatingInput');
+      if (container) {
+        container.addEventListener('mouseleave', function () {
+          updateStarDisplay(state.selectedRating);
+        });
+      }
+    }
+
+    function updateStarDisplay(rating) {
+      const labels = document.querySelectorAll('.star-label');
+      labels.forEach((label, i) => {
+        if (i < rating) {
+          label.style.color = '#ffc107';
+        } else {
+          label.style.color = '#ddd';
+        }
+      });
+    }
+
+    /* ══════════════════════════════════════════════════════
+       SUBMIT REVIEW
+    ══════════════════════════════════════════════════════ */
+    function submitReview(event) {
+      event.preventDefault();
+
+      const reviewerName = document.getElementById('reviewerName').value.trim();
+      const reviewerEmail = document.getElementById('reviewerEmail').value.trim();
+      const comment = document.getElementById('reviewComment').value.trim();
+
+      if (!state.selectedRating) {
+        showToast('Silakan pilih rating terlebih dahulu', 'warning');
+        return;
+      }
+
+      if (!reviewerName) {
+        showToast('Silakan masukkan nama Anda', 'warning');
+        return;
+      }
+
+      // Disable submit button
+      const submitBtn = document.getElementById('submitBtn');
+      submitBtn.disabled = true;
+
+      showLoading();
+      api('addReview', {
+        UniqueCode: state.uniqueCode,
+        ReviewerName: reviewerName,
+        Rating: state.selectedRating,
+        Comment: comment
+      }).then(res => {
+        hideLoading();
+        submitBtn.disabled = false;
+
+        if (!res.success) {
+          showToast(res.message || 'Gagal mengirim ulasan', 'danger');
+          return;
+        }
+
+        showToast('Ulasan berhasil dikirim! Terima kasih atas feedback Anda.', 'success');
+
+        // Refresh the page after a delay to show the review
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      }).catch(e => {
+        hideLoading();
+        submitBtn.disabled = false;
+        showToast('Terjadi kesalahan: ' + e.message, 'danger');
+      });
+    }
+  </script>
+</body>
+
+</html>

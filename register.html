@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Daftar — Lapak Yudhas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <style>
+        :root {
+            --brand: #4F46E5;
+            --brand-dark: #312E81;
+            --brand-deeper: #1E1B4B;
+            --accent: #F59E0B;
+            --success: #10B981;
+            --danger: #EF4444;
+            --border: #E2E8F0;
+            --text-1: #0F172A;
+            --text-2: #475569;
+            --text-3: #94A3B8;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--brand-deeper) 0%, #312E81 50%, #4338CA 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse at 85% 15%, rgba(245, 158, 11, .22) 0%, transparent 50%),
+                radial-gradient(ellipse at 10% 80%, rgba(124, 58, 237, .35) 0%, transparent 50%);
+        }
+
+        .card {
+            position: relative;
+            z-index: 1;
+            background: #fff;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 480px;
+            padding: 2.5rem 2.5rem 2rem;
+            box-shadow: 0 24px 64px rgba(0, 0, 0, .22);
+        }
+
+        /* Logo */
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: .6rem;
+            margin-bottom: 1.75rem;
+        }
+
+        .logo-box {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--brand), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .logo-name {
+            font-weight: 800;
+            font-size: 1.15rem;
+            color: var(--text-1);
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -.03em;
+            color: var(--text-1);
+            margin-bottom: .3rem;
+        }
+
+        .sub {
+            color: var(--text-2);
+            font-size: .88rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Alerts */
+        .alert {
+            display: none;
+            align-items: flex-start;
+            gap: .55rem;
+            padding: .72rem 1rem;
+            border-radius: 10px;
+            font-size: .84rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .alert.show {
+            display: flex;
+        }
+
+        .alert.error {
+            background: #FEE2E2;
+            color: #B91C1C;
+        }
+
+        .alert.success {
+            background: #DCFCE7;
+            color: #15803D;
+        }
+
+        .alert i {
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        /* Fields */
+        .field {
+            margin-bottom: 1rem;
+        }
+
+        .row-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: .85rem;
+        }
+
+        label {
+            display: block;
+            font-size: .83rem;
+            font-weight: 600;
+            color: var(--text-1);
+            margin-bottom: .38rem;
+        }
+
+        .inp-wrap {
+            position: relative;
+        }
+
+        .inp-wrap>i.fi {
+            position: absolute;
+            left: .9rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-3);
+            font-size: .95rem;
+            pointer-events: none;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: .7rem 1rem .7rem 2.5rem;
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            font-size: .9rem;
+            font-family: inherit;
+            color: var(--text-1);
+            transition: border-color .2s, box-shadow .2s;
+            outline: none;
+            background: #fff;
+        }
+
+        input:focus {
+            border-color: var(--brand);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, .12);
+        }
+
+        input.err-inp {
+            border-color: var(--danger);
+        }
+
+        .eye-btn {
+            position: absolute;
+            right: .85rem;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0;
+            color: var(--text-3);
+            font-size: 1rem;
+        }
+
+        .eye-btn:hover {
+            color: var(--brand);
+        }
+
+        .field-err {
+            font-size: .75rem;
+            color: var(--danger);
+            margin-top: .3rem;
+            display: none;
+        }
+
+        .field-err.show {
+            display: block;
+        }
+
+        /* Password strength */
+        .pw-bar {
+            height: 4px;
+            border-radius: 2px;
+            margin-top: .45rem;
+            background: var(--border);
+            overflow: hidden;
+        }
+
+        .pw-fill {
+            height: 100%;
+            transition: width .3s, background .3s;
+            border-radius: 2px;
+            width: 0%;
+        }
+
+        .pw-label {
+            font-size: .72rem;
+            color: var(--text-3);
+            margin-top: .2rem;
+        }
+
+        /* Submit */
+        .btn-submit {
+            width: 100%;
+            padding: .82rem;
+            margin-top: .5rem;
+            background: var(--brand);
+            color: #fff;
+            font-weight: 700;
+            font-size: 1rem;
+            font-family: inherit;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background .2s, transform .15s, box-shadow .2s;
+            box-shadow: 0 6px 20px rgba(79, 70, 229, .3);
+        }
+
+        .btn-submit:hover:not(:disabled) {
+            background: var(--brand-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 28px rgba(79, 70, 229, .4);
+        }
+
+        .btn-submit:disabled {
+            opacity: .65;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Divider + login link */
+        .divider {
+            text-align: center;
+            color: var(--text-3);
+            font-size: .8rem;
+            margin: 1.1rem 0;
+            position: relative;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: calc(50% - 22px);
+            height: 1px;
+            background: var(--border);
+        }
+
+        .divider::before {
+            left: 0;
+        }
+
+        .divider::after {
+            right: 0;
+        }
+
+        .btn-outline {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: .45rem;
+            width: 100%;
+            padding: .78rem;
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            background: none;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: .9rem;
+            font-weight: 600;
+            color: var(--text-1);
+            text-decoration: none;
+            transition: border-color .2s, background .2s, color .2s;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--brand);
+            background: #EDE9FE;
+            color: var(--brand);
+        }
+
+        /* Role info */
+        .role-note {
+            background: #F8FAFC;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: .75rem 1rem;
+            margin-bottom: 1rem;
+            font-size: .8rem;
+            color: var(--text-2);
+            display: flex;
+            gap: .5rem;
+        }
+
+        .role-note i {
+            color: var(--brand);
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        /* Footer */
+        .ft-note {
+            text-align: center;
+            color: var(--text-3);
+            font-size: .77rem;
+            margin-top: 1.2rem;
+        }
+
+        .ft-note a {
+            color: var(--brand);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        /* Spinner */
+        .spin {
+            display: inline-block;
+            width: 15px;
+            height: 15px;
+            border: 2.5px solid rgba(255, 255, 255, .35);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spn .65s linear infinite;
+            vertical-align: -3px;
+            margin-right: .35rem;
+        }
+
+        @keyframes spn {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Page loader */
+        #pgLoader {
+            position: fixed;
+            inset: 0;
+            background: rgba(255, 255, 255, .7);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+        }
+
+        #pgLoader.show {
+            display: flex;
+        }
+
+        .ld-ring {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            border: 4px solid rgba(79, 70, 229, .15);
+            border-top-color: var(--brand);
+            animation: spn .7s linear infinite;
+        }
+
+        @media (max-width: 480px) {
+            .row-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="pgLoader">
+        <div class="ld-ring"></div>
+    </div>
+
+    <div class="card">
+        <!-- Logo -->
+        <div class="logo">
+            <div class="logo-box"><i class="bi bi-bag-heart-fill"></i></div>
+            <span class="logo-name">Lapak Yudhas</span>
+        </div>
+
+        <h1>Buat Akun Baru</h1>
+        <p class="sub">Daftar dan mulai belanja sekarang</p>
+
+        <!-- Role info -->
+        <div class="role-note">
+            <i class="bi bi-info-circle-fill"></i>
+            <span>Akun yang dibuat melalui halaman ini memiliki peran <strong>Pembeli</strong>. Akun Admin hanya dapat
+                dibuat oleh admin melalui panel admin.</span>
+        </div>
+
+        <!-- Alerts -->
+        <div class="alert error" id="alertErr">
+            <i class="bi bi-x-circle-fill"></i>
+            <span id="alertErrMsg"></span>
+        </div>
+        <div class="alert success" id="alertOk">
+            <i class="bi bi-check-circle-fill"></i>
+            <span id="alertOkMsg"></span>
+        </div>
+
+        <!-- Form -->
+        <form id="form" onsubmit="handleRegister(event)" novalidate>
+            <div class="field">
+                <label for="name">Nama Lengkap</label>
+                <div class="inp-wrap">
+                    <i class="bi bi-person fi"></i>
+                    <input type="text" id="name" placeholder="Nama lengkap Anda" required autocomplete="name" />
+                </div>
+                <div class="field-err" id="nameErr"></div>
+            </div>
+
+            <div class="field">
+                <label for="email">Alamat Email</label>
+                <div class="inp-wrap">
+                    <i class="bi bi-envelope fi"></i>
+                    <input type="email" id="email" placeholder="email@contoh.com" required autocomplete="email" />
+                </div>
+                <div class="field-err" id="emailErr"></div>
+            </div>
+
+            <div class="row-2">
+                <div class="field">
+                    <label for="password">Password</label>
+                    <div class="inp-wrap">
+                        <i class="bi bi-lock fi"></i>
+                        <input type="password" id="password" placeholder="Min. 6 karakter" required
+                            oninput="checkStrength(this.value)" autocomplete="new-password" />
+                        <button type="button" class="eye-btn" onclick="togglePw('password', this)">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </div>
+                    <div class="pw-bar">
+                        <div class="pw-fill" id="pwFill"></div>
+                    </div>
+                    <div class="pw-label" id="pwLabel">Kekuatan password</div>
+                    <div class="field-err" id="pwErr"></div>
+                </div>
+
+                <div class="field">
+                    <label for="confirm">Ulangi Password</label>
+                    <div class="inp-wrap">
+                        <i class="bi bi-lock-fill fi"></i>
+                        <input type="password" id="confirm" placeholder="Ulangi password" required
+                            autocomplete="new-password" />
+                        <button type="button" class="eye-btn" onclick="togglePw('confirm', this)">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </div>
+                    <div class="field-err" id="confirmErr"></div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-submit" id="btnReg">Daftar Sekarang</button>
+        </form>
+
+        <div class="divider">Sudah punya akun?</div>
+
+        <a id="btnLogin" href="#" class="btn-outline">
+            <i class="bi bi-box-arrow-in-right"></i>Masuk ke Akun Saya
+        </a>
+
+        <p class="ft-note">Dengan mendaftar, Anda menyetujui <a href="#">Syarat &amp; Ketentuan</a> kami.</p>
+    </div>
+
+    <script>
+        const API_URL = 'https://script.google.com/macros/s/AKfycbyb9NghBypjpt17FT6MlIAJsZvXNoa4OniIJ47kPNYicmhqAS-6kaWWN8VPHcbky4L9/exec';
+
+        async function api(action, payload = {}, tkn) {
+            const token = tkn !== undefined ? tkn : null;
+            const res = await fetch(API_URL, {
+                method: 'POST',
+                body: JSON.stringify({ action, token, payload }),
+            });
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            const json = await res.json();
+            json.success = json.status === 'success';
+            return json;
+        }
+
+        document.getElementById('btnLogin').href = 'login.html';
+
+        function togglePw(id, btn) {
+            const inp = document.getElementById(id);
+            const show = inp.type === 'password';
+            inp.type = show ? 'text' : 'password';
+            btn.querySelector('i').className = show ? 'bi bi-eye-slash' : 'bi bi-eye';
+        }
+
+        function checkStrength(val) {
+            const fill = document.getElementById('pwFill');
+            const label = document.getElementById('pwLabel');
+            if (!val) { fill.style.width = '0'; label.textContent = 'Kekuatan password'; return; }
+            let score = 0;
+            if (val.length >= 6) score++;
+            if (val.length >= 10) score++;
+            if (/[A-Z]/.test(val)) score++;
+            if (/\d/.test(val)) score++;
+            if (/[^A-Za-z0-9]/.test(val)) score++;
+            const levels = [
+                { pct: '20%', color: '#EF4444', text: 'Sangat lemah' },
+                { pct: '40%', color: '#F97316', text: 'Lemah' },
+                { pct: '60%', color: '#F59E0B', text: 'Sedang' },
+                { pct: '80%', color: '#84CC16', text: 'Kuat' },
+                { pct: '100%', color: '#10B981', text: 'Sangat kuat' },
+            ];
+            const lv = levels[score - 1] || levels[0];
+            fill.style.width = lv.pct;
+            fill.style.background = lv.color;
+            label.textContent = lv.text;
+            label.style.color = lv.color;
+        }
+
+        function showErr(msg) {
+            document.getElementById('alertErrMsg').textContent = msg;
+            document.getElementById('alertErr').classList.add('show');
+            document.getElementById('alertOk').classList.remove('show');
+        }
+        function showOk(msg) {
+            document.getElementById('alertOkMsg').textContent = msg;
+            document.getElementById('alertOk').classList.add('show');
+            document.getElementById('alertErr').classList.remove('show');
+        }
+        function fieldErr(id, msg) {
+            const el = document.getElementById(id);
+            el.textContent = msg;
+            el.classList.toggle('show', !!msg);
+        }
+
+        function handleRegister(e) {
+            e.preventDefault();
+            ['nameErr', 'emailErr', 'pwErr', 'confirmErr'].forEach(id => fieldErr(id, ''));
+            document.getElementById('alertErr').classList.remove('show');
+
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const confirm = document.getElementById('confirm').value;
+
+            let valid = true;
+            if (!name) { fieldErr('nameErr', 'Nama wajib diisi.'); valid = false; }
+            if (!email) { fieldErr('emailErr', 'Email wajib diisi.'); valid = false; }
+            if (!password || password.length < 6) {
+                fieldErr('pwErr', 'Password minimal 6 karakter.'); valid = false;
+            }
+            if (password !== confirm) {
+                fieldErr('confirmErr', 'Password tidak cocok.'); valid = false;
+            }
+            if (!valid) return;
+
+            const btn = document.getElementById('btnReg');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spin"></span>Memproses…';
+
+            api('registerUser', { name, email, password }, null).then(res => {
+                btn.disabled = false;
+                btn.innerHTML = 'Daftar Sekarang';
+                if (!res.success) { showErr(res.message); return; }
+                showOk('Registrasi berhasil! Mengalihkan ke halaman login…');
+                setTimeout(() => { window.location.href = 'login.html'; }, 1500);
+            }).catch(() => {
+                btn.disabled = false;
+                btn.innerHTML = 'Daftar Sekarang';
+                showErr('Terjadi kesalahan koneksi. Coba lagi.');
+            });
+        }
+    </script>
+</body>
+
+</html>

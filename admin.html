@@ -1,0 +1,1808 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Panel — Lapak Yudhas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-bs5.min.css" rel="stylesheet" />
+    <style>
+        :root {
+            --brand: #4F46E5;
+            --brand-dark: #312E81;
+            --brand-deeper: #1E1B4B;
+            --accent: #F59E0B;
+            --surface: #F8FAFC;
+            --surface-2: #F1F5F9;
+            --surface-3: #E2E8F0;
+            --border: #E2E8F0;
+            --text-1: #0F172A;
+            --text-2: #475569;
+            --text-3: #94A3B8;
+            --r-lg: 16px;
+            --r-xl: 20px;
+            --sidebar-w: 240px;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--surface);
+            color: var(--text-1);
+            margin: 0;
+        }
+
+        /* ── Sidebar ── */
+        .admin-side {
+            width: var(--sidebar-w);
+            min-height: 100vh;
+            background: var(--brand-deeper);
+            display: flex;
+            flex-direction: column;
+            padding: 1rem .75rem;
+            flex-shrink: 0;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .admin-side-brand {
+            display: flex;
+            align-items: center;
+            gap: .55rem;
+            padding: .5rem .75rem 1.25rem;
+            color: #fff;
+            font-weight: 800;
+            font-size: 1.05rem;
+        }
+
+        .adnav {
+            display: flex;
+            align-items: center;
+            gap: .7rem;
+            padding: .62rem .9rem;
+            border-radius: 10px;
+            color: rgba(255, 255, 255, .6);
+            cursor: pointer;
+            text-decoration: none;
+            font-size: .875rem;
+            font-weight: 500;
+            transition: background .18s, color .18s;
+            margin-bottom: 2px;
+        }
+
+        .adnav:hover,
+        .adnav.active {
+            background: rgba(255, 255, 255, .1);
+            color: #fff;
+        }
+
+        .adnav.active {
+            background: rgba(255, 255, 255, .15);
+        }
+
+        /* ── Main area ── */
+        .admin-main {
+            flex: 1;
+            padding: 2rem;
+            min-width: 0;
+        }
+
+        .admin-pg-title {
+            font-weight: 800;
+            font-size: 1.35rem;
+        }
+
+        /* ── Tab sections ── */
+        .admin-tab-content {
+            display: none;
+        }
+
+        .admin-tab-content.visible {
+            display: block;
+        }
+
+        /* ── Stat cards ── */
+        .stat-card {
+            background: #fff;
+            border-radius: var(--r-lg);
+            padding: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, .06);
+        }
+
+        .stat-icon-bg {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        /* ── Tables ── */
+        table {
+            font-size: .875rem;
+        }
+
+        thead th {
+            font-weight: 600;
+            color: var(--text-2);
+            border-bottom: 1px solid var(--border);
+        }
+
+        /* ── Toast ── */
+        #toastBox {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: .5rem;
+            width: 320px;
+        }
+
+        .toast-item {
+            display: flex;
+            align-items: center;
+            gap: .75rem;
+            padding: .85rem 1rem;
+            border-radius: 12px;
+            font-size: .875rem;
+            font-weight: 500;
+            color: #fff;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, .18);
+            animation: toastIn .25s ease;
+        }
+
+        .toast-item.success {
+            background: #10B981;
+        }
+
+        .toast-item.danger {
+            background: #EF4444;
+        }
+
+        .toast-item.warning {
+            background: #F59E0B;
+        }
+
+        .toast-item.info {
+            background: #3B82F6;
+        }
+
+        @keyframes toastIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ── Loading ── */
+        #loadingOverlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(255, 255, 255, .55);
+            backdrop-filter: blur(3px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 8888;
+        }
+
+        .ld-ring {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            border: 4px solid rgba(79, 70, 229, .15);
+            border-top-color: var(--brand);
+            animation: spn .7s linear infinite;
+        }
+
+        @keyframes spn {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ── Top bar ── */
+        .top-bar {
+            background: #fff;
+            border-bottom: 1px solid var(--border);
+            padding: .75rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .top-bar-user {
+            display: flex;
+            align-items: center;
+            gap: .75rem;
+            font-size: .875rem;
+            color: var(--text-2);
+        }
+
+        .avatar-sm {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--brand);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: .8rem;
+            flex-shrink: 0;
+        }
+
+        /* ── Hamburger button ── */
+        .nav-hamburger {
+            display: none;
+            width: 38px;
+            height: 38px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 10px;
+            flex-direction: column;
+            justify-content: center;
+            gap: 5px;
+            transition: background .18s;
+            flex-shrink: 0;
+        }
+
+        .nav-hamburger:hover {
+            background: var(--surface-2);
+        }
+
+        .nav-hamburger .hb-bar {
+            display: block;
+            height: 2px;
+            background: var(--text-2);
+            border-radius: 2px;
+            transition: transform .28s cubic-bezier(.4, 0, .2, 1), opacity .2s;
+            transform-origin: center;
+            width: 100%;
+        }
+
+        .nav-hamburger.open .hb-bar:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+        }
+
+        .nav-hamburger.open .hb-bar:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+
+        .nav-hamburger.open .hb-bar:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg);
+        }
+
+        /* ── Backdrop ── */
+        .nav-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, .55);
+            backdrop-filter: blur(3px);
+            z-index: 1040;
+            opacity: 0;
+            transition: opacity .28s;
+        }
+
+        .nav-backdrop.show {
+            opacity: 1;
+        }
+
+        /* ── Drawer ── */
+        .nav-drawer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 280px;
+            max-width: 85vw;
+            background: linear-gradient(160deg, #0f0c29 0%, #1E1B4B 40%, #312E81 100%);
+            z-index: 1050;
+            display: flex;
+            flex-direction: column;
+            transform: translateX(-100%);
+            transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .nav-drawer.open {
+            transform: translateX(0);
+        }
+
+        .drawer-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.1rem 1.1rem .85rem;
+            border-bottom: 1px solid rgba(255, 255, 255, .08);
+            flex-shrink: 0;
+        }
+
+        .drawer-brand {
+            display: flex;
+            align-items: center;
+            gap: .55rem;
+            color: #fff;
+            font-weight: 800;
+            font-size: 1rem;
+        }
+
+        .drawer-close {
+            width: 30px;
+            height: 30px;
+            border: none;
+            background: rgba(255, 255, 255, .1);
+            border-radius: 8px;
+            color: rgba(255, 255, 255, .7);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .9rem;
+            transition: background .18s;
+            flex-shrink: 0;
+        }
+
+        .drawer-close:hover {
+            background: rgba(255, 255, 255, .2);
+            color: #fff;
+        }
+
+        .drawer-user-banner {
+            display: flex;
+            align-items: center;
+            gap: .75rem;
+            padding: .85rem 1rem;
+            margin: .75rem;
+            background: rgba(255, 255, 255, .07);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, .08);
+            flex-shrink: 0;
+        }
+
+        .drawer-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), #F97316);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: .95rem;
+            flex-shrink: 0;
+        }
+
+        .drawer-user-info {
+            min-width: 0;
+        }
+
+        .drawer-user-role {
+            font-size: .7rem;
+            color: var(--accent);
+            font-weight: 700;
+            letter-spacing: .05em;
+            text-transform: uppercase;
+        }
+
+        .drawer-user-email {
+            font-size: .83rem;
+            color: rgba(255, 255, 255, .85);
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 185px;
+        }
+
+        .drawer-section-label {
+            font-size: .7rem;
+            font-weight: 700;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, .35);
+            padding: .75rem 1.1rem .35rem;
+            flex-shrink: 0;
+        }
+
+        .drawer-nav {
+            padding: 0 .6rem;
+            flex: 1;
+        }
+
+        .drawer-link {
+            display: flex;
+            align-items: center;
+            gap: .75rem;
+            padding: .72rem .9rem;
+            border-radius: 10px;
+            color: rgba(255, 255, 255, .65);
+            text-decoration: none;
+            font-size: .875rem;
+            font-weight: 500;
+            transition: background .18s, color .18s;
+            cursor: pointer;
+            margin-bottom: 2px;
+            border: none;
+            background: transparent;
+            width: 100%;
+            text-align: left;
+        }
+
+        .drawer-link:hover {
+            background: rgba(255, 255, 255, .1);
+            color: #fff;
+        }
+
+        .drawer-link.active {
+            background: rgba(255, 255, 255, .15);
+            color: #fff;
+        }
+
+        .dl-icon {
+            font-size: 1.05rem;
+            flex-shrink: 0;
+            width: 20px;
+            text-align: center;
+        }
+
+        .drawer-divider {
+            height: 1px;
+            background: rgba(255, 255, 255, .07);
+            margin: .5rem .75rem .6rem;
+            flex-shrink: 0;
+        }
+
+        .drawer-footer {
+            padding: 0 .6rem 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .drawer-link-danger:hover {
+            background: rgba(239, 68, 68, .15);
+            color: #FCA5A5;
+        }
+
+        .drawer-link-warning {
+            color: rgba(251, 191, 36, .7);
+        }
+
+        .drawer-link-warning:hover {
+            background: rgba(251, 191, 36, .1);
+            color: #FCD34D;
+        }
+
+        /* ── Responsive layout ── */
+        @media (max-width: 991px) {
+            .admin-side {
+                display: none;
+            }
+
+            .nav-hamburger {
+                display: flex;
+            }
+
+            .top-bar {
+                padding: .65rem 1rem;
+            }
+
+            .admin-main {
+                padding: 1.25rem;
+            }
+        }
+
+        @media (max-width: 575px) {
+            .admin-main {
+                padding: 1rem .75rem;
+            }
+
+            .top-bar {
+                padding: .55rem .75rem;
+            }
+
+            #toastBox {
+                width: calc(100vw - 1.5rem);
+                right: .75rem;
+                left: .75rem;
+            }
+
+            .admin-pg-title {
+                font-size: 1.15rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="loadingOverlay">
+        <div class="ld-ring"></div>
+    </div>
+    <div id="toastBox"></div>
+
+    <!-- ══ Nav Backdrop ══ -->
+    <div class="nav-backdrop" id="navBackdrop" onclick="closeDrawer()"></div>
+
+    <!-- ══ Mobile Drawer ══ -->
+    <div class="nav-drawer" id="navDrawer">
+        <div class="drawer-header">
+            <div class="drawer-brand">
+                <i class="bi bi-speedometer2 text-warning"></i>
+                <span>Admin Panel</span>
+            </div>
+            <button class="drawer-close" onclick="closeDrawer()" aria-label="Tutup menu">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+
+        <!-- User banner -->
+        <div class="drawer-user-banner">
+            <div class="drawer-avatar" id="drawerAvatar">A</div>
+            <div class="drawer-user-info">
+                <div class="drawer-user-role">Administrator</div>
+                <div class="drawer-user-email" id="drawerUserName">—</div>
+            </div>
+        </div>
+
+        <!-- Menu -->
+        <div class="drawer-section-label">Menu Admin</div>
+        <nav class="drawer-nav">
+            <button class="drawer-link active" id="drawerDashboard" onclick="adminTab('dashboard')">
+                <i class="bi bi-grid-1x2 dl-icon"></i><span>Dashboard</span>
+            </button>
+            <button class="drawer-link" id="drawerProducts" onclick="adminTab('products')">
+                <i class="bi bi-box-seam dl-icon"></i><span>Produk</span>
+            </button>
+            <button class="drawer-link" id="drawerPenjualan" onclick="adminTab('penjualan')">
+                <i class="bi bi-receipt-cutoff dl-icon"></i><span>Penjualan</span>
+            </button>
+            <button class="drawer-link" id="drawerUlasan" onclick="adminTab('ulasan')">
+                <i class="bi bi-star-half dl-icon"></i><span>Ulasan</span>
+            </button>
+            <button class="drawer-link" id="drawerConfig" onclick="adminTab('config')">
+                <i class="bi bi-gear-wide-connected dl-icon"></i><span>Konfigurasi</span>
+            </button>
+        </nav>
+
+        <!-- Footer links -->
+        <div class="drawer-divider"></div>
+        <div class="drawer-footer">
+            <button class="drawer-link drawer-link-warning" onclick="goHome()">
+                <i class="bi bi-arrow-left-circle dl-icon"></i><span>Ke Toko</span>
+            </button>
+            <button class="drawer-link drawer-link-danger" onclick="logout()">
+                <i class="bi bi-box-arrow-right dl-icon"></i><span>Logout</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="d-flex" style="min-height:100vh;">
+        <!-- ══ Sidebar ══ -->
+        <div class="admin-side">
+            <div class="admin-side-brand">
+                <i class="bi bi-speedometer2 text-warning"></i>
+                <span>Admin Panel</span>
+            </div>
+            <nav>
+                <a class="adnav active" id="sidebarDashboard" onclick="adminTab('dashboard')">
+                    <i class="bi bi-grid-1x2"></i><span>Dashboard</span>
+                </a>
+                <a class="adnav" id="sidebarProducts" onclick="adminTab('products')">
+                    <i class="bi bi-box-seam"></i><span>Produk</span>
+                </a>
+                <a class="adnav" id="sidebarPenjualan" onclick="adminTab('penjualan')">
+                    <i class="bi bi-receipt-cutoff"></i><span>Penjualan</span>
+                </a>
+                <a class="adnav" id="sidebarUlasan" onclick="adminTab('ulasan')">
+                    <i class="bi bi-star-half"></i><span>Ulasan</span>
+                </a>
+                <a class="adnav" id="sidebarConfig" onclick="adminTab('config')">
+                    <i class="bi bi-gear-wide-connected"></i><span>Konfigurasi</span>
+                </a>
+            </nav>
+            <div style="margin-top:auto;border-top:1px solid rgba(255,255,255,.07);padding-top:.75rem;">
+                <a class="adnav" href="javascript:void(0)" onclick="goHome()">
+                    <i class="bi bi-arrow-left-circle"></i><span>Ke Toko</span>
+                </a>
+                <a class="adnav" href="javascript:void(0)" onclick="logout()">
+                    <i class="bi bi-box-arrow-right"></i><span>Logout</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- ══ Content ══ -->
+        <div class="flex-grow-1 d-flex flex-column" style="min-width:0;">
+
+            <!-- Top bar -->
+            <div class="top-bar">
+                <div class="d-flex align-items-center gap-2">
+                    <button class="nav-hamburger" id="navHamburger" onclick="openDrawer()" aria-label="Buka menu">
+                        <span class="hb-bar"></span>
+                        <span class="hb-bar"></span>
+                        <span class="hb-bar"></span>
+                    </button>
+                    <span class="fw-700 text-secondary small">Lapak Yudhas Admin</span>
+                </div>
+                <div class="top-bar-user">
+                    <div class="avatar-sm" id="topAvatar">A</div>
+                    <span id="topEmail" class="fw-600">—</span>
+                </div>
+            </div>
+
+            <!-- Main -->
+            <div class="admin-main">
+
+                <!-- ── Dashboard ── -->
+                <div id="tabDashboard" class="admin-tab-content visible">
+                    <h4 class="admin-pg-title mb-1">Dashboard</h4>
+                    <p class="text-secondary small mb-4">Ringkasan statistik Lapak Yudhas</p>
+                    <div class="row g-4" id="statsCards">
+                        <div class="col-12 text-muted small">Memuat statistik…</div>
+                    </div>
+                </div>
+
+                <!-- ── Products ── -->
+                <div id="tabProducts" class="admin-tab-content">
+                    <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+                        <div>
+                            <h4 class="admin-pg-title mb-1">Manajemen Produk</h4>
+                            <p class="text-secondary small mb-0">Kelola produk yang tersedia di toko</p>
+                        </div>
+                        <button class="btn btn-primary fw-semibold" onclick="openProductModal()"
+                            style="border-radius:10px;">
+                            <i class="bi bi-plus-lg me-1"></i>Tambah Produk
+                        </button>
+                    </div>
+                    <div class="card border-0 shadow-sm" style="border-radius:var(--r-lg);">
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle mb-0">
+                                    <thead style="background:var(--surface-2);">
+                                        <tr>
+                                            <th class="ps-4 py-3">Produk</th>
+                                            <th>Deskripsi</th>
+                                            <th class="pe-4">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="productsTableBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── Penjualan ── -->
+                <div id="tabPenjualan" class="admin-tab-content">
+                    <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+                        <div>
+                            <h4 class="admin-pg-title mb-1">Data Penjualan</h4>
+                            <p class="text-secondary small mb-0">Riwayat dan manajemen data penjualan pelanggan</p>
+                        </div>
+                        <button class="btn btn-primary fw-semibold" onclick="openPenjualanModal()"
+                            style="border-radius:10px;">
+                            <i class="bi bi-plus-lg me-1"></i>Tambah Penjualan
+                        </button>
+                    </div>
+                    <div class="card border-0 shadow-sm" style="border-radius:var(--r-lg);">
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle mb-0" style="font-size:.82rem;">
+                                    <thead style="background:var(--surface-2);">
+                                        <tr>
+                                            <th class="ps-4 py-3">Kode</th>
+                                            <th>Produk / Varian</th>
+                                            <th>Pelanggan</th>
+                                            <th>WA</th>
+                                            <th>Harga</th>
+                                            <th>Status</th>
+                                            <th>Ulasan</th>
+                                            <th>Tgl</th>
+                                            <th class="pe-4">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="penjualanTableBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── Ulasan ── -->
+                <div id="tabUlasan" class="admin-tab-content">
+                    <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+                        <div>
+                            <h4 class="admin-pg-title mb-1">Ulasan Pelanggan</h4>
+                            <p class="text-secondary small mb-0">Semua ulasan yang diberikan pelanggan terhadap produk
+                            </p>
+                        </div>
+                        <button class="btn btn-outline-secondary" onclick="loadUlasan()" style="border-radius:10px;">
+                            <i class="bi bi-arrow-clockwise me-1"></i>Refresh
+                        </button>
+                    </div>
+                    <div class="card border-0 shadow-sm" style="border-radius:var(--r-lg);">
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle mb-0" style="font-size:.82rem;">
+                                    <thead style="background:var(--surface-2);">
+                                        <tr>
+                                            <th class="ps-4 py-3">Produk</th>
+                                            <th>Kode Penjualan</th>
+                                            <th>Nama Reviewer</th>
+                                            <th>Rating</th>
+                                            <th>Komentar</th>
+                                            <th class="pe-4">Tgl</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="ulasanTableBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── Config ── -->
+                <div id="tabConfig" class="admin-tab-content">
+                    <h4 class="admin-pg-title mb-1">Konfigurasi</h4>
+                    <p class="text-secondary small mb-4">Atur nomor WhatsApp bisnis yang digunakan di toko</p>
+                    <div class="card border-0 shadow-sm p-4" style="border-radius:var(--r-lg);max-width:520px;">
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Nomor WhatsApp Bisnis</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-whatsapp text-success"></i></span>
+                                <input type="text" id="cfgWaPhone" class="form-control" placeholder="628xxxxxxxxxx" />
+                            </div>
+                            <small class="text-muted">Format internasional tanpa +, contoh: 6281234567890</small>
+                        </div>
+                        <button class="btn btn-primary fw-semibold" onclick="saveConfigData()"
+                            style="border-radius:10px;">
+                            <i class="bi bi-save me-2"></i>Simpan Konfigurasi
+                        </button>
+                    </div>
+                </div>
+
+            </div><!-- /admin-main -->
+        </div>
+    </div>
+
+    <!-- ══ MODALS ══ -->
+
+    <!-- Product Modal -->
+    <div class="modal fade" id="productModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0" style="border-radius:var(--r-xl);">
+                <div class="modal-header border-0 px-4 pt-4 pb-0">
+                    <h5 class="modal-title fw-bold" id="productModalTitle">Tambah Produk</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body px-4 pt-3 pb-4">
+                    <input type="hidden" id="editProductId" />
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label class="form-label fw-semibold">Nama Produk <span class="text-danger">*</span></label>
+                            <input type="text" id="pName" class="form-control" placeholder="Nama produk" />
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label fw-semibold">URL Gambar</label>
+                            <input type="url" id="pImageUrl" class="form-control" placeholder="https://…" />
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label fw-semibold">Deskripsi</label>
+                            <textarea id="pDescription" class="form-control" rows="3"
+                                placeholder="Deskripsi produk…"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 px-4 pt-0 pb-4">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal" style="border-radius:10px;">Batal</button>
+                    <button class="btn btn-primary fw-semibold" onclick="saveProduct()" style="border-radius:10px;">
+                        <i class="bi bi-save me-1"></i>Simpan
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Variants Modal -->
+    <div class="modal fade" id="variantsModal" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content border-0" style="border-radius:var(--r-xl);overflow:hidden;">
+                <div class="modal-header border-0 px-4 pt-4 pb-3"
+                    style="background:linear-gradient(135deg,var(--brand-deeper),var(--brand-dark));">
+                    <div>
+                        <h5 class="modal-title fw-bold text-white" id="variantsModalTitle">Varian Produk</h5>
+                        <p class="small mb-0" id="variantsModalSub" style="color:rgba(255,255,255,.6);"></p>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-0">
+                    <input type="hidden" id="variantsProductId" />
+                    <!-- Add/Edit Variant Form -->
+                    <div id="variantFormSection"
+                        style="padding:1.5rem;border-bottom:1px solid var(--border);background:#fff;">
+                        <input type="hidden" id="editVariantId" />
+                        <div class="d-flex align-items-center gap-2 mb-3">
+                            <span id="variantFormBadge" class="badge px-3 py-2"
+                                style="background:var(--brand);border-radius:8px;font-size:.75rem;letter-spacing:.04em;">TAMBAH
+                                VARIAN BARU</span>
+                            <button class="btn btn-sm btn-outline-secondary" id="cancelEditVariantBtn"
+                                onclick="cancelEditVariant()"
+                                style="border-radius:8px;display:none;font-size:.78rem;"><i
+                                    class="bi bi-x me-1"></i>Batal Edit</button>
+                        </div>
+                        <div class="row g-3">
+                            <div class="col-md-5">
+                                <label class="form-label fw-semibold small mb-1">Nama Varian <span
+                                        class="text-danger">*</span></label>
+                                <input type="text" id="vName" class="form-control"
+                                    placeholder="cth: Standard, Premium, Paket A…" />
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label fw-semibold small mb-1">Harga <span
+                                        class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text fw-semibold text-secondary"
+                                        style="background:var(--surface-2);font-size:.85rem;">Rp</span>
+                                    <input type="number" id="vPrice" class="form-control" placeholder="0" min="0"
+                                        step="1000" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold small mb-1">Keterangan</label>
+                                <input type="text" id="vDesc" class="form-control"
+                                    placeholder="Info tambahan varian…" />
+                            </div>
+                            <div class="col-12 pt-1">
+                                <button class="btn btn-primary fw-semibold px-4" onclick="saveVariant()"
+                                    style="border-radius:10px;"><i class="bi bi-save me-2"></i><span
+                                        id="variantFormBtnText">Tambah Varian</span></button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Variants List -->
+                    <div style="padding:1.25rem 1.5rem;">
+                        <div class="fw-semibold small text-secondary text-uppercase mb-3" style="letter-spacing:.06em;">
+                            Daftar Varian</div>
+                        <div id="variantsList">
+                            <p class="text-muted small text-center py-3">Memuat varian…</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 px-4 pt-0 pb-4">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal" style="border-radius:10px;">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Penjualan Modal -->
+    <div class="modal fade" id="penjualanModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0" style="border-radius:var(--r-xl);">
+                <div class="modal-header border-0 px-4 pt-4 pb-0">
+                    <h5 class="modal-title fw-bold" id="penjualanModalTitle">Tambah Penjualan</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body px-4 pt-3 pb-4">
+                    <input type="hidden" id="editPenjualanId" />
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Produk <span class="text-danger">*</span></label>
+                            <select id="pjProduct" class="form-select" onchange="onPjProductChange()"></select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Varian <span class="text-danger">*</span></label>
+                            <select id="pjVariant" class="form-select"></select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Nama Pelanggan <span
+                                    class="text-danger">*</span></label>
+                            <input type="text" id="pjCustomerName" class="form-control" placeholder="Nama pelanggan" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">WhatsApp Pelanggan <span
+                                    class="text-danger">*</span></label>
+                            <input type="text" id="pjCustomerWa" class="form-control" placeholder="628xxxxxxxxxx" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Email Pelanggan</label>
+                            <input type="email" id="pjCustomerEmail" class="form-control"
+                                placeholder="email@contoh.com" />
+                        </div>
+                        <div class="col-md-6" id="pjStatusRow" style="display:none;">
+                            <label class="form-label fw-semibold">Status</label>
+                            <select id="pjStatus" class="form-select">
+                                <option value="aktif">Aktif</option>
+                                <option value="selesai">Selesai</option>
+                                <option value="batal">Batal</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label fw-semibold">Hasil Penjualan <small
+                                    class="text-muted fw-normal">(akun, kode, atau info produk)</small></label>
+                            <textarea id="pjHasil" class="form-control" rows="3"
+                                placeholder="Tulis hasil/informasi yang dikirimkan ke pelanggan…"></textarea>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label fw-semibold">URL Bukti Pembayaran</label>
+                            <input type="url" id="pjBukti" class="form-control" placeholder="https://…" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 px-4 pt-0 pb-4">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal" style="border-radius:10px;">Batal</button>
+                    <button class="btn btn-primary fw-semibold" onclick="savePenjualan()" style="border-radius:10px;">
+                        <i class="bi bi-save me-1"></i>Simpan
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirm Delete Modal -->
+    <div class="modal fade" id="confirmModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content border-0" style="border-radius:var(--r-xl);">
+                <div class="modal-header border-0 px-4 pt-4 pb-0">
+                    <h5 class="modal-title fw-bold text-danger">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>Hapus Data
+                    </h5>
+                    <button class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body px-4 py-3 text-secondary" id="confirmModalBody">Yakin hapus data ini?</div>
+                <div class="modal-footer border-0 px-4 pt-0 pb-4">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal" style="border-radius:10px;">Batal</button>
+                    <button class="btn btn-danger fw-semibold" id="confirmDeleteBtn"
+                        style="border-radius:10px;">Hapus</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-bs5.min.js"></script>
+    <script>
+        /* ══════════════════════════════════════════════════════
+           API HELPER
+        ══════════════════════════════════════════════════════ */
+        const API_URL = 'https://script.google.com/macros/s/AKfycbyb9NghBypjpt17FT6MlIAJsZvXNoa4OniIJ47kPNYicmhqAS-6kaWWN8VPHcbky4L9/exec';
+
+        async function api(action, payload = {}, tkn) {
+            const token = tkn !== undefined ? tkn : sessionStorage.getItem('auth_token');
+            const res = await fetch(API_URL, {
+                method: 'POST',
+                body: JSON.stringify({ action, token, payload }),
+            });
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            const json = await res.json();
+            json.success = json.status === 'success';
+            return json;
+        }
+
+        /* ══════════════════════════════════════════════════════
+           STATE
+        ══════════════════════════════════════════════════════ */
+        const state = { products: [], categories: [], users: [], penjualan: [], variantsCache: {} };
+
+        /* ══════════════════════════════════════════════════════
+           BOOT — AUTH GUARD
+        ══════════════════════════════════════════════════════ */
+        document.addEventListener('DOMContentLoaded', () => {
+            const token = sessionStorage.getItem('auth_token');
+            if (!token) { window.location.href = 'login.html'; return; }
+
+            api('validateSession', {}, token).then(res => {
+                if (!res.success || res.data.role !== 'admin') {
+                    sessionStorage.removeItem('auth_token');
+                    sessionStorage.removeItem('auth_user');
+                    window.location.href = 'login.html';
+                    return;
+                }
+                const name = res.data.name || res.data.email || 'Admin';
+                document.getElementById('topEmail').textContent = name;
+                document.getElementById('topAvatar').textContent = name.charAt(0).toUpperCase();
+                document.getElementById('drawerUserName').textContent = name;
+                document.getElementById('drawerAvatar').textContent = name.charAt(0).toUpperCase();
+                loadAdminDashboard();
+            }).catch(() => { window.location.href = 'login.html'; });
+        });
+
+        /* ══════════════════════════════════════════════════════
+           HELPERS
+        ══════════════════════════════════════════════════════ */
+        function showLoading() { document.getElementById('loadingOverlay').style.display = 'flex'; }
+        function hideLoading() { document.getElementById('loadingOverlay').style.display = 'none'; }
+
+        function showToast(msg, type = 'success') {
+            const icons = { success: 'check-circle-fill', danger: 'x-circle-fill', warning: 'exclamation-triangle-fill', info: 'info-circle-fill' };
+            const id = 'toast-' + Date.now();
+            const el = document.createElement('div');
+            el.id = id; el.className = `toast-item ${type}`;
+            el.innerHTML = `<i class="bi bi-${icons[type] || 'info-circle-fill'} me-1"></i><span class="flex-grow-1">${escHtml(msg)}</span><button style="background:none;border:none;color:rgba(255,255,255,.5);cursor:pointer;font-size:1.1rem;" onclick="this.parentElement.remove()">×</button>`;
+            document.getElementById('toastBox').appendChild(el);
+            setTimeout(() => { const e = document.getElementById(id); if (e) e.remove(); }, 4500);
+        }
+
+        function escHtml(s) {
+            if (s == null) return '';
+            return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+        function formatRupiah(n) { return 'Rp\u00A0' + Number(n).toLocaleString('id-ID'); }
+        function formatDate(ts) {
+            if (!ts) return '—';
+            try { return new Date(ts).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }); }
+            catch { return ts; }
+        }
+
+        function goHome() { window.location.href = 'index.html'; }
+
+        function logout() {
+            const token = sessionStorage.getItem('auth_token');
+            sessionStorage.removeItem('auth_token');
+            sessionStorage.removeItem('auth_user');
+            if (token) api('logoutUser', {}, token).catch(() => { });
+            window.location.href = 'login.html';
+        }
+
+        /* ══════════════════════════════════════════════════════
+           MOBILE DRAWER
+        ══════════════════════════════════════════════════════ */
+        function openDrawer() {
+            const drawer = document.getElementById('navDrawer');
+            const backdrop = document.getElementById('navBackdrop');
+            const hamburger = document.getElementById('navHamburger');
+            backdrop.style.display = 'block';
+            requestAnimationFrame(() => backdrop.classList.add('show'));
+            drawer.classList.add('open');
+            hamburger.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDrawer() {
+            const drawer = document.getElementById('navDrawer');
+            const backdrop = document.getElementById('navBackdrop');
+            const hamburger = document.getElementById('navHamburger');
+            if (!drawer || !backdrop) return;
+            drawer.classList.remove('open');
+            backdrop.classList.remove('show');
+            if (hamburger) hamburger.classList.remove('open');
+            document.body.style.overflow = '';
+            setTimeout(() => { backdrop.style.display = 'none'; }, 300);
+        }
+
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
+
+        /* ══════════════════════════════════════════════════════
+           TABS
+        ══════════════════════════════════════════════════════ */
+        function adminTab(tab) {
+            closeDrawer();
+            document.querySelectorAll('.admin-tab-content').forEach(el => el.classList.remove('visible'));
+            document.querySelectorAll('.adnav').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.drawer-link').forEach(el => el.classList.remove('active'));
+            const cap = tab.charAt(0).toUpperCase() + tab.slice(1);
+            const content = document.getElementById(`tab${cap}`);
+            const nav = document.getElementById(`sidebar${cap}`);
+            const drawerLink = document.getElementById(`drawer${cap}`);
+            if (content) content.classList.add('visible');
+            if (nav) nav.classList.add('active');
+            if (drawerLink) drawerLink.classList.add('active');
+
+            if (tab === 'dashboard') loadAdminDashboard();
+            if (tab === 'products') loadProducts();
+            if (tab === 'categories') loadCategories();
+            if (tab === 'penjualan') loadPenjualan();
+            if (tab === 'ulasan') loadUlasan();
+            if (tab === 'users') loadUsers();
+            if (tab === 'config') loadConfig();
+        }
+
+        /* ══════════════════════════════════════════════════════
+           DASHBOARD
+        ══════════════════════════════════════════════════════ */
+        function loadAdminDashboard() {
+            api('getDashboardStats').then(res => {
+                if (!res.success) { showToast(res.message, 'danger'); return; }
+                const d = res.data;
+                const fmt = n => Number(n).toLocaleString('id-ID');
+                const stats = [
+                    { label: 'Total Produk', value: d.totalProducts, icon: 'box-seam', color: 'primary', bg: '#EDE9FE' },
+                    { label: 'Total Varian', value: d.totalVariants, icon: 'layers', color: 'info', bg: '#E0F2FE' },
+                    { label: 'Penjualan', value: d.totalPenjualan, icon: 'receipt-cutoff', color: 'success', bg: '#DCFCE7' },
+                    { label: 'Pending', value: d.pendingOrders, icon: 'hourglass-split', color: 'warning', bg: '#FEF9C3' },
+                    { label: 'Ulasan', value: d.totalReviews, icon: 'star-fill', color: 'secondary', bg: '#F1F5F9' },
+                    { label: 'Total Pendapatan', value: 'Rp ' + fmt(d.totalRevenue), icon: 'cash-coin', color: 'danger', bg: '#FEE2E2' },
+                ];
+                document.getElementById('statsCards').innerHTML = stats.map(s => `
+      <div class="col-sm-6 col-xl-4">
+        <div class="stat-card">
+          <div class="stat-icon-bg" style="background:${s.bg};">
+            <i class="bi bi-${s.icon} text-${s.color}"></i>
+          </div>
+          <div>
+            <p class="text-secondary small mb-0 fw-500">${s.label}</p>
+            <p class="mb-0 fw-800 text-${s.color}" style="font-size:1.65rem;">${escHtml(String(s.value))}</p>
+          </div>
+        </div>
+      </div>`).join('');
+            }).catch(e => showToast(e.message, 'danger'));
+        }
+
+        /* ══════════════════════════════════════════════════════
+           PRODUCTS
+        ══════════════════════════════════════════════════════ */
+        function loadProducts() {
+            showLoading();
+            api('getProducts').then(pRes => {
+                hideLoading();
+                if (!pRes.success) { showToast(pRes.message, 'danger'); return; }
+                state.products = pRes.data;
+                const tbody = document.getElementById('productsTableBody');
+                if (!state.products.length) {
+                    tbody.innerHTML = '<tr><td colspan="3" class="text-center text-muted py-4 ps-4">Belum ada produk.</td></tr>'; return;
+                }
+                tbody.innerHTML = state.products.map(p => {
+                    const desc = (p.Description || '').replace(/<[^>]*>/g, '').trim();
+                    const descShort = desc.length > 60 ? desc.substring(0, 60) + '…' : (desc || '<span class="text-muted">—</span>');
+                    return `
+      <tr>
+        <td class="ps-4 py-3">
+          <div class="d-flex align-items-center gap-2">
+            ${p.ImageURL
+                            ? `<img src="${escHtml(p.ImageURL)}" style="width:36px;height:36px;border-radius:8px;object-fit:cover;" />`
+                            : `<div style="width:36px;height:36px;border-radius:8px;background:var(--surface-3);display:flex;align-items:center;justify-content:center;"><i class="bi bi-image text-secondary" style="font-size:.8rem;"></i></div>`}
+            <span class="fw-semibold">${escHtml(p.ProductName)}</span>
+          </div>
+        </td>
+        <td style="max-width:220px;color:var(--text-2);font-size:.83rem;">${descShort}</td>
+        <td class="pe-4">
+          <button class="btn btn-sm btn-outline-success me-1" onclick="openVariantsModal('${escHtml(p.ProductID)}','${escHtml(p.ProductName)}')" style="border-radius:8px;" title="Kelola Varian"><i class="bi bi-layers"></i> Varian</button>
+          <button class="btn btn-sm btn-outline-primary me-1" onclick="openProductModal('${escHtml(p.ProductID)}')" style="border-radius:8px;"><i class="bi bi-pencil"></i></button>
+          <button class="btn btn-sm btn-outline-danger" onclick="confirmDelete('product','${escHtml(p.ProductID)}','${escHtml(p.ProductName)}')" style="border-radius:8px;"><i class="bi bi-trash"></i></button>
+        </td>
+      </tr>`;
+                }).join('');
+            }).catch(e => { hideLoading(); showToast(e.message, 'danger'); });
+        }
+
+        function openProductModal(productId) {
+            const modal = new bootstrap.Modal(document.getElementById('productModal'));
+            if (productId) {
+                document.getElementById('productModalTitle').textContent = 'Edit Produk';
+                const p = state.products.find(x => x.ProductID === productId);
+                if (p) {
+                    document.getElementById('editProductId').value = p.ProductID;
+                    document.getElementById('pName').value = p.ProductName;
+                    document.getElementById('pImageUrl').value = p.ImageURL || '';
+                    document.getElementById('pDescription').value = p.Description || '';
+                }
+            } else {
+                document.getElementById('productModalTitle').textContent = 'Tambah Produk';
+                ['editProductId', 'pName', 'pImageUrl', 'pDescription'].forEach(id =>
+                    document.getElementById(id).value = '');
+            }
+            modal.show();
+        }
+
+        function saveProduct() {
+            const editId = document.getElementById('editProductId').value;
+            const productName = document.getElementById('pName').value.trim();
+            const imageUrl = document.getElementById('pImageUrl').value.trim();
+            const description = ($('#pDescription').summernote('code') || '').trim();
+            if (!productName) return showToast('Nama produk wajib diisi.', 'warning');
+            showLoading();
+            const p = editId
+                ? { productId: editId, ProductName: productName, ImageURL: imageUrl, Description: description }
+                : { ProductName: productName, ImageURL: imageUrl, Description: description };
+            api(editId ? 'updateProduct' : 'addProduct', p).then(res => {
+                hideLoading();
+                bootstrap.Modal.getInstance(document.getElementById('productModal')).hide();
+                if (!res.success) { showToast(res.message, 'danger'); return; }
+                showToast('Produk berhasil disimpan!', 'success');
+                loadProducts();
+            }).catch(e => { hideLoading(); showToast(e.message, 'danger'); });
+        }
+
+        /* ══════════════════════════════════════════════════════
+           VARIANTS
+        ══════════════════════════════════════════════════════ */
+        function openVariantsModal(productId, productName) {
+            document.getElementById('variantsProductId').value = productId;
+            document.getElementById('variantsModalTitle').textContent = 'Varian — ' + productName;
+            document.getElementById('variantsModalSub').textContent = 'Tambah, edit, atau hapus varian untuk produk ini';
+            resetVariantForm();
+            loadVariantsList(productId);
+            new bootstrap.Modal(document.getElementById('variantsModal')).show();
+        }
+
+        function loadVariantsList(productId) {
+            const container = document.getElementById('variantsList');
+            container.innerHTML = '<p class="text-muted small text-center py-3">Memuat…</p>';
+            api('getVariantsByProduct', { productId }).then(res => {
+                if (!res.success || !res.data.length) {
+                    container.innerHTML = '<p class="text-muted small text-center py-3">Belum ada varian. Tambahkan di atas.</p>'; return;
+                }
+                state.variantsCache[productId] = res.data;
+                container.innerHTML = `<div class="row g-2">${res.data.map(v => `
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-start gap-3 p-3" style="background:var(--surface-2);border:1px solid var(--border);border-radius:12px;">
+                            <div class="flex-grow-1" style="min-width:0;">
+                                <div class="fw-semibold mb-1">${escHtml(v.VariantName)}</div>
+                                <div class="fw-bold" style="color:#10B981;font-size:.9rem;">${formatRupiah(v.Price)}</div>
+                                ${v.Description ? `<div class="text-secondary mt-1" style="font-size:.76rem;">${escHtml(v.Description)}</div>` : ''}
+                            </div>
+                            <div class="d-flex gap-1 flex-shrink-0">
+                                <button class="btn btn-sm btn-outline-primary" onclick="editVariant('${escHtml(v.VariantID)}','${escHtml(v.VariantName)}',${v.Price},'${escHtml(v.Description || '')}')" style="border-radius:8px;" title="Edit Varian"><i class="bi bi-pencil"></i></button>
+                                <button class="btn btn-sm btn-outline-danger" onclick="deleteVariant('${escHtml(v.VariantID)}','${escHtml(v.VariantName)}')" style="border-radius:8px;" title="Hapus Varian"><i class="bi bi-trash"></i></button>
+                            </div>
+                        </div>
+                    </div>`).join('')}</div>`;
+            }).catch(e => { container.innerHTML = `<p class="text-danger small text-center py-3">${escHtml(e.message)}</p>`; });
+        }
+
+        function saveVariant() {
+            const productId = document.getElementById('variantsProductId').value;
+            const editId = document.getElementById('editVariantId').value;
+            const name = document.getElementById('vName').value.trim();
+            const price = document.getElementById('vPrice').value;
+            const desc = document.getElementById('vDesc').value.trim();
+            if (!name) return showToast('Nama varian wajib diisi.', 'warning');
+            if (!price || isNaN(Number(price))) return showToast('Harga wajib diisi.', 'warning');
+            showLoading();
+            if (editId) {
+                api('updateVariant', { variantId: editId, VariantName: name, Price: Number(price), Description: desc }).then(res => {
+                    hideLoading();
+                    if (!res.success) { showToast(res.message, 'danger'); return; }
+                    showToast('Varian diperbarui!', 'success');
+                    resetVariantForm();
+                    loadVariantsList(productId);
+                }).catch(e => { hideLoading(); showToast(e.message, 'danger'); });
+            } else {
+                api('addVariant', { ProductID: productId, VariantName: name, Price: Number(price), Description: desc }).then(res => {
+                    hideLoading();
+                    if (!res.success) { showToast(res.message, 'danger'); return; }
+                    showToast('Varian ditambahkan!', 'success');
+                    resetVariantForm();
+                    loadVariantsList(productId);
+                }).catch(e => { hideLoading(); showToast(e.message, 'danger'); });
+            }
+        }
+
+        function editVariant(id, name, price, desc) {
+            document.getElementById('editVariantId').value = id;
+            document.getElementById('vName').value = name;
+            document.getElementById('vPrice').value = price;
+            document.getElementById('vDesc').value = desc;
+            document.getElementById('variantFormBadge').textContent = 'MODE EDIT';
+            document.getElementById('variantFormBadge').style.background = '#F59E0B';
+            document.getElementById('variantFormBtnText').textContent = 'Perbarui Varian';
+            document.getElementById('cancelEditVariantBtn').style.display = '';
+            document.getElementById('vName').focus();
+            document.getElementById('variantFormSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function cancelEditVariant() {
+            resetVariantForm();
+        }
+
+        function resetVariantForm() {
+            document.getElementById('editVariantId').value = '';
+            document.getElementById('vName').value = '';
+            document.getElementById('vPrice').value = '';
+            document.getElementById('vDesc').value = '';
+            document.getElementById('variantFormBadge').textContent = 'TAMBAH VARIAN BARU';
+            document.getElementById('variantFormBadge').style.background = 'var(--brand)';
+            document.getElementById('variantFormBtnText').textContent = 'Tambah Varian';
+            document.getElementById('cancelEditVariantBtn').style.display = 'none';
+        }
+
+        function deleteVariant(variantId, variantName) {
+            const productId = document.getElementById('variantsProductId').value;
+            document.getElementById('confirmModalBody').textContent = `Hapus varian "${variantName}"? Tindakan ini tidak dapat dibatalkan.`;
+            const btn = document.getElementById('confirmDeleteBtn');
+            btn.onclick = () => {
+                bootstrap.Modal.getInstance(document.getElementById('confirmModal')).hide();
+                showLoading();
+                api('deleteVariant', { variantId }).then(res => {
+                    hideLoading();
+                    if (!res.success) showToast(res.message, 'danger');
+                    else { showToast('Varian dihapus.', 'success'); loadVariantsList(productId); }
+                }).catch(e => { hideLoading(); showToast(e.message, 'danger'); });
+            };
+            new bootstrap.Modal(document.getElementById('confirmModal')).show();
+        }
+
+        /* ══════════════════════════════════════════════════════
+           CATEGORIES
+        ══════════════════════════════════════════════════════ */
+        function loadCategories() {
+            showLoading();
+            api('getCategories').then(res => {
+                hideLoading();
+                if (!res.success) { showToast(res.message, 'danger'); return; }
+                state.categories = res.data;
+                const tbody = document.getElementById('categoriesTableBody');
+                if (!state.categories.length) {
+                    tbody.innerHTML = '<tr><td colspan="3" class="text-center text-muted py-4 ps-4">Belum ada kategori.</td></tr>'; return;
+                }
+                tbody.innerHTML = state.categories.map(c => `
+      <tr>
+        <td class="ps-4 text-muted py-3" style="font-size:.78rem;">${escHtml(c.CategoryID)}</td>
+        <td class="fw-semibold">${escHtml(c.CategoryName)}</td>
+        <td class="pe-4">
+          <button class="btn btn-sm btn-outline-primary me-1" onclick="openCategoryModal('${escHtml(c.CategoryID)}')" style="border-radius:8px;"><i class="bi bi-pencil"></i></button>
+          <button class="btn btn-sm btn-outline-danger" onclick="confirmDelete('category','${escHtml(c.CategoryID)}','${escHtml(c.CategoryName)}')" style="border-radius:8px;"><i class="bi bi-trash"></i></button>
+        </td>
+      </tr>`).join('');
+            }).catch(e => { hideLoading(); showToast(e.message, 'danger'); });
+        }
+
+        function openCategoryModal(catId) {
+            const modal = new bootstrap.Modal(document.getElementById('categoryModal'));
+            if (catId) {
+                document.getElementById('categoryModalTitle').textContent = 'Edit Kategori';
+                const c = state.categories.find(x => x.CategoryID === catId);
+                document.getElementById('editCategoryId').value = catId;
+                document.getElementById('catName').value = c ? c.CategoryName : '';
+            } else {
+                document.getElementById('categoryModalTitle').textContent = 'Tambah Kategori';
+                document.getElementById('editCategoryId').value = '';
+                document.getElementById('catName').value = '';
+            }
+            modal.show();
+        }
+
+        function saveCategory() {
+            const editId = document.getElementById('editCategoryId').value;
+            const catName = document.getElementById('catName').value.trim();
+            if (!catName) return showToast('Nama kategori wajib diisi.', 'warning');
+            showLoading();
+            const action = editId ? 'updateCategory' : 'addCategory';
+            const p = editId ? { categoryId: editId, payload: { CategoryName: catName } } : { payload: { CategoryName: catName } };
+            api(action, p).then(res => {
+                hideLoading();
+                bootstrap.Modal.getInstance(document.getElementById('categoryModal')).hide();
+                if (!res.success) { showToast(res.message, 'danger'); return; }
+                showToast('Kategori berhasil disimpan!', 'success');
+                loadCategories();
+            }).catch(e => { hideLoading(); showToast(e.message, 'danger'); });
+        }
+
+        /* ══════════════════════════════════════════════════════
+           PENJUALAN
+        ══════════════════════════════════════════════════════ */
+        function loadPenjualan() {
+            showLoading();
+            api('getPenjualan').then(res => {
+                hideLoading();
+                if (!res.success) { showToast(res.message, 'danger'); return; }
+                state.penjualan = res.data;
+                const tbody = document.getElementById('penjualanTableBody');
+                if (!res.data.length) {
+                    tbody.innerHTML = '<tr><td colspan="9" class="text-center text-muted py-4 ps-4">Belum ada data penjualan.</td></tr>'; return;
+                }
+                const scColor = { aktif: 'warning', selesai: 'success', batal: 'danger' };
+                tbody.innerHTML = res.data.map(t => {
+                    const hasVariantName = t.VariantName && !t.VariantName.startsWith('VAR-');
+                    const variantDisplay = hasVariantName ? escHtml(t.VariantName) : 'Default';
+                    const priceValue = Number(t.VariantPrice) || 0;
+                    return `
+      <tr>
+        <td class="ps-4 py-3"><span class="badge bg-secondary" style="font-family:monospace;letter-spacing:.05em;">${escHtml(t.UniqueCode)}</span></td>
+        <td>
+          <div class="fw-semibold">${escHtml(t.ProductName || t.ProductID)}</div>
+          <div class="text-secondary" style="font-size:.78rem;">${variantDisplay} · ${formatRupiah(priceValue)}</div>
+        </td>
+        <td><div class="fw-semibold">${escHtml(t.CustomerName)}</div><div class="text-secondary" style="font-size:.78rem;">${escHtml(t.CustomerEmail || '')}</div></td>
+        <td style="font-size:.82rem;"><a href="https://wa.me/${escHtml(t.CustomerWhatsapp || '')}" target="_blank" class="text-success text-decoration-none"><i class="bi bi-whatsapp"></i> ${escHtml(t.CustomerWhatsapp || '—')}</a></td>
+        <td class="fw-semibold">${formatRupiah(priceValue)}</td>
+        <td><span class="badge bg-${scColor[t.Status] || 'secondary'} px-2" style="border-radius:6px;">${escHtml(t.Status)}</span></td>
+        <td>${t.reviewed ? '<span class="badge bg-success px-2" style="border-radius:6px;">✓ Ada</span>' : '<span class="text-muted" style="font-size:.78rem;">—</span>'}</td>
+        <td style="font-size:.8rem;">${formatDate(t.CreatedAt)}</td>
+        <td class="pe-4">
+          <button class="btn btn-sm btn-outline-success me-1" onclick="sendPenjualanWhatsApp('${escHtml(t.PenjualanID)}','${escHtml(t.CustomerWhatsapp)}','${escHtml(t.UniqueCode)}')" style="border-radius:8px;" title="Kirim ke WhatsApp"><i class="bi bi-whatsapp"></i></button>
+          <button class="btn btn-sm btn-outline-info me-1" onclick="window.open('transaksi.html?code=${escHtml(t.UniqueCode)}', '_blank')" style="border-radius:8px;" title="Lihat Transaksi"><i class="bi bi-eye"></i></button>
+          <button class="btn btn-sm btn-outline-primary me-1" onclick="openPenjualanModal('${escHtml(t.PenjualanID)}')" style="border-radius:8px;"><i class="bi bi-pencil"></i></button>
+          <button class="btn btn-sm btn-outline-danger" onclick="confirmDeletePenjualan('${escHtml(t.PenjualanID)}','${escHtml(t.UniqueCode)}')" style="border-radius:8px;"><i class="bi bi-trash"></i></button>
+        </td>
+      </tr>`;
+                }).join('');
+            }).catch(e => { hideLoading(); showToast(e.message, 'danger'); });
+        }
+
+        function openPenjualanModal(penjualanId) {
+            showLoading();
+            // Load products for dropdown
+            api('getProducts').then(pRes => {
+                hideLoading();
+                if (!pRes.success) { showToast(pRes.message, 'danger'); return; }
+                state.products = pRes.data;
+                const pjProduct = document.getElementById('pjProduct');
+                pjProduct.innerHTML = '<option value="">Pilih produk…</option>' +
+                    pRes.data.map(p => `<option value="${escHtml(p.ProductID)}">${escHtml(p.ProductName)}</option>`).join('');
+                document.getElementById('pjVariant').innerHTML = '<option value="">Pilih produk dulu…</option>';
+
+                if (penjualanId) {
+                    document.getElementById('penjualanModalTitle').textContent = 'Edit Penjualan';
+                    document.getElementById('pjStatusRow').style.display = '';
+                    const t = state.penjualan.find(x => x.PenjualanID === penjualanId);
+                    if (t) {
+                        document.getElementById('editPenjualanId').value = t.PenjualanID;
+                        document.getElementById('pjCustomerName').value = t.CustomerName || '';
+                        document.getElementById('pjCustomerWa').value = t.CustomerWhatsapp || '';
+                        document.getElementById('pjCustomerEmail').value = t.CustomerEmail || '';
+                        document.getElementById('pjHasil').value = t.HasilPenjualan || '';
+                        document.getElementById('pjBukti').value = t.BuktiPembayaran || '';
+                        document.getElementById('pjStatus').value = t.Status || 'aktif';
+                        pjProduct.value = t.ProductID;
+                        // Load variants for selected product then set variant
+                        loadPjVariants(t.ProductID, t.VariantID);
+                    }
+                } else {
+                    document.getElementById('penjualanModalTitle').textContent = 'Tambah Penjualan';
+                    document.getElementById('pjStatusRow').style.display = 'none';
+                    ['editPenjualanId', 'pjCustomerName', 'pjCustomerWa', 'pjCustomerEmail', 'pjHasil', 'pjBukti'].forEach(id => document.getElementById(id).value = '');
+                    document.getElementById('pjStatus').value = 'aktif';
+                }
+                new bootstrap.Modal(document.getElementById('penjualanModal')).show();
+            }).catch(e => { hideLoading(); showToast(e.message, 'danger'); });
+        }
+
+        function loadPjVariants(productId, selectVariantId) {
+            const sel = document.getElementById('pjVariant');
+            sel.innerHTML = '<option value="">Memuat…</option>';
+            if (!productId) { sel.innerHTML = '<option value="">Pilih produk dulu…</option>'; return; }
+            api('getVariantsByProduct', { productId }).then(res => {
+                if (!res.success || !res.data.length) {
+                    sel.innerHTML = '<option value="">Tidak ada varian</option>'; return;
+                }
+                sel.innerHTML = res.data.map(v =>
+                    `<option value="${escHtml(v.VariantID)}" ${v.VariantID === selectVariantId ? 'selected' : ''}>${escHtml(v.VariantName)} — ${formatRupiah(v.Price)}</option>`
+                ).join('');
+            }).catch(() => { sel.innerHTML = '<option value="">Gagal memuat</option>'; });
+        }
+
+        function onPjProductChange() {
+            loadPjVariants(document.getElementById('pjProduct').value, '');
+        }
+
+        function savePenjualan() {
+            const editId = document.getElementById('editPenjualanId').value;
+            const customerName = document.getElementById('pjCustomerName').value.trim();
+            const customerWa = document.getElementById('pjCustomerWa').value.trim();
+            const customerEmail = document.getElementById('pjCustomerEmail').value.trim();
+            const hasil = ($('#pjHasil').summernote('code') || '').trim();
+            const bukti = document.getElementById('pjBukti').value.trim();
+            const status = document.getElementById('pjStatus').value;
+
+            if (!customerName) return showToast('Nama pelanggan wajib diisi.', 'warning');
+            if (!customerWa) return showToast('WhatsApp pelanggan wajib diisi.', 'warning');
+
+            showLoading();
+            if (editId) {
+                api('updatePenjualan', { penjualanId: editId, CustomerName: customerName, CustomerWhatsapp: customerWa, CustomerEmail: customerEmail, HasilPenjualan: hasil, BuktiPembayaran: bukti, Status: status }).then(res => {
+                    hideLoading();
+                    bootstrap.Modal.getInstance(document.getElementById('penjualanModal')).hide();
+                    if (!res.success) { showToast(res.message, 'danger'); return; }
+                    showToast('Data penjualan diperbarui!', 'success');
+                    loadPenjualan();
+                }).catch(e => { hideLoading(); showToast(e.message, 'danger'); });
+            } else {
+                const productId = document.getElementById('pjProduct').value;
+                const variantId = document.getElementById('pjVariant').value;
+                if (!productId) return (hideLoading(), showToast('Pilih produk.', 'warning'));
+                if (!variantId) return (hideLoading(), showToast('Pilih varian.', 'warning'));
+                api('addPenjualan', { ProductID: productId, VariantID: variantId, CustomerName: customerName, CustomerWhatsapp: customerWa, CustomerEmail: customerEmail, HasilPenjualan: hasil, BuktiPembayaran: bukti }).then(res => {
+                    hideLoading();
+                    bootstrap.Modal.getInstance(document.getElementById('penjualanModal')).hide();
+                    if (!res.success) { showToast(res.message, 'danger'); return; }
+                    showToast('Penjualan berhasil ditambahkan! Kode: ' + res.data.UniqueCode, 'success');
+                    loadPenjualan();
+                }).catch(e => { hideLoading(); showToast(e.message, 'danger'); });
+            }
+        }
+
+        /* ══════════════════════════════════════════════════════
+           ULASAN
+        ══════════════════════════════════════════════════════ */
+        function loadUlasan() {
+            showLoading();
+            // Ensure products are in state for name lookup
+            const doLoad = () => api('getUlasan', {}).then(res => {
+                hideLoading();
+                if (!res.success) { showToast(res.message, 'danger'); return; }
+                const tbody = document.getElementById('ulasanTableBody');
+                if (!res.data.length) {
+                    tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted py-4 ps-4">Belum ada ulasan.</td></tr>'; return;
+                }
+                const prodMap = Object.fromEntries((state.products || []).map(p => [p.ProductID, p.ProductName]));
+                const pjMap = Object.fromEntries((state.penjualan || []).map(t => [t.PenjualanID, t.UniqueCode]));
+                tbody.innerHTML = res.data.map(r => {
+                    const stars = '★'.repeat(Number(r.Rating || 0)) + '☆'.repeat(5 - Number(r.Rating || 0));
+                    return `
+      <tr>
+        <td class="ps-4 py-3 fw-semibold">${escHtml(prodMap[r.ProductID] || r.ProductID)}</td>
+        <td><span class="badge bg-secondary" style="font-family:monospace;letter-spacing:.04em;">${escHtml(pjMap[r.PenjualanID] || r.PenjualanID)}</span></td>
+        <td>${escHtml(r.ReviewerName)}</td>
+        <td><span style="color:#F59E0B;letter-spacing:.1em;">${stars}</span> <span class="text-muted small ms-1">${r.Rating}/5</span></td>
+        <td style="max-width:280px;color:var(--text-2);font-size:.82rem;">${escHtml(r.Comment || '—')}</td>
+        <td class="pe-4" style="font-size:.8rem;">${formatDate(r.CreatedAt)}</td>
+      </tr>`;
+                }).join('');
+            }).catch(e => { hideLoading(); showToast(e.message, 'danger'); });
+
+            if (state.products.length && state.penjualan.length) { doLoad(); return; }
+            Promise.all([
+                state.products.length ? Promise.resolve() : api('getProducts').then(r => { if (r.success) state.products = r.data; }),
+                state.penjualan.length ? Promise.resolve() : api('getPenjualan').then(r => { if (r.success) state.penjualan = r.data; }),
+            ]).then(doLoad).catch(doLoad);
+        }
+
+        function confirmDeletePenjualan(id, code) {
+            document.getElementById('confirmModalBody').textContent = `Hapus data penjualan kode "${code}"? Tindakan ini tidak dapat dibatalkan.`;
+            const btn = document.getElementById('confirmDeleteBtn');
+            btn.onclick = () => {
+                bootstrap.Modal.getInstance(document.getElementById('confirmModal')).hide();
+                showToast('Hapus penjualan belum tersedia via API.', 'warning');
+            };
+            new bootstrap.Modal(document.getElementById('confirmModal')).show();
+        }
+
+        function sendPenjualanWhatsApp(penjualanId, customerWhatsapp, uniqueCode) {
+            if (!customerWhatsapp) {
+                showToast('Nomor WhatsApp tidak tersedia untuk pelanggan ini.', 'warning');
+                return;
+            }
+
+            showLoading();
+
+            // Ambil BASEURL dari konfigurasi aplikasi
+            api('getAppConfig', {}).then(appRes => {
+                if (!appRes.success || !appRes.data) {
+                    hideLoading();
+                    showToast('Gagal mendapatkan konfigurasi aplikasi.', 'danger');
+                    return;
+                }
+
+                const baseUrl = appRes.data.BASEURL;
+                const transactionLink = `${baseUrl}transaksi.html?code=${encodeURIComponent(uniqueCode)}`;
+
+                // Format pesan sesuai template
+                const message = `*Informasi dari Lapak Yudhas*
+
+Pesanan anda dengan kode ${uniqueCode}
+Sudah selesai diproses oleh admin
+
+Silahkan akses link berikut
+${transactionLink}
+
+untuk melihat pesanan anda
+
+> Jika ada kesalahan produk atau pesanan silahkan langsung konfirmasi kepada admin
+> Mohon berikan review pada produk kami untuk memajukan layanan kami`;
+
+                // Kirim via Fonnte WhatsApp API
+                api('sendWhatsAppViaFonnte', {
+                    target: customerWhatsapp.replace(/^0/, '62'), // Konversi 0 ke 62
+                    message: message
+                }).then(res => {
+                    hideLoading();
+                    if (res.success) {
+                        showToast('✓ Pesan WhatsApp berhasil dikirim!', 'success');
+                    } else {
+                        showToast(`Error: ${res.message}`, 'danger');
+                    }
+                }).catch(e => {
+                    hideLoading();
+                    showToast(`Error: ${e.message}`, 'danger');
+                });
+            }).catch(e => {
+                hideLoading();
+                showToast(`Error: ${e.message}`, 'danger');
+            });
+        }
+
+        /* ══════════════════════════════════════════════════════
+           USERS
+        ══════════════════════════════════════════════════════ */
+        function loadUsers() {
+            showLoading();
+            api('getUsersList').then(res => {
+                hideLoading();
+                if (!res.success) { showToast(res.message, 'danger'); return; }
+                state.users = res.data;
+                const tbody = document.getElementById('usersTableBody');
+                if (!state.users.length) {
+                    tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted py-4 ps-4">Belum ada user.</td></tr>'; return;
+                }
+                tbody.innerHTML = state.users.map(u => `
+      <tr>
+        <td class="ps-4 py-3 fw-semibold">${escHtml(u.Name)}</td>
+        <td class="text-secondary">${escHtml(u.Email)}</td>
+        <td>
+          <span class="badge ${u.Role === 'admin' ? 'bg-danger' : 'bg-primary'} px-2" style="border-radius:6px;">
+            ${escHtml(u.Role)}
+          </span>
+        </td>
+        <td style="font-size:.8rem;">${formatDate(u.CreatedAt)}</td>
+        <td class="pe-4">
+          <button class="btn btn-sm btn-outline-primary me-1" onclick="openUserModal('${escHtml(u.UserID)}')" style="border-radius:8px;"><i class="bi bi-pencil"></i></button>
+          <button class="btn btn-sm btn-outline-danger" onclick="confirmDelete('user','${escHtml(u.UserID)}','${escHtml(u.Name)}')" style="border-radius:8px;"><i class="bi bi-trash"></i></button>
+        </td>
+      </tr>`).join('');
+            }).catch(e => { hideLoading(); showToast(e.message, 'danger'); });
+        }
+
+        function openUserModal(userId) {
+            const modal = new bootstrap.Modal(document.getElementById('userModal'));
+            if (userId) {
+                document.getElementById('userModalTitle').textContent = 'Edit User';
+                document.getElementById('uPasswordHint').textContent = '(kosongkan jika tidak diubah)';
+                const u = state.users.find(x => x.UserID === userId);
+                if (u) {
+                    document.getElementById('editUserId').value = u.UserID;
+                    document.getElementById('uName').value = u.Name;
+                    document.getElementById('uEmail').value = u.Email;
+                    document.getElementById('uPassword').value = '';
+                    document.getElementById('uRole').value = u.Role;
+                }
+            } else {
+                document.getElementById('userModalTitle').textContent = 'Tambah User';
+                document.getElementById('uPasswordHint').textContent = '(wajib untuk user baru)';
+                ['editUserId', 'uName', 'uEmail', 'uPassword'].forEach(id => document.getElementById(id).value = '');
+                document.getElementById('uRole').value = 'pembeli';
+            }
+            modal.show();
+        }
+
+        function saveUser() {
+            const editId = document.getElementById('editUserId').value;
+            const name = document.getElementById('uName').value.trim();
+            const email = document.getElementById('uEmail').value.trim();
+            const password = document.getElementById('uPassword').value;
+            const role = document.getElementById('uRole').value;
+
+            if (!name) return showToast('Nama wajib diisi.', 'warning');
+            if (!email) return showToast('Email wajib diisi.', 'warning');
+            if (!editId && !password) return showToast('Password wajib diisi untuk user baru.', 'warning');
+            if (!editId && password.length < 6) return showToast('Password minimal 6 karakter.', 'warning');
+
+            showLoading();
+            const payload = { name, email, role };
+            if (password) payload.password = password;
+
+            const action = editId ? 'updateUser' : 'addUser';
+            const p = editId ? { userId: editId, ...payload } : payload;
+
+            api(action, p).then(res => {
+                hideLoading();
+                bootstrap.Modal.getInstance(document.getElementById('userModal')).hide();
+                if (!res.success) { showToast(res.message, 'danger'); return; }
+                showToast('User berhasil disimpan!', 'success');
+                loadUsers();
+            }).catch(e => { hideLoading(); showToast(e.message, 'danger'); });
+        }
+
+        /* ══════════════════════════════════════════════════════
+           CONFIG
+        ══════════════════════════════════════════════════════ */
+        function loadConfig() {
+            api('getConfig').then(res => {
+                if (!res.success) { showToast(res.message, 'danger'); return; }
+                document.getElementById('cfgWaPhone').value = res.data.WA_PHONE || '';
+            }).catch(e => showToast(e.message, 'danger'));
+        }
+
+        function saveConfigData() {
+            const waPhone = document.getElementById('cfgWaPhone').value.trim();
+            if (!waPhone) return showToast('Nomor WhatsApp wajib diisi.', 'warning');
+            showLoading();
+            api('saveConfig', { WA_PHONE: waPhone }).then(res => {
+                hideLoading();
+                if (!res.success) showToast(res.message, 'danger');
+                else showToast('Konfigurasi berhasil disimpan!', 'success');
+            }).catch(e => { hideLoading(); showToast(e.message, 'danger'); });
+        }
+
+        /* ══════════════════════════════════════════════════════
+           CONFIRM DELETE
+        ══════════════════════════════════════════════════════ */
+        function confirmDelete(type, id, name) {
+            document.getElementById('confirmModalBody').textContent = `Hapus "${name}"? Tindakan ini tidak dapat dibatalkan.`;
+            const btn = document.getElementById('confirmDeleteBtn');
+            btn.onclick = () => {
+                bootstrap.Modal.getInstance(document.getElementById('confirmModal')).hide();
+                showLoading();
+                const actionMap = { product: 'deleteProduct', category: 'deleteCategory', user: 'deleteUser', variant: 'deleteVariant' };
+                const payloadMap = { product: { productId: id }, category: { categoryId: id }, user: { userId: id }, variant: { variantId: id } };
+                api(actionMap[type], payloadMap[type]).then(res => {
+                    hideLoading();
+                    if (!res.success) showToast(res.message, 'danger');
+                    else {
+                        showToast('Data berhasil dihapus.', 'success');
+                        if (type === 'product') loadProducts();
+                        if (type === 'category') loadCategories();
+                        if (type === 'user') loadUsers();
+                    }
+                }).catch(e => { hideLoading(); showToast(e.message, 'danger'); });
+            };
+            new bootstrap.Modal(document.getElementById('confirmModal')).show();
+        }
+
+        /* ══════════════════════════════════════════════════════
+           SUMMERNOTE — initialize on modal show, destroy on hide
+        ══════════════════════════════════════════════════════ */
+        const snToolbar = [
+            ['style', ['bold', 'italic', 'underline', 'clear']],
+            ['font', ['strikethrough']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['table', ['table']],
+            ['insert', ['link']],
+            ['view', ['codeview', 'fullscreen']]
+        ];
+
+        // Product Modal — Summernote on #pDescription
+        document.getElementById('productModal').addEventListener('shown.bs.modal', function () {
+            $('#pDescription').summernote({
+                height: 200,
+                placeholder: 'Tulis deskripsi produk (mendukung format HTML)…',
+                toolbar: snToolbar,
+                callbacks: { onImageUpload: function () { showToast('Upload gambar tidak didukung, gunakan URL.', 'warning'); } }
+            });
+        });
+        document.getElementById('productModal').addEventListener('hidden.bs.modal', function () {
+            if ($('#pDescription').next('.note-editor').length) $('#pDescription').summernote('destroy');
+        });
+
+        // Penjualan Modal — Summernote on #pjHasil
+        document.getElementById('penjualanModal').addEventListener('shown.bs.modal', function () {
+            $('#pjHasil').summernote({
+                height: 180,
+                placeholder: 'Tulis hasil/informasi yang dikirimkan ke pelanggan (akun, kode, link, dll.)…',
+                toolbar: snToolbar,
+                callbacks: { onImageUpload: function () { showToast('Upload gambar tidak didukung, gunakan URL.', 'warning'); } }
+            });
+        });
+        document.getElementById('penjualanModal').addEventListener('hidden.bs.modal', function () {
+            if ($('#pjHasil').next('.note-editor').length) $('#pjHasil').summernote('destroy');
+        });
+    </script>
+</body>
+
+</html>
