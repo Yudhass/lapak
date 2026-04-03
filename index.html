@@ -1,0 +1,3058 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lapak Yudhas — Marketplace Terpercaya</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
+  <style>
+    /* ─────────────────────── Root Variables ─────────────────────── */
+    :root {
+      --brand: #4F46E5;
+      --brand-dark: #312E81;
+      --brand-deeper: #1E1B4B;
+      --brand-light: #EDE9FE;
+      --accent: #F59E0B;
+      --accent-light: #FEF3C7;
+      --success: #10B981;
+      --danger: #EF4444;
+      --surface: #FFFFFF;
+      --surface-2: #F8FAFC;
+      --surface-3: #F1F5F9;
+      --border: #E2E8F0;
+      --text-1: #0F172A;
+      --text-2: #475569;
+      --text-3: #94A3B8;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, .08);
+      --shadow-md: 0 4px 12px rgba(0, 0, 0, .08);
+      --shadow-lg: 0 10px 30px rgba(0, 0, 0, .1);
+      --shadow-xl: 0 20px 50px rgba(0, 0, 0, .12);
+      --r-sm: 8px;
+      --r-md: 12px;
+      --r-lg: 16px;
+      --r-xl: 24px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+      background: var(--surface-2);
+      color: var(--text-1);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─────────────────────── Navbar ─────────────────────── */
+    .main-nav {
+      background: rgba(30, 27, 75, .96);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(255, 255, 255, .07);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: .55rem;
+      font-weight: 800;
+      font-size: 1.25rem;
+      letter-spacing: -.5px;
+      color: #fff;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .nav-logo .logo-box {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--brand), var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-item-link {
+      color: rgba(255, 255, 255, .7) !important;
+      font-weight: 500;
+      font-size: .9rem;
+      padding: .45rem .9rem !important;
+      border-radius: 8px;
+      transition: all .2s;
+    }
+
+    .nav-item-link:hover {
+      color: #fff !important;
+      background: rgba(255, 255, 255, .09);
+    }
+
+    .nav-btn-admin {
+      background: linear-gradient(135deg, var(--brand), #7C3AED);
+      color: #fff !important;
+      font-weight: 600;
+      font-size: .85rem;
+      padding: .4rem 1.1rem;
+      border-radius: 8px;
+      transition: opacity .2s;
+    }
+
+    .nav-btn-admin:hover {
+      opacity: .88;
+    }
+
+    /* ─────────────────────── Mobile Drawer Menu ─────────────────────── */
+
+    /* Hamburger button */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      width: 42px;
+      height: 42px;
+      border: none;
+      background: rgba(255, 255, 255, .1);
+      border-radius: 10px;
+      cursor: pointer;
+      padding: 0;
+      transition: background .2s;
+      z-index: 1201;
+    }
+
+    .nav-hamburger:hover {
+      background: rgba(255, 255, 255, .18);
+    }
+
+    .nav-hamburger .bar {
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: #fff;
+      border-radius: 2px;
+      transition: transform .3s, opacity .3s, width .3s;
+      transform-origin: center;
+    }
+
+    /* X animation when open */
+    .nav-hamburger.open .bar:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+
+    .nav-hamburger.open .bar:nth-child(2) {
+      opacity: 0;
+      width: 0;
+    }
+
+    .nav-hamburger.open .bar:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+
+    /* Backdrop */
+    .nav-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, .5);
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+      z-index: 1199;
+      opacity: 0;
+      transition: opacity .3s;
+    }
+
+    .nav-backdrop.visible {
+      display: block;
+    }
+
+    .nav-backdrop.open {
+      opacity: 1;
+    }
+
+    /* Drawer panel */
+    .nav-drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: min(320px, 85vw);
+      background: linear-gradient(160deg, #1E1B4B 0%, #312E81 55%, #1a1730 100%);
+      z-index: 1200;
+      transform: translateX(100%);
+      transition: transform .35s cubic-bezier(.4, 0, .2, 1);
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      border-left: 1px solid rgba(255, 255, 255, .07);
+      box-shadow: -12px 0 40px rgba(0, 0, 0, .35);
+    }
+
+    .nav-drawer.open {
+      transform: translateX(0);
+    }
+
+    /* Drawer header */
+    .drawer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 1.5rem 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, .07);
+    }
+
+    .drawer-brand {
+      display: flex;
+      align-items: center;
+      gap: .55rem;
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .drawer-brand .logo-box {
+      width: 32px;
+      height: 32px;
+      border-radius: 9px;
+      background: linear-gradient(135deg, var(--brand), var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .drawer-close {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, .08);
+      border: none;
+      color: rgba(255, 255, 255, .7);
+      font-size: 1.15rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background .2s, color .2s;
+    }
+
+    .drawer-close:hover {
+      background: rgba(255, 255, 255, .15);
+      color: #fff;
+    }
+
+    /* User banner inside drawer */
+    .drawer-user-banner {
+      display: none;
+      align-items: center;
+      gap: .75rem;
+      margin: 1rem 1.5rem;
+      padding: .9rem 1rem;
+      background: rgba(255, 255, 255, .07);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, .08);
+    }
+
+    .drawer-user-banner.show {
+      display: flex;
+    }
+
+    .drawer-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--brand), #7C3AED);
+      color: #fff;
+      font-weight: 700;
+      font-size: .95rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .drawer-user-email {
+      font-size: .82rem;
+      color: rgba(255, 255, 255, .75);
+      font-weight: 500;
+      word-break: break-all;
+    }
+
+    /* Nav links section */
+    .drawer-section-label {
+      font-size: .67rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: rgba(255, 255, 255, .3);
+      padding: 1.25rem 1.5rem .4rem;
+    }
+
+    .drawer-nav {
+      display: flex;
+      flex-direction: column;
+      padding: 0 1rem;
+      gap: 2px;
+    }
+
+    .drawer-link {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      padding: .75rem 1rem;
+      border-radius: 12px;
+      color: rgba(255, 255, 255, .72);
+      text-decoration: none;
+      font-size: .93rem;
+      font-weight: 500;
+      transition: background .2s, color .2s;
+      cursor: pointer;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+    }
+
+    .drawer-link:hover {
+      background: rgba(255, 255, 255, .09);
+      color: #fff;
+    }
+
+    .drawer-link .dl-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 9px;
+      background: rgba(255, 255, 255, .08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    .drawer-link.admin-link .dl-icon {
+      background: rgba(124, 58, 237, .28);
+      color: #C4B5FD;
+    }
+
+    .drawer-link.admin-link {
+      color: #C4B5FD;
+    }
+
+    .drawer-link.logout-link .dl-icon {
+      background: rgba(239, 68, 68, .2);
+      color: #FCA5A5;
+    }
+
+    .drawer-link.logout-link {
+      color: rgba(255, 255, 255, .6);
+    }
+
+    /* Divider inside drawer */
+    .drawer-divider {
+      height: 1px;
+      background: rgba(255, 255, 255, .07);
+      margin: .6rem 1.5rem;
+    }
+
+    /* Bottom spacer */
+    .drawer-footer {
+      margin-top: auto;
+      padding: 1.25rem 1.5rem;
+      font-size: .75rem;
+      color: rgba(255, 255, 255, .22);
+      border-top: 1px solid rgba(255, 255, 255, .06);
+    }
+
+    /* Only show hamburger on < lg */
+    @media (max-width: 991px) {
+      .nav-hamburger {
+        display: flex;
+      }
+
+      /* hide Bootstrap collapse nav on mobile — we use drawer instead */
+      #mainNav {
+        display: none !important;
+      }
+    }
+
+    /* ─────────────────────── Hero ─────────────────────── */
+    #heroSection {
+      background: linear-gradient(135deg, var(--brand-deeper) 0%, var(--brand-dark) 45%, #4338CA 100%);
+      min-height: 92vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #heroSection::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 15% 50%, rgba(99, 102, 241, .35) 0%, transparent 55%),
+        radial-gradient(ellipse at 85% 15%, rgba(245, 158, 11, .18) 0%, transparent 45%);
+    }
+
+    .hero-z {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      background: rgba(255, 255, 255, .1);
+      border: 1px solid rgba(255, 255, 255, .15);
+      color: rgba(255, 255, 255, .9);
+      font-size: .78rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      padding: .3rem .9rem;
+      border-radius: 100px;
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-title {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -.035em;
+      color: #fff;
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-title .gold {
+      background: linear-gradient(135deg, #FDE68A, #F59E0B);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: 1.05rem;
+      color: rgba(255, 255, 255, .6);
+      line-height: 1.75;
+      max-width: 500px;
+      margin-bottom: 2rem;
+    }
+
+    .hero-cta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .75rem;
+    }
+
+    .btn-hero-primary {
+      background: var(--accent);
+      color: #1E1B4B;
+      font-weight: 700;
+      font-size: 1rem;
+      padding: .8rem 2rem;
+      border-radius: 12px;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      transition: transform .25s, box-shadow .25s;
+      box-shadow: 0 8px 24px rgba(245, 158, 11, .35);
+    }
+
+    .btn-hero-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px rgba(245, 158, 11, .5);
+    }
+
+    .btn-hero-outline {
+      background: rgba(255, 255, 255, .1);
+      border: 1.5px solid rgba(255, 255, 255, .22);
+      color: #fff;
+      font-weight: 600;
+      font-size: 1rem;
+      padding: .8rem 1.75rem;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      transition: background .25s;
+    }
+
+    .btn-hero-outline:hover {
+      background: rgba(255, 255, 255, .18);
+      color: #fff;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 2.5rem;
+      flex-wrap: wrap;
+      margin-top: 3rem;
+      padding-top: 2.5rem;
+      border-top: 1px solid rgba(255, 255, 255, .1);
+    }
+
+    .hero-stat-val {
+      font-size: 1.9rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1;
+    }
+
+    .hero-stat-lbl {
+      font-size: .78rem;
+      color: rgba(255, 255, 255, .5);
+      margin-top: .25rem;
+    }
+
+    /* Floating illustration */
+    .hero-visual {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-blob {
+      width: 380px;
+      height: 380px;
+      border-radius: 60% 40% 70% 30% / 50% 60% 40% 50%;
+      background: rgba(255, 255, 255, .06);
+      border: 1px solid rgba(255, 255, 255, .1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9rem;
+      animation: morphBlob 9s ease-in-out infinite;
+    }
+
+    @keyframes morphBlob {
+
+      0%,
+      100% {
+        border-radius: 60% 40% 70% 30% / 50% 60% 40% 50%;
+      }
+
+      33% {
+        border-radius: 40% 60% 30% 70% / 60% 30% 70% 40%;
+      }
+
+      66% {
+        border-radius: 50% 50% 60% 40% / 40% 70% 30% 60%;
+      }
+    }
+
+    .float-card {
+      position: absolute;
+      background: rgba(255, 255, 255, .13);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, .2);
+      border-radius: 14px;
+      padding: .7rem 1.2rem;
+      color: #fff;
+      font-size: .84rem;
+      font-weight: 600;
+    }
+
+    .float-card.fc1 {
+      top: 8%;
+      right: 2%;
+      animation: flt1 6s ease-in-out infinite;
+    }
+
+    .float-card.fc2 {
+      bottom: 12%;
+      left: 2%;
+      animation: flt2 7s ease-in-out infinite;
+    }
+
+    @keyframes flt1 {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-12px);
+      }
+    }
+
+    @keyframes flt2 {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(10px);
+      }
+    }
+
+    /* ─────────────────────── Section helpers ─────────────────────── */
+    .section {
+      padding: 5rem 0;
+    }
+
+    .section-sm {
+      padding: 3rem 0;
+    }
+
+    .eyebrow {
+      font-size: .75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: var(--brand);
+      margin-bottom: .4rem;
+    }
+
+    .sec-title {
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 800;
+      letter-spacing: -.025em;
+      color: var(--text-1);
+      margin-bottom: .35rem;
+    }
+
+    .sec-sub {
+      color: var(--text-2);
+      font-size: .97rem;
+    }
+
+    .underline-accent {
+      position: relative;
+      display: inline-block;
+    }
+
+    .underline-accent::after {
+      content: '';
+      position: absolute;
+      bottom: 1px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    /* ─────────────────────── Product Card ─────────────────────── */
+    .prod-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform .25s, box-shadow .25s, border-color .25s;
+      height: 100%;
+    }
+
+    .prod-card:hover {
+      transform: translateY(-6px);
+      border-color: transparent;
+      box-shadow: var(--shadow-xl);
+    }
+
+    .prod-thumb {
+      height: 220px;
+      overflow: hidden;
+      position: relative;
+      background: linear-gradient(135deg, #EDE9FE, #DDD6FE);
+    }
+
+    .prod-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .4s;
+    }
+
+    .prod-card:hover .prod-thumb img {
+      transform: scale(1.06);
+    }
+
+    .prod-thumb-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--brand);
+      font-size: 3.5rem;
+      opacity: .45;
+    }
+
+    .prod-cat-tag {
+      position: absolute;
+      top: .7rem;
+      left: .7rem;
+      background: rgba(255, 255, 255, .92);
+      backdrop-filter: blur(8px);
+      color: var(--brand);
+      font-size: .68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      padding: .22rem .6rem;
+      border-radius: 100px;
+    }
+
+    .prod-sold-out {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, .45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 700;
+      font-size: .95rem;
+      gap: .4rem;
+    }
+
+    .prod-body {
+      padding: 1rem 1.1rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .prod-name {
+      font-weight: 700;
+      font-size: .93rem;
+      color: var(--text-1);
+      margin-bottom: .3rem;
+      line-height: 1.35;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .prod-desc {
+      font-size: .8rem;
+      color: var(--text-3);
+      margin-bottom: .7rem;
+      flex-grow: 1;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .prod-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .prod-price {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--brand);
+    }
+
+    .stock-badge {
+      font-size: .7rem;
+      font-weight: 600;
+      padding: .2rem .55rem;
+      border-radius: 6px;
+    }
+
+    .stock-ok {
+      background: #DCFCE7;
+      color: #15803D;
+    }
+
+    .stock-low {
+      background: #FEF9C3;
+      color: #92400E;
+    }
+
+    .stock-nil {
+      background: #FEE2E2;
+      color: #DC2626;
+    }
+
+    /* ─────────────────────── Stars ─────────────────────── */
+    .stars i {
+      font-size: .82rem;
+    }
+
+    /* ─────────────────────── Skeleton ─────────────────────── */
+    .skel {
+      background: linear-gradient(90deg, var(--surface-3) 25%, var(--border) 50%, var(--surface-3) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.6s infinite;
+      border-radius: 6px;
+    }
+
+    @keyframes shimmer {
+      0% {
+        background-position: 200% 0;
+      }
+
+      100% {
+        background-position: -200% 0;
+      }
+    }
+
+    .skel-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      overflow: hidden;
+    }
+
+    /* ─────────────────────── Search & Filter ─────────────────────── */
+    .search-wrap {
+      position: relative;
+      max-width: 400px;
+    }
+
+    .search-wrap .bi {
+      position: absolute;
+      left: .95rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-3);
+    }
+
+    .search-inp {
+      padding-left: 2.7rem;
+      border-radius: 12px;
+      border: 1.5px solid var(--border);
+      height: 44px;
+      font-size: .9rem;
+      transition: border-color .2s, box-shadow .2s;
+      width: 100%;
+    }
+
+    .search-inp:focus {
+      border-color: var(--brand);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, .12);
+      outline: none;
+    }
+
+    .fp {
+      display: inline-flex;
+      align-items: center;
+      gap: .3rem;
+      padding: .32rem .85rem;
+      border-radius: 100px;
+      font-size: .8rem;
+      font-weight: 600;
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      color: var(--text-2);
+      cursor: pointer;
+      transition: all .2s;
+      white-space: nowrap;
+    }
+
+    .fp:hover {
+      border-color: var(--brand);
+      color: var(--brand);
+    }
+
+    .fp.active {
+      background: var(--brand);
+      border-color: var(--brand);
+      color: #fff;
+    }
+
+    /* ─────────────────────── Product Detail ─────────────────────── */
+    #productDetailPage {
+      background: var(--surface-2);
+      min-height: 100vh;
+    }
+
+    .detail-img-wrap {
+      border-radius: var(--r-xl);
+      overflow: hidden;
+      background: var(--surface-3);
+      aspect-ratio: 4/3;
+    }
+
+    .detail-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .detail-cat-badge {
+      display: inline-block;
+      background: var(--brand-light);
+      color: var(--brand);
+      font-size: .75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      padding: .28rem .8rem;
+      border-radius: 100px;
+      margin-bottom: .7rem;
+    }
+
+    .detail-name {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 800;
+      letter-spacing: -.025em;
+      line-height: 1.2;
+    }
+
+    .detail-price {
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--brand);
+      letter-spacing: -.03em;
+    }
+
+    .detail-stock {
+      display: inline-flex;
+      align-items: center;
+      gap: .35rem;
+      font-size: .82rem;
+      font-weight: 600;
+      padding: .3rem .85rem;
+      border-radius: 8px;
+    }
+
+    .detail-stock.ok {
+      background: #DCFCE7;
+      color: #15803D;
+    }
+
+    .detail-stock.out {
+      background: #FEE2E2;
+      color: #DC2626;
+    }
+
+    .detail-desc {
+      color: var(--text-2);
+      line-height: 1.75;
+      font-size: .95rem;
+    }
+
+    .btn-order {
+      background: var(--brand);
+      color: #fff;
+      font-weight: 700;
+      padding: .8rem 2rem;
+      border-radius: 12px;
+      border: none;
+      font-size: 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      transition: all .25s;
+    }
+
+    .btn-order:hover {
+      background: var(--brand-dark);
+      transform: translateY(-2px);
+      color: #fff;
+    }
+
+    .btn-wa {
+      background: #25D366;
+      color: #fff;
+      font-weight: 700;
+      padding: .8rem 1.75rem;
+      border-radius: 12px;
+      border: none;
+      font-size: 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      transition: all .25s;
+    }
+
+    .btn-wa:hover {
+      background: #1ebe5d;
+      transform: translateY(-2px);
+      color: #fff;
+    }
+
+    /* ─────────────────────── Review Card ─────────────────────── */
+    .rev-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      padding: 1.1rem;
+      height: 100%;
+    }
+
+    .rev-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      flex-shrink: 0;
+      background: linear-gradient(135deg, var(--brand), #7C3AED);
+      color: #fff;
+      font-weight: 700;
+      font-size: .95rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ─────────────────────── Review Form ─────────────────────── */
+    .rev-form-card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--r-xl);
+      padding: 1.75rem 2rem;
+    }
+
+    .star-picker {
+      display: flex;
+      gap: .4rem;
+    }
+
+    .star-picker i {
+      font-size: 1.7rem;
+      cursor: pointer;
+      transition: transform .15s;
+      color: var(--border);
+    }
+
+    .star-picker i:hover,
+    .star-picker i.lit {
+      transform: scale(1.2);
+      color: var(--accent);
+    }
+
+    /* ─────────────────────── Admin ─────────────────────── */
+    #adminPage {
+      min-height: 100vh;
+      background: var(--surface-2);
+    }
+
+    .admin-side {
+      width: 238px;
+      flex-shrink: 0;
+      background: var(--brand-deeper);
+      min-height: 100vh;
+      padding: 1.5rem 1rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .admin-side-brand {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      color: #fff;
+      font-weight: 800;
+      font-size: 1.05rem;
+      padding: 0 .5rem 1.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, .08);
+      margin-bottom: 1rem;
+    }
+
+    .adnav {
+      display: flex;
+      align-items: center;
+      gap: .65rem;
+      color: rgba(255, 255, 255, .62);
+      padding: .65rem .9rem;
+      border-radius: 10px;
+      font-size: .9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all .2s;
+      text-decoration: none;
+      margin-bottom: .2rem;
+    }
+
+    .adnav:hover {
+      background: rgba(255, 255, 255, .08);
+      color: #fff;
+    }
+
+    .adnav.active {
+      background: rgba(255, 255, 255, .12);
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .adnav i {
+      font-size: 1.05rem;
+      width: 20px;
+      flex-shrink: 0;
+    }
+
+    .admin-main {
+      flex: 1;
+      padding: 2rem;
+      overflow-y: auto;
+    }
+
+    .admin-pg-title {
+      font-size: 1.45rem;
+      font-weight: 800;
+      letter-spacing: -.025em;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: 1.4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-icon-bg {
+      position: absolute;
+      right: -8px;
+      top: -8px;
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.85rem;
+      opacity: .2;
+    }
+
+    /* ─────────────────────── Toast ─────────────────────── */
+    #toastBox {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      z-index: 9999;
+    }
+
+    .toast-item {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      background: #1E293B;
+      color: #fff;
+      border-radius: 14px;
+      padding: .85rem 1.2rem;
+      min-width: 280px;
+      max-width: 360px;
+      box-shadow: var(--shadow-lg);
+      margin-top: .45rem;
+      animation: slideUp .3s ease;
+      font-size: .88rem;
+      font-weight: 500;
+    }
+
+    .toast-item.success {
+      border-left: 4px solid var(--success);
+    }
+
+    .toast-item.danger {
+      border-left: 4px solid var(--danger);
+    }
+
+    .toast-item.warning {
+      border-left: 4px solid var(--accent);
+    }
+
+    .toast-item.info {
+      border-left: 4px solid #3B82F6;
+    }
+
+    .toast-icon.success {
+      color: var(--success);
+    }
+
+    .toast-icon.danger {
+      color: var(--danger);
+    }
+
+    .toast-icon.warning {
+      color: var(--accent);
+    }
+
+    .toast-icon.info {
+      color: #3B82F6;
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(16px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    /* ─────────────────────── Loading Overlay ─────────────────────── */
+    #loadingOverlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, .55);
+      backdrop-filter: blur(5px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+    }
+
+    .spin-box {
+      background: var(--surface);
+      border-radius: var(--r-xl);
+      padding: 2.5rem 3.5rem;
+      text-align: center;
+      box-shadow: var(--shadow-xl);
+    }
+
+    .spin-ring {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 4px solid var(--surface-3);
+      border-top-color: var(--brand);
+      animation: spin .75s linear infinite;
+      margin: 0 auto 1rem;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* ─────────────────────── Misc ─────────────────────── */
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    .cur {
+      cursor: pointer;
+    }
+
+    .form-control,
+    .form-select {
+      border-radius: 10px;
+      border: 1.5px solid var(--border);
+      font-size: .9rem;
+      padding: .65rem 1rem;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+      border-color: var(--brand);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, .12);
+    }
+
+    .form-label {
+      font-weight: 600;
+      font-size: .87rem;
+    }
+
+    /* ─────────────────────── Footer ─────────────────────── */
+    .main-footer {
+      background: var(--brand-deeper);
+      color: rgba(255, 255, 255, .6);
+      padding: 4rem 0 2rem;
+    }
+
+    .footer-brand {
+      font-weight: 800;
+      font-size: 1.2rem;
+      color: #fff;
+    }
+
+    .ft-link {
+      color: rgba(255, 255, 255, .5);
+      text-decoration: none;
+      font-size: .88rem;
+      display: block;
+      margin-bottom: .45rem;
+      transition: color .2s;
+    }
+
+    .ft-link:hover {
+      color: #fff;
+    }
+
+    .ft-head {
+      color: var(--accent);
+      font-weight: 700;
+      font-size: .78rem;
+      text-transform: uppercase;
+      letter-spacing: .09em;
+      margin-bottom: 1rem;
+    }
+
+    .soc-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, .08);
+      color: rgba(255, 255, 255, .6);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      transition: all .2s;
+      font-size: 1rem;
+    }
+
+    .soc-btn:hover {
+      background: var(--brand);
+      color: #fff;
+    }
+
+    /* ─────────────────────── Responsive ─────────────────────── */
+
+    /* ── Large tablets / small desktops ── */
+    @media (max-width: 991px) {
+      #heroSection {
+        min-height: auto;
+        padding: 4.5rem 0 3.5rem;
+      }
+
+      .hero-stats {
+        gap: 1.75rem;
+        margin-top: 2.25rem;
+        padding-top: 2rem;
+      }
+    }
+
+    /* ── Tablets / large phones ── */
+    @media (max-width: 767px) {
+      .hero-blob {
+        width: 240px;
+        height: 240px;
+        font-size: 6rem;
+      }
+
+      .float-card {
+        display: none;
+      }
+
+      .hero-sub {
+        font-size: .95rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .hero-stats {
+        gap: 1.25rem;
+        margin-top: 1.75rem;
+        padding-top: 1.5rem;
+      }
+
+      .hero-stat-val {
+        font-size: 1.5rem;
+      }
+
+      .section {
+        padding: 3rem 0;
+      }
+
+      .section-sm {
+        padding: 2rem 0;
+      }
+
+      /* Product detail page */
+      #productDetailPage>div {
+        padding: 1.5rem 0 3rem !important;
+      }
+
+      .detail-name {
+        font-size: 1.5rem;
+      }
+
+      .detail-price {
+        font-size: 1.7rem;
+      }
+
+      /* Buyer name field — full width on mobile */
+      #buyerName {
+        max-width: 100% !important;
+      }
+
+      /* Order + WA buttons — full width on mobile */
+      .btn-order,
+      .btn-wa {
+        flex: 1 1 100%;
+        justify-content: center;
+      }
+
+      /* Review form — full width & compact padding */
+      .rev-form-card {
+        padding: 1.25rem;
+        max-width: 100% !important;
+      }
+
+      /* Footer */
+      .main-footer {
+        padding: 3rem 0 1.5rem;
+      }
+
+      /* Toast — full width on mobile, stays in bottom bar */
+      #toastBox {
+        left: 1rem;
+        right: 1rem;
+        bottom: 1rem;
+        width: auto;
+      }
+
+      .toast-item {
+        min-width: 0;
+        max-width: 100%;
+      }
+
+      /* Admin sidebar — narrow but still visible */
+      .admin-side {
+        width: 190px;
+      }
+    }
+
+    /* ── Small phones ── */
+    @media (max-width: 575px) {
+
+      /* Hero CTA buttons stack vertically and fill width */
+      .hero-cta {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .btn-hero-primary,
+      .btn-hero-outline {
+        justify-content: center;
+      }
+
+      /* Search fills full width */
+      .search-wrap {
+        max-width: 100%;
+      }
+
+      /* Admin sidebar — icon only */
+      .admin-side {
+        width: 54px;
+      }
+
+      .admin-side-brand span,
+      .adnav span {
+        display: none;
+      }
+
+      .adnav {
+        justify-content: center;
+      }
+
+      .admin-main {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ══════════════════════════════════ LOADING ══════════════════════════════════ -->
+  <div id="loadingOverlay">
+    <div class="spin-box">
+      <div class="spin-ring"></div>
+      <p class="mb-0 text-secondary fw-semibold small">Memuat…</p>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════ TOAST ══════════════════════════════════ -->
+  <div id="toastBox" aria-live="polite"></div>
+
+  <!-- ══════════════════════════════════ NAVBAR ══════════════════════════════════ -->
+  <!-- Backdrop for drawer -->
+  <div class="nav-backdrop" id="navBackdrop" onclick="closeDrawer()"></div>
+
+  <!-- Drawer -->
+  <div class="nav-drawer" id="navDrawer" role="dialog" aria-modal="true" aria-label="Menu Navigasi">
+    <div class="drawer-header">
+      <a class="drawer-brand" onclick="closeDrawer();showPage('home')" role="button">
+        <div class="logo-box"><i class="bi bi-bag-heart-fill text-white" style="font-size:.85rem;"></i></div>
+        <span>Lapak Yudhas</span>
+      </a>
+      <button class="drawer-close" onclick="closeDrawer()" aria-label="Tutup menu">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+
+    <!-- Logged-in user badge -->
+    <div class="drawer-user-banner" id="drawerUserBanner">
+      <div class="drawer-avatar" id="drawerAvatar">U</div>
+      <div class="drawer-user-email" id="drawerUserEmail">—</div>
+    </div>
+
+    <p class="drawer-section-label">Navigasi</p>
+    <div class="drawer-nav">
+      <a class="drawer-link" onclick="closeDrawer();showPage('home')" role="button">
+        <span class="dl-icon"><i class="bi bi-house-fill"></i></span>
+        <span>Beranda</span>
+      </a>
+      <a class="drawer-link" href="semua_produk.html">
+        <span class="dl-icon"><i class="bi bi-grid-3x3-gap-fill"></i></span>
+        <span>Semua Produk</span>
+      </a>
+      <a class="drawer-link admin-link" id="drawerAdminLink" href="admin.html" style="display:none;">
+        <span class="dl-icon"><i class="bi bi-speedometer2"></i></span>
+        <span>Admin Panel</span>
+      </a>
+    </div>
+
+    <div class="drawer-divider"></div>
+    <p class="drawer-section-label">Akun</p>
+    <div class="drawer-nav">
+      <a class="drawer-link" id="drawerLoginLink" href="login.html">
+        <span class="dl-icon"><i class="bi bi-person-circle"></i></span>
+        <span>Login</span>
+      </a>
+      <a class="drawer-link logout-link" id="drawerLogoutLink" onclick="closeDrawer();logout()" style="display:none;"
+        role="button">
+        <span class="dl-icon"><i class="bi bi-box-arrow-right"></i></span>
+        <span>Logout</span>
+      </a>
+    </div>
+
+    <div class="drawer-footer">&copy; Lapak Yudhas &mdash; Marketplace Terpercaya</div>
+  </div>
+
+  <nav class="main-nav navbar navbar-dark navbar-expand-lg sticky-top py-2">
+    <div class="container">
+      <a class="nav-logo" onclick="showPage('home')">
+        <div class="logo-box"><i class="bi bi-bag-heart-fill text-white" style="font-size:1.05rem;"></i></div>
+        <span>Lapak Yudhas</span>
+      </a>
+      <!-- Custom hamburger (mobile only) -->
+      <button class="nav-hamburger" id="navHamburger" onclick="openDrawer()" aria-label="Buka menu"
+        aria-expanded="false" aria-controls="navDrawer">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-1">
+          <li class="nav-item">
+            <a class="nav-item-link nav-link cur" onclick="showPage('home')">
+              <i class="bi bi-house me-1"></i>Beranda
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-item-link nav-link cur" href="semua_produk.html">
+              <i class="bi bi-grid-3x3-gap me-1"></i>Produk
+            </a>
+          </li>
+          <li class="nav-item" id="adminNavItem" style="display:none;">
+            <a class="nav-btn-admin nav-link cur ms-1" href="admin.html">
+              <i class="bi bi-speedometer2 me-1"></i>Admin
+            </a>
+          </li>
+        </ul>
+        <div class="d-flex align-items-center gap-2 ms-lg-3 mt-2 mt-lg-0">
+          <span class="text-white-50 small" id="navUserEmail" style="display:none;"></span>
+          <li class="nav-item list-unstyled" id="navLogoutItem" style="display:none;">
+            <a class="nav-link cur text-white-50 small" onclick="logout()">
+              <i class="bi bi-box-arrow-right me-1"></i>Logout
+            </a>
+          </li>
+          <li class="nav-item list-unstyled" id="navLoginItem">
+            <a class="nav-link cur text-white-50 small" href="javascript:void(0)"
+              onclick="window.location.href='login.html'">
+              <i class="bi bi-person-circle me-1"></i>Login
+            </a>
+          </li>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ══════════════════════════════════ HOME PAGE ══════════════════════════════════ -->
+  <div id="homePage" class="page active">
+
+    <!-- ── Hero ── -->
+    <section id="heroSection">
+      <div class="container">
+        <div class="row align-items-center g-5">
+          <!-- Text -->
+          <div class="col-lg-6 hero-z">
+            <div class="hero-badge">
+              <i class="bi bi-lightning-fill text-warning"></i>Marketplace Terpercaya No. 1
+            </div>
+            <h1 class="hero-title">
+              Belanja <span class="gold">Lebih Hemat</span><br>& Mudah
+            </h1>
+            <p class="hero-sub">
+              Temukan ribuan produk pilihan dengan harga terjangkau.<br>
+              Proses cepat, aman, dan terpercaya.
+            </p>
+            <div class="hero-cta">
+              <a href="semua_produk.html" class="btn-hero-primary">
+                <i class="bi bi-compass-fill"></i>Jelajahi Produk
+              </a>
+              <button class="btn-hero-outline" onclick="scrollToFeatured()">
+                <i class="bi bi-star-fill"></i>Produk Unggulan
+              </button>
+            </div>
+            <div class="hero-stats">
+              <div>
+                <div class="hero-stat-val" id="heroTotalProd">—</div>
+                <div class="hero-stat-lbl">Total Produk</div>
+              </div>
+              <div>
+                <div class="hero-stat-val" id="heroTotalCat">—</div>
+                <div class="hero-stat-lbl">Kategori</div>
+              </div>
+              <div>
+                <div class="hero-stat-val">✓</div>
+                <div class="hero-stat-lbl">Terpercaya</div>
+              </div>
+            </div>
+          </div>
+          <!-- Visual -->
+          <div class="col-lg-6 d-none d-lg-block hero-z">
+            <div class="hero-visual">
+              <div class="hero-blob">🛒</div>
+              <div class="float-card fc1"><i class="bi bi-star-fill text-warning me-1"></i>Rating 5.0</div>
+              <div class="float-card fc2"><i class="bi bi-shield-check-fill text-success me-1"></i>Belanja Aman</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Featured Products ── -->
+    <section class="section" id="featuredSection" style="background:var(--surface-2);">
+      <div class="container">
+        <div class="row align-items-end mb-5">
+          <div class="col-md-8">
+            <p class="eyebrow">Pilihan Terbaik</p>
+            <h2 class="sec-title mb-1">Produk <span class="underline-accent">Unggulan</span></h2>
+            <p class="sec-sub">Produk terpilih dengan kualitas terbaik untuk Anda</p>
+          </div>
+          <div class="col-md-4 text-md-end mt-3 mt-md-0">
+            <a href="semua_produk.html" class="btn btn-outline-primary fw-semibold px-4" style="border-radius:10px;">
+              Lihat Semua <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Grid / Skeleton -->
+        <div id="featuredGrid" class="row g-4">
+          <!-- skeleton placeholders -->
+          <div class="col-sm-6 col-lg-4">
+            <div class="skel-card">
+              <div class="skel" style="height:220px;"></div>
+              <div class="p-3">
+                <div class="skel mb-2" style="height:11px;width:55%;"></div>
+                <div class="skel mb-2" style="height:17px;width:88%;"></div>
+                <div class="skel mb-3" style="height:11px;width:70%;"></div>
+                <div class="d-flex justify-content-between">
+                  <div class="skel" style="height:18px;width:40%;"></div>
+                  <div class="skel" style="height:18px;width:22%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-lg-4">
+            <div class="skel-card">
+              <div class="skel" style="height:220px;"></div>
+              <div class="p-3">
+                <div class="skel mb-2" style="height:11px;width:55%;"></div>
+                <div class="skel mb-2" style="height:17px;width:88%;"></div>
+                <div class="skel mb-3" style="height:11px;width:70%;"></div>
+                <div class="d-flex justify-content-between">
+                  <div class="skel" style="height:18px;width:40%;"></div>
+                  <div class="skel" style="height:18px;width:22%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-lg-4">
+            <div class="skel-card">
+              <div class="skel" style="height:220px;"></div>
+              <div class="p-3">
+                <div class="skel mb-2" style="height:11px;width:55%;"></div>
+                <div class="skel mb-2" style="height:17px;width:88%;"></div>
+                <div class="skel mb-3" style="height:11px;width:70%;"></div>
+                <div class="d-flex justify-content-between">
+                  <div class="skel" style="height:18px;width:40%;"></div>
+                  <div class="skel" style="height:18px;width:22%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── All Products (revealed on demand) ── -->
+    <section id="allProductsSection" class="section" style="display:none; background:var(--surface);">
+      <div class="container">
+        <div class="row align-items-center mb-4 g-3">
+          <div class="col-md-5">
+            <h2 class="sec-title mb-0">Semua Produk</h2>
+          </div>
+          <div class="col-md-7">
+            <div class="search-wrap ms-md-auto">
+              <i class="bi bi-search"></i>
+              <input type="text" id="productSearch" class="search-inp" placeholder="Cari produk…"
+                oninput="handleSearch(this.value)" />
+            </div>
+          </div>
+        </div>
+        <div class="d-flex flex-wrap gap-2 mb-4" id="catFilters"></div>
+        <div id="allProductsGrid" class="row g-4"></div>
+      </div>
+    </section>
+
+    <!-- ── Footer ── -->
+    <footer class="main-footer">
+      <div class="container">
+        <div class="row g-5">
+          <!-- Brand -->
+          <div class="col-lg-4">
+            <div class="d-flex align-items-center gap-2 mb-3">
+              <div
+                style="width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--brand),var(--accent));display:flex;align-items:center;justify-content:center;">
+                <i class="bi bi-bag-heart-fill text-white"></i>
+              </div>
+              <span class="footer-brand">Lapak Yudhas</span>
+            </div>
+            <p style="font-size:.87rem;line-height:1.75;">
+              Marketplace terpercaya untuk kebutuhan Anda sehari-hari. Produk berkualitas, harga bersaing.
+            </p>
+            <div class="d-flex gap-2 mt-3">
+              <a href="#" class="soc-btn"><i class="bi bi-instagram"></i></a>
+              <a href="#" class="soc-btn"><i class="bi bi-facebook"></i></a>
+              <a href="#" class="soc-btn"><i class="bi bi-twitter-x"></i></a>
+              <a href="#" class="soc-btn"><i class="bi bi-tiktok"></i></a>
+            </div>
+          </div>
+          <!-- Nav links -->
+          <div class="col-6 col-lg-2">
+            <p class="ft-head">Navigasi</p>
+            <a href="#" class="ft-link" onclick="showPage('home')">Beranda</a>
+            <a href="#" class="ft-link" onclick="loadAllProducts()">Semua Produk</a>
+            <a href="#" class="ft-link" onclick="scrollToFeatured()">Unggulan</a>
+          </div>
+          <!-- Support -->
+          <div class="col-6 col-lg-3">
+            <p class="ft-head">Dukungan</p>
+            <p class="ft-link"><i class="bi bi-envelope me-1"></i>support@lapakYudhas.id</p>
+            <p class="ft-link"><i class="bi bi-whatsapp me-1"></i>Hubungi via WhatsApp</p>
+            <p class="ft-link"><i class="bi bi-clock me-1"></i>Senin–Sabtu 08.00–20.00</p>
+          </div>
+          <!-- Admin info -->
+          <div class="col-lg-3">
+            <p class="ft-head">Info Admin</p>
+            <p class="ft-link" id="footerAdminInfo">—</p>
+            <div class="d-flex gap-2 flex-wrap mt-3" style="font-size:.75rem;color:rgba(255,255,255,.4);">
+              <span><i class="bi bi-shield-check-fill text-success me-1"></i>SSL Secure</span>
+              <span><i class="bi bi-patch-check-fill text-primary me-1"></i>Verified</span>
+            </div>
+          </div>
+        </div>
+        <hr style="border-color:rgba(255,255,255,.08);margin:2rem 0 1.5rem;" />
+        <div class="d-flex flex-column flex-sm-row align-items-center justify-content-between gap-2"
+          style="font-size:.8rem;color:rgba(255,255,255,.35);">
+          <span>&copy; <span id="footerYear"></span> Lapak Yudhas. All rights reserved.</span>
+          <span>Dibuat dengan <i class="bi bi-heart-fill text-danger"></i> &amp; Google Apps Script</span>
+        </div>
+      </div>
+    </footer>
+  </div><!-- /homePage -->
+
+  <!-- ══════════════════════════════════ PRODUCT DETAIL ══════════════════════════════════ -->
+  <div id="productDetailPage" class="page">
+    <div style="padding:2.5rem 0 5rem;">
+      <div class="container">
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb" class="mb-4">
+          <ol class="breadcrumb" style="font-size:.87rem;">
+            <li class="breadcrumb-item">
+              <a href="#" class="text-decoration-none" style="color:var(--brand);" onclick="showPage('home')">
+                <i class="bi bi-house me-1"></i>Beranda
+              </a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="#" class="text-decoration-none" style="color:var(--brand);"
+                onclick="loadAllProducts()">Produk</a>
+            </li>
+            <li class="breadcrumb-item active" id="breadcrumbProduct">Detail Produk</li>
+          </ol>
+        </nav>
+
+        <!-- Main detail row -->
+        <div class="row g-4 g-lg-5">
+          <!-- Image -->
+          <div class="col-12 col-md-5 col-lg-5">
+            <div class="detail-img-wrap shadow-sm">
+              <img id="detailImage" src="" alt="" />
+            </div>
+          </div>
+          <!-- Info -->
+          <div class="col-12 col-md-7 col-lg-7">
+            <span id="detailCategory" class="detail-cat-badge"></span>
+            <h1 id="detailName" class="detail-name mb-3"></h1>
+
+            <div class="d-flex align-items-center gap-2 mb-3">
+              <div id="detailStars"></div>
+              <span class="text-secondary small fw-semibold" id="detailRatingText"></span>
+            </div>
+
+            <div class="d-flex align-items-baseline gap-3 mb-3 flex-wrap">
+              <span id="detailPrice" class="detail-price"></span>
+              <span id="detailStockBadge" class="detail-stock"></span>
+            </div>
+
+            <p id="detailDescription" class="detail-desc mb-4"></p>
+
+            <!-- Buyer name -->
+            <div class="mb-4">
+              <label class="form-label">Nama Pembeli</label>
+              <input type="text" id="buyerName" class="form-control" placeholder="Masukkan nama lengkap Anda"
+                style="max-width:360px;" />
+            </div>
+
+            <!-- Buttons -->
+            <div class="d-flex flex-wrap gap-3">
+              <button class="btn-order" onclick="placeOrder()">
+                <i class="bi bi-cart-plus-fill"></i>Pesan Sekarang
+              </button>
+              <button class="btn-wa" id="waBtn">
+                <i class="bi bi-whatsapp"></i>Tanya via WhatsApp
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reviews -->
+        <div class="mt-5 pt-2">
+          <hr style="border-color:var(--border);" />
+          <h3 class="sec-title mt-4 mb-1">Ulasan Pembeli</h3>
+          <p class="sec-sub mb-4">Pendapat pelanggan yang telah berbelanja</p>
+
+          <div id="reviewsList" class="row g-3 mb-4"></div>
+
+          <!-- Review access area -->
+          <div id="reviewAccessArea">
+            <!-- Form (hidden until user clicks check button) -->
+            <div id="reviewFormContainer" class="rev-form-card" style="display:none; max-width:600px;">
+              <h5 class="fw-bold mb-4"><i class="bi bi-pencil-square me-2" style="color:var(--brand);"></i>Tulis Ulasan
+                Anda</h5>
+              <div class="mb-3">
+                <label class="form-label">ID Transaksi</label>
+                <input type="text" id="reviewTransactionId" class="form-control" placeholder="TRX-xxxxxxxxxxxx" />
+                <small class="text-muted d-block mt-1">ID transaksi dikirim setelah pembelian berhasil.</small>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Nama Sesuai Pesanan</label>
+                <input type="text" id="reviewCustomerName" class="form-control" placeholder="Nama Anda" />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Rating</label>
+                <div class="star-picker" id="starRatingPicker">
+                  <i class="bi bi-star" onclick="setRating(1)"></i>
+                  <i class="bi bi-star" onclick="setRating(2)"></i>
+                  <i class="bi bi-star" onclick="setRating(3)"></i>
+                  <i class="bi bi-star" onclick="setRating(4)"></i>
+                  <i class="bi bi-star" onclick="setRating(5)"></i>
+                </div>
+                <input type="hidden" id="reviewRating" value="0" />
+              </div>
+              <div class="mb-4">
+                <label class="form-label">Komentar</label>
+                <textarea id="reviewComment" class="form-control" rows="3"
+                  placeholder="Ceritakan pengalaman belanja Anda…"></textarea>
+              </div>
+              <button class="btn btn-primary fw-semibold px-4" style="border-radius:10px;" onclick="submitReview()">
+                <i class="bi bi-send-fill me-2"></i>Kirim Ulasan
+              </button>
+            </div>
+            <!-- Toggle button -->
+            <button class="btn btn-outline-secondary fw-semibold mt-3" id="checkReviewBtn" onclick="checkReviewAccess()"
+              style="border-radius:10px;">
+              <i class="bi bi-chat-square-text me-2"></i>Sudah beli? Tulis Ulasan
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div><!-- /productDetailPage -->
+
+  <!-- ══════════════════════════════════ ADMIN PAGE ══════════════════════════════════ -->
+  <div id="adminPage" class="page">
+    <div class="d-flex" style="min-height:100vh;">
+      <!-- Sidebar -->
+      <div class="admin-side">
+        <div class="admin-side-brand">
+          <i class="bi bi-speedometer2 text-warning" style="font-size:1.25rem;"></i>
+          <span>Admin Panel</span>
+        </div>
+        <nav>
+          <a class="adnav active" id="sidebarDashboard" onclick="adminTab('dashboard')">
+            <i class="bi bi-grid-1x2"></i><span>Dashboard</span>
+          </a>
+          <a class="adnav" id="sidebarProducts" onclick="adminTab('products')">
+            <i class="bi bi-box-seam"></i><span>Produk</span>
+          </a>
+          <a class="adnav" id="sidebarCategories" onclick="adminTab('categories')">
+            <i class="bi bi-tags"></i><span>Kategori</span>
+          </a>
+          <a class="adnav" id="sidebarTransactions" onclick="adminTab('transactions')">
+            <i class="bi bi-receipt-cutoff"></i><span>Transaksi</span>
+          </a>
+          <a class="adnav" id="sidebarConfig" onclick="adminTab('config')">
+            <i class="bi bi-gear-wide-connected"></i><span>Konfigurasi</span>
+          </a>
+        </nav>
+        <div class="mt-auto" style="border-top:1px solid rgba(255,255,255,.07);padding-top:.75rem;margin-top:.75rem;">
+          <a class="adnav" onclick="showPage('home')">
+            <i class="bi bi-arrow-left-circle"></i><span>Kembali</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Main -->
+      <div class="admin-main flex-grow-1">
+        <!-- Dashboard -->
+        <div id="adminDashboard" class="admin-tab-content">
+          <h4 class="admin-pg-title mb-1">Dashboard</h4>
+          <p class="text-secondary small mb-4">Ringkasan statistik Lapak Yudhas</p>
+          <div class="row g-4" id="statsCards">
+            <div class="col-12 text-muted small">Memuat statistik…</div>
+          </div>
+        </div>
+
+        <!-- Products -->
+        <div id="adminProducts" class="admin-tab-content" style="display:none;">
+          <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+            <div>
+              <h4 class="admin-pg-title mb-1">Manajemen Produk</h4>
+              <p class="text-secondary small mb-0">Kelola produk yang tersedia di toko</p>
+            </div>
+            <button class="btn btn-primary fw-semibold" onclick="openProductModal()" style="border-radius:10px;">
+              <i class="bi bi-plus-lg me-1"></i>Tambah Produk
+            </button>
+          </div>
+          <div class="card border-0 shadow-sm" style="border-radius:var(--r-lg);">
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0" style="font-size:.875rem;">
+                  <thead style="background:var(--surface-3);">
+                    <tr>
+                      <th class="ps-4 py-3">Produk</th>
+                      <th>Kategori</th>
+                      <th>Harga</th>
+                      <th>Stok</th>
+                      <th class="pe-4">Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody id="adminProductsTableBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Categories -->
+        <div id="adminCategories" class="admin-tab-content" style="display:none;">
+          <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+            <div>
+              <h4 class="admin-pg-title mb-1">Manajemen Kategori</h4>
+              <p class="text-secondary small mb-0">Kelola kategori produk</p>
+            </div>
+            <button class="btn btn-primary fw-semibold" onclick="openCategoryModal()" style="border-radius:10px;">
+              <i class="bi bi-plus-lg me-1"></i>Tambah Kategori
+            </button>
+          </div>
+          <div class="card border-0 shadow-sm" style="border-radius:var(--r-lg);">
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0" style="font-size:.875rem;">
+                  <thead style="background:var(--surface-3);">
+                    <tr>
+                      <th class="ps-4 py-3">ID</th>
+                      <th>Nama Kategori</th>
+                      <th class="pe-4">Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody id="adminCategoriesTableBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Transactions -->
+        <div id="adminTransactions" class="admin-tab-content" style="display:none;">
+          <h4 class="admin-pg-title mb-1">Log Transaksi</h4>
+          <p class="text-secondary small mb-4">Riwayat seluruh pembelian pelanggan</p>
+          <div class="card border-0 shadow-sm" style="border-radius:var(--r-lg);">
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0" style="font-size:.835rem;">
+                  <thead style="background:var(--surface-3);">
+                    <tr>
+                      <th class="ps-4 py-3">ID Transaksi</th>
+                      <th>Produk</th>
+                      <th>Pelanggan</th>
+                      <th>Total</th>
+                      <th>Status</th>
+                      <th>Tanggal</th>
+                      <th class="pe-4">Ubah Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="adminTransactionsTableBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Config -->
+        <div id="adminConfig" class="admin-tab-content" style="display:none;">
+          <h4 class="admin-pg-title mb-1">Konfigurasi</h4>
+          <p class="text-secondary small mb-4">Atur email admin dan nomor WhatsApp bisnis</p>
+          <div class="card border-0 shadow-sm p-4" style="border-radius:var(--r-lg);max-width:520px;">
+            <div class="mb-4">
+              <label class="form-label">Email Admin <small class="text-muted fw-normal">(pisahkan koma)</small></label>
+              <input type="text" id="cfgAdminEmails" class="form-control"
+                placeholder="admin@email.com, admin2@email.com" />
+            </div>
+            <div class="mb-4">
+              <label class="form-label">Nomor WhatsApp Bisnis</label>
+              <div class="input-group">
+                <span class="input-group-text" style="border-radius:10px 0 0 10px;">
+                  <i class="bi bi-whatsapp text-success"></i>
+                </span>
+                <input type="text" id="cfgWaPhone" class="form-control" placeholder="628xxxxxxxxxx" />
+              </div>
+              <small class="text-muted d-block mt-1">Format internasional tanpa +, contoh: 6281234567890</small>
+            </div>
+            <button class="btn btn-primary fw-semibold" onclick="saveConfigData()" style="border-radius:10px;">
+              <i class="bi bi-save me-2"></i>Simpan Konfigurasi
+            </button>
+          </div>
+        </div>
+      </div><!-- /admin-main -->
+    </div>
+  </div><!-- /adminPage -->
+
+  <!-- ══════════════════════════════════ MODALS ══════════════════════════════════ -->
+
+  <!-- Product Modal -->
+  <div class="modal fade" id="productModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content" style="border:none;border-radius:var(--r-xl);">
+        <div class="modal-header border-0 px-4 pt-4 pb-0">
+          <h5 class="modal-title fw-bold" id="productModalTitle">Tambah Produk</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body px-4 pt-3 pb-4">
+          <input type="hidden" id="editProductId" />
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">Nama Produk <span class="text-danger">*</span></label>
+              <input type="text" id="pName" class="form-control" placeholder="Nama produk" />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Kategori <span class="text-danger">*</span></label>
+              <select id="pCategory" class="form-select"></select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Harga (Rp) <span class="text-danger">*</span></label>
+              <input type="number" id="pPrice" class="form-control" placeholder="50000" min="0" />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Stok <span class="text-danger">*</span></label>
+              <input type="number" id="pStock" class="form-control" placeholder="10" min="0" />
+            </div>
+            <div class="col-12">
+              <label class="form-label">URL Gambar</label>
+              <input type="url" id="pImageUrl" class="form-control" placeholder="https://…" />
+            </div>
+            <div class="col-12">
+              <label class="form-label">Deskripsi</label>
+              <textarea id="pDescription" class="form-control" rows="3" placeholder="Deskripsi produk…"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer border-0 px-4 pt-0 pb-4">
+          <button class="btn btn-secondary fw-semibold" data-bs-dismiss="modal"
+            style="border-radius:10px;">Batal</button>
+          <button class="btn btn-primary fw-semibold" onclick="saveProduct()" style="border-radius:10px;">
+            <i class="bi bi-save me-1"></i>Simpan
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Category Modal -->
+  <div class="modal fade" id="categoryModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content" style="border:none;border-radius:var(--r-xl);">
+        <div class="modal-header border-0 px-4 pt-4 pb-0">
+          <h5 class="modal-title fw-bold" id="categoryModalTitle">Tambah Kategori</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body px-4 pt-3 pb-4">
+          <input type="hidden" id="editCategoryId" />
+          <label class="form-label">Nama Kategori <span class="text-danger">*</span></label>
+          <input type="text" id="catName" class="form-control" placeholder="Nama kategori" />
+        </div>
+        <div class="modal-footer border-0 px-4 pt-0 pb-4">
+          <button class="btn btn-secondary fw-semibold" data-bs-dismiss="modal"
+            style="border-radius:10px;">Batal</button>
+          <button class="btn btn-primary fw-semibold" onclick="saveCategory()" style="border-radius:10px;">
+            <i class="bi bi-save me-1"></i>Simpan
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirm Delete Modal -->
+  <div class="modal fade" id="confirmModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+      <div class="modal-content" style="border:none;border-radius:var(--r-xl);">
+        <div class="modal-header border-0 px-4 pt-4 pb-0">
+          <h5 class="modal-title fw-bold text-danger mb-0">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>Hapus Data
+          </h5>
+          <button class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body px-4 py-3 text-secondary" id="confirmModalBody">Yakin hapus data ini?</div>
+        <div class="modal-footer border-0 px-4 pt-0 pb-4">
+          <button class="btn btn-secondary fw-semibold" data-bs-dismiss="modal"
+            style="border-radius:10px;">Batal</button>
+          <button class="btn btn-danger fw-semibold" id="confirmDeleteBtn" style="border-radius:10px;">Hapus</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap 5 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    crossorigin="anonymous"></script>
+
+  <!-- Common functions shared by all pages -->
+  <script>
+    function openProductDetail(productId) {
+      window.location.href = `detail_produk.html?id=${encodeURIComponent(productId)}`;
+    }
+  </script>
+
+  <script>
+    /* ══════════════════════════════════════════════════════
+       API HELPER
+    ══════════════════════════════════════════════════════ */
+    const API_URL = 'https://script.google.com/macros/s/AKfycbyb9NghBypjpt17FT6MlIAJsZvXNoa4OniIJ47kPNYicmhqAS-6kaWWN8VPHcbky4L9/exec';
+
+    async function api(action, payload = {}, tkn) {
+      const token = tkn !== undefined ? tkn : sessionStorage.getItem('auth_token');
+      const res = await fetch(API_URL, {
+        method: 'POST',
+        body: JSON.stringify({ action, token, payload }),
+      });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const json = await res.json();
+      json.success = json.status === 'success';
+      return json;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       STATE
+    ══════════════════════════════════════════════════════ */
+    const state = {
+      products: [], categories: [],
+      currentProduct: null,
+      userEmail: '', isAdmin: false,
+      searchQuery: '', activeCat: '',
+    };
+
+    /* ══════════════════════════════════════════════════════
+       BOOT
+    ══════════════════════════════════════════════════════ */
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('footerYear').textContent = new Date().getFullYear();
+      initApp();
+    });
+
+    function initApp() {
+      const token = sessionStorage.getItem('auth_token');
+      console.log('initApp: token =', token);
+      const loginItem = document.getElementById('navLoginItem');
+
+      // Reset navLoginItem to default login state
+      if (loginItem) {
+        loginItem.style.display = '';
+        const link = loginItem.querySelector('a');
+        if (link) {
+          link.href = 'login.html';
+          link.onclick = function () { window.location.href = 'login.html'; };
+          link.innerHTML = '<i class="bi bi-person-circle me-1"></i>Login';
+        }
+      }
+
+      if (!token) {
+        console.log('No token found, loading featured products');
+        loadFeaturedProducts();
+        return;
+      }
+
+      api('validateSession', {}, token).then(res => {
+        console.log('validateSession response:', res);
+        if (res.success) {
+          console.log('Token is valid, updating navbar');
+          state.userEmail = res.data.email || res.data.name || '';
+          state.isAdmin = res.data.role === 'admin';
+          console.log('User email:', state.userEmail, 'Is Admin:', state.isAdmin);
+          if (state.userEmail) {
+            const el = document.getElementById('navUserEmail');
+            if (el) { el.textContent = state.userEmail; el.style.display = ''; }
+          }
+          if (state.isAdmin) {
+            const ai = document.getElementById('adminNavItem');
+            if (ai) ai.style.display = '';
+          }
+          const li = document.getElementById('navLogoutItem');
+          if (li) li.style.display = '';
+          const loginItem = document.getElementById('navLoginItem');
+          if (loginItem) {
+            loginItem.style.display = '';
+            const link = loginItem.querySelector('a');
+            if (link) {
+              link.href = 'admin.html';
+              link.onclick = function (e) { e.preventDefault(); window.location.href = 'admin.html'; };
+              link.innerHTML = '<i class="bi bi-speedometer2 me-1"></i>Dashboard Admin';
+              console.log('Updated navLoginItem to Dashboard Admin');
+            }
+          }
+          // Sync mobile drawer
+          syncDrawerUser(state.userEmail, state.isAdmin);
+        } else {
+          console.log('Token validation failed, clearing session');
+          sessionStorage.removeItem('auth_token');
+          sessionStorage.removeItem('auth_user');
+        }
+        loadFeaturedProducts();
+      }).catch((error) => {
+        console.error('validateSession error:', error);
+        loadFeaturedProducts();
+      });
+    }
+
+    function logout() {
+      const token = sessionStorage.getItem('auth_token');
+      sessionStorage.removeItem('auth_token');
+      sessionStorage.removeItem('auth_user');
+      state.userEmail = ''; state.isAdmin = false;
+      if (token) api('logoutUser', {}, token).catch(() => { });
+      window.location.href = 'login.html';
+    }
+
+    /* ══════════════════════════════════════════════════════
+       MOBILE DRAWER
+    ══════════════════════════════════════════════════════ */
+    function openDrawer() {
+      const drawer = document.getElementById('navDrawer');
+      const backdrop = document.getElementById('navBackdrop');
+      const btn = document.getElementById('navHamburger');
+      backdrop.classList.add('visible');
+      requestAnimationFrame(() => {
+        backdrop.classList.add('open');
+        drawer.classList.add('open');
+      });
+      btn.classList.add('open');
+      btn.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeDrawer() {
+      const drawer = document.getElementById('navDrawer');
+      const backdrop = document.getElementById('navBackdrop');
+      const btn = document.getElementById('navHamburger');
+      drawer.classList.remove('open');
+      backdrop.classList.remove('open');
+      btn.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+      setTimeout(() => backdrop.classList.remove('visible'), 320);
+    }
+
+    // Close drawer on Escape key
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
+
+    function syncDrawerUser(email, isAdmin) {
+      const banner = document.getElementById('drawerUserBanner');
+      const avatar = document.getElementById('drawerAvatar');
+      const emailEl = document.getElementById('drawerUserEmail');
+      const adminLink = document.getElementById('drawerAdminLink');
+      const loginLink = document.getElementById('drawerLoginLink');
+      const logoutLink = document.getElementById('drawerLogoutLink');
+
+      if (email) {
+        banner.classList.add('show');
+        avatar.textContent = email.charAt(0).toUpperCase();
+        emailEl.textContent = email;
+        loginLink.style.display = 'none';
+        logoutLink.style.display = '';
+      } else {
+        banner.classList.remove('show');
+        loginLink.style.display = '';
+        logoutLink.style.display = 'none';
+      }
+
+      if (adminLink) adminLink.style.display = isAdmin ? '' : 'none';
+    }
+
+    /* ══════════════════════════════════════════════════════
+       ROUTING
+    ══════════════════════════════════════════════════════ */
+    function showPage(page) {
+      document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+      const t = document.getElementById(`${page}Page`);
+      if (t) { t.classList.add('active'); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+      if (page === 'admin') loadAdminDashboard();
+    }
+    function scrollToFeatured() {
+      document.getElementById('featuredSection').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    /* ══════════════════════════════════════════════════════
+       LOADING & TOAST
+    ══════════════════════════════════════════════════════ */
+    function showLoading() { document.getElementById('loadingOverlay').style.display = 'flex'; }
+    function hideLoading() { document.getElementById('loadingOverlay').style.display = 'none'; }
+
+    function showToast(msg, type = 'success') {
+      const icons = { success: 'check-circle-fill', danger: 'x-circle-fill', warning: 'exclamation-triangle-fill', info: 'info-circle-fill' };
+      const id = 'toast-' + Date.now();
+      const el = document.createElement('div');
+      el.id = id;
+      el.className = `toast-item ${type}`;
+      el.innerHTML = `
+    <i class="bi bi-${icons[type] || 'info-circle-fill'} toast-icon ${type}"></i>
+    <span class="flex-grow-1">${escHtml(msg)}</span>
+    <button style="background:none;border:none;color:rgba(255,255,255,.5);cursor:pointer;font-size:1.2rem;line-height:1;" onclick="this.parentElement.remove()">×</button>`;
+      document.getElementById('toastBox').appendChild(el);
+      setTimeout(() => { const e = document.getElementById(id); if (e) e.remove(); }, 4500);
+    }
+
+    /* ══════════════════════════════════════════════════════
+       UTILITY
+    ══════════════════════════════════════════════════════ */
+    function escHtml(s) {
+      if (s == null) return '';
+      return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+    function stripHtml(html) {
+      if (!html) return '';
+      return String(html).replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').trim();
+    }
+    function formatRupiah(n) { return 'Rp\u00A0' + Number(n).toLocaleString('id-ID'); }
+    function renderStars(r) {
+      let h = '<span class="stars">';
+      for (let i = 1; i <= 5; i++)
+        h += i <= r
+          ? '<i class="bi bi-star-fill" style="color:var(--accent);"></i>'
+          : '<i class="bi bi-star" style="color:var(--border);"></i>';
+      return h + '</span>';
+    }
+    function avgRating(reviews) {
+      if (!reviews || !reviews.length) return 0;
+      const s = reviews.reduce((a, r) => a + Number(r.Rating || 0), 0);
+      return Math.round((s / reviews.length) * 10) / 10;
+    }
+    function formatDate(ts) {
+      if (!ts) return '—';
+      try { return new Date(ts).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }); }
+      catch { return ts; }
+    }
+    function initials(name) {
+      if (!name) return '?';
+      return name.trim().split(/\s+/).slice(0, 2).map(w => w[0].toUpperCase()).join('');
+    }
+
+    /* ══════════════════════════════════════════════════════
+       PRODUCT CARD
+    ══════════════════════════════════════════════════════ */
+    function buildCard(p, reviews) {
+      const rev = (reviews || []).filter(r => r.ProductID === p.ProductID);
+      const rate = avgRating(rev);
+
+      const imgHtml = p.ImageURL
+        ? `<img src="${escHtml(p.ImageURL)}" alt="${escHtml(p.ProductName)}" loading="lazy" />`
+        : `<div class="prod-thumb-placeholder"><i class="bi bi-image"></i></div>`;
+
+      const priceHtml = p.minPrice && p.maxPrice
+        ? p.minPrice === p.maxPrice
+          ? `<span class="prod-price">${formatRupiah(p.minPrice)}</span>`
+          : `<span class="prod-price">${formatRupiah(p.minPrice)} - ${formatRupiah(p.maxPrice)}</span>`
+        : `<span class="prod-price">${formatRupiah(p.Price || 0)}</span>`;
+
+      return `
+    <div class="col-sm-6 col-lg-4">
+      <div class="prod-card" onclick="openProductDetail('${escHtml(p.ProductID)}')">
+        <div class="prod-thumb">
+          ${imgHtml}
+          ${p.CategoryName ? `<span class="prod-cat-tag">${escHtml(p.CategoryName)}</span>` : ''}
+        </div>
+        <div class="prod-body">
+          <div class="prod-name">${escHtml(p.ProductName)}</div>
+          <div class="d-flex align-items-center gap-1 mb-2">
+            ${renderStars(Math.round(rate))}
+            <span style="font-size:.73rem;color:var(--text-3);">
+              ${rate > 0 ? rate + ' (' + rev.length + ')' : 'Belum ada ulasan'}
+            </span>
+          </div>
+          <div class="prod-desc">${escHtml(stripHtml(p.Description).slice(0, 90))}${stripHtml(p.Description).length > 90 ? '…' : ''}</div>
+          <div class="prod-footer">
+            ${priceHtml}
+          </div>
+        </div>
+      </div>
+    </div>`;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       FEATURED PRODUCTS
+    ══════════════════════════════════════════════════════ */
+    function loadFeaturedProducts() {
+      api('getProducts').then(pRes => {
+        if (!pRes.success) { showToast(pRes.message, 'danger'); return; }
+        state.products = pRes.data;
+        document.getElementById('heroTotalProd').textContent = pRes.data.length;
+
+        api('getCategories').then(cRes => {
+          if (cRes.success) {
+            state.categories = cRes.data;
+            document.getElementById('heroTotalCat').textContent = cRes.data.length;
+          }
+          const catMap = {};
+          state.categories.forEach(c => { catMap[c.CategoryID] = c.CategoryName; });
+          state.products.forEach(p => { p.CategoryName = catMap[p.CategoryID] || ''; });
+
+          const featured = state.products.slice(0, 5);
+          const grid = document.getElementById('featuredGrid');
+
+          if (!featured.length) {
+            grid.innerHTML = `<div class="col-12 text-center py-5 text-muted">
+             <i class="bi bi-bag-x" style="font-size:3rem;opacity:.3;"></i>
+             <p class="mt-2 mb-0">Belum ada produk.</p>
+           </div>`;
+            return;
+          }
+
+          // Ambil varian & reviews untuk setiap produk featured
+          const variantPromises = featured.map(p =>
+            api('getVariantsByProduct', { productId: p.ProductID })
+          );
+          const reviewPromises = featured.map(p =>
+            api('getReviewsByProduct', { productId: p.ProductID })
+          );
+          Promise.all([...variantPromises, ...reviewPromises]).then(allResults => {
+            const varResults = allResults.slice(0, featured.length);
+            const revResults = allResults.slice(featured.length);
+            featured.forEach((p, idx) => {
+              const variants = varResults[idx].success ? varResults[idx].data : [];
+              if (variants.length) {
+                const prices = variants.map(v => Number(v.Price) || 0);
+                p.minPrice = Math.min(...prices);
+                p.maxPrice = Math.max(...prices);
+              } else {
+                p.minPrice = p.Price || 0;
+                p.maxPrice = p.Price || 0;
+              }
+            });
+            const allReviews = revResults.reduce((acc, res) => {
+              return acc.concat(res.success ? res.data : []);
+            }, []);
+            grid.innerHTML = featured.map(p => buildCard(p, allReviews)).join('');
+          });
+        }).catch(() => {
+          const grid = document.getElementById('featuredGrid');
+          grid.innerHTML = state.products.slice(0, 5).map(p => buildCard(p, state.allReviews || [])).join('');
+        });
+      }).catch(e => {
+        showToast('Gagal memuat produk: ' + e.message, 'danger');
+        document.getElementById('featuredGrid').innerHTML =
+          '<div class="col-12 text-center text-muted py-4">Gagal memuat produk.</div>';
+      });
+    }
+
+    /* ══════════════════════════════════════════════════════
+       ALL PRODUCTS
+    ══════════════════════════════════════════════════════ */
+    function loadAllProducts() {
+      showLoading();
+      showPage('home');
+      api('getProducts').then(pRes => {
+        if (!pRes.success) { hideLoading(); showToast(pRes.message, 'danger'); return; }
+        state.products = pRes.data;
+
+        api('getCategories').then(cRes => {
+          if (cRes.success) state.categories = cRes.data;
+          const catMap = {};
+          state.categories.forEach(c => { catMap[c.CategoryID] = c.CategoryName; });
+          state.products.forEach(p => { p.CategoryName = catMap[p.CategoryID] || ''; });
+
+          // Ambil varian & reviews untuk setiap produk
+          const variantPromises = state.products.map(p =>
+            api('getVariantsByProduct', { productId: p.ProductID })
+          );
+          const reviewPromises = state.products.map(p =>
+            api('getReviewsByProduct', { productId: p.ProductID })
+          );
+          Promise.all([...variantPromises, ...reviewPromises]).then(allResults => {
+            const varResults = allResults.slice(0, state.products.length);
+            const revResults = allResults.slice(state.products.length);
+            state.products.forEach((p, idx) => {
+              const variants = varResults[idx].success ? varResults[idx].data : [];
+              if (variants.length) {
+                const prices = variants.map(v => Number(v.Price) || 0);
+                p.minPrice = Math.min(...prices);
+                p.maxPrice = Math.max(...prices);
+              } else {
+                p.minPrice = p.Price || 0;
+                p.maxPrice = p.Price || 0;
+              }
+            });
+            state.allReviews = revResults.reduce((acc, res) => {
+              return acc.concat(res.success ? res.data : []);
+            }, []);
+
+            renderAllProducts(state.products, state.allReviews);
+            renderCatFilters(state.categories);
+
+            const sec = document.getElementById('allProductsSection');
+            sec.style.display = '';
+            setTimeout(() => sec.scrollIntoView({ behavior: 'smooth' }), 80);
+            hideLoading();
+          }).catch(e => {
+            hideLoading();
+            showToast('Gagal memuat harga produk: ' + e.message, 'warning');
+            // Fallback: render tanpa harga varian
+            renderAllProducts(state.products, state.allReviews || []);
+            renderCatFilters(state.categories);
+            const sec = document.getElementById('allProductsSection');
+            sec.style.display = '';
+            setTimeout(() => sec.scrollIntoView({ behavior: 'smooth' }), 80);
+          });
+        }).catch(e => { hideLoading(); showToast(e.message, 'danger'); });
+      }).catch(e => { hideLoading(); showToast(e.message, 'danger'); });
+    }
+
+    function renderAllProducts(list, reviews) {
+      const grid = document.getElementById('allProductsGrid');
+      const revData = reviews || state.allReviews || [];
+      if (!list.length) {
+        grid.innerHTML = `<div class="col-12 text-center py-5 text-muted">
+         <i class="bi bi-search" style="font-size:3rem;opacity:.3;"></i>
+         <p class="mt-2 mb-0">Tidak ada produk ditemukan.</p>
+       </div>`;
+        return;
+      }
+      grid.innerHTML = list.map(p => buildCard(p, revData)).join('');
+    }
+
+    function renderCatFilters(cats) {
+      const c = document.getElementById('catFilters');
+      c.innerHTML = `<button class="fp active" id="fp-all" onclick="filterByCat('')">Semua</button>` +
+        cats.map(cat =>
+          `<button class="fp" id="fp-${escHtml(cat.CategoryID)}" onclick="filterByCat('${escHtml(cat.CategoryID)}')">${escHtml(cat.CategoryName)}</button>`
+        ).join('');
+    }
+
+    function filterByCat(catId) {
+      state.activeCat = catId;
+      document.querySelectorAll('.fp').forEach(b => b.classList.remove('active'));
+      const a = document.getElementById(catId ? `fp-${catId}` : 'fp-all');
+      if (a) a.classList.add('active');
+      applyFilters();
+    }
+
+    function handleSearch(q) {
+      state.searchQuery = q.toLowerCase().trim();
+      applyFilters();
+    }
+
+    function applyFilters() {
+      let list = state.products;
+      if (state.activeCat) list = list.filter(p => p.CategoryID === state.activeCat);
+      if (state.searchQuery) list = list.filter(p =>
+        p.ProductName.toLowerCase().includes(state.searchQuery) ||
+        (p.Description || '').toLowerCase().includes(state.searchQuery)
+      );
+      renderAllProducts(list, state.allReviews || []);
+    }
+
+    /* ══════════════════════════════════════════════════════
+       PRODUCT DETAIL — navigate to dedicated page (same as semua_produk.html)
+    ══════════════════════════════════════════════════════ */
+    function openProductDetail(productId) {
+      window.location.href = 'detail_produk.html?id=' + encodeURIComponent(productId);
+    }
+
+    function populateDetail(p) {
+      const catMap = {};
+      state.categories.forEach(c => { catMap[c.CategoryID] = c.CategoryName; });
+
+      document.getElementById('breadcrumbProduct').textContent = p.ProductName;
+      document.getElementById('detailName').textContent = p.ProductName;
+      document.getElementById('detailCategory').textContent = catMap[p.CategoryID] || 'Produk';
+      document.getElementById('detailPrice').textContent = formatRupiah(p.Price);
+      document.getElementById('detailDescription').innerHTML = p.Description || '—';
+
+      const img = document.getElementById('detailImage');
+      img.src = p.ImageURL || 'https://placehold.co/600x450/EDE9FE/4F46E5?text=No+Image';
+      img.alt = p.ProductName;
+
+      const sb = document.getElementById('detailStockBadge');
+      if (Number(p.Stock) > 0) {
+        sb.className = 'detail-stock ok';
+        sb.innerHTML = `<i class="bi bi-check-circle-fill"></i> Tersedia (${p.Stock})`;
+      } else {
+        sb.className = 'detail-stock out';
+        sb.innerHTML = `<i class="bi bi-x-circle-fill"></i> Stok Habis`;
+      }
+
+      document.getElementById('waBtn').onclick = () => {
+        api('getWhatsAppLink', { productName: p.ProductName }).then(r => {
+          if (r.success) window.open(r.data.url, '_blank');
+          else showToast(r.message, 'warning');
+        }).catch(e => showToast(e.message, 'danger'));
+      };
+
+      document.getElementById('reviewFormContainer').style.display = 'none';
+      document.getElementById('checkReviewBtn').style.display = '';
+      document.getElementById('reviewRating').value = '0';
+      setRating(0);
+      document.getElementById('buyerName').value = '';
+    }
+
+    /* ══════════════════════════════════════════════════════
+       REVIEWS
+    ══════════════════════════════════════════════════════ */
+    function renderReviews(reviews) {
+      const c = document.getElementById('reviewsList');
+      if (!reviews.length) {
+        c.innerHTML = `<div class="col-12 text-center py-4 text-muted">
+      <i class="bi bi-chat-square-text" style="font-size:2.5rem;opacity:.3;"></i>
+      <p class="mt-2 mb-0 small">Belum ada ulasan untuk produk ini.</p>
+    </div>`;
+        return;
+      }
+      c.innerHTML = reviews.map(r => `
+    <div class="col-md-6">
+      <div class="rev-card">
+        <div class="d-flex align-items-start gap-3 mb-2">
+          <div class="rev-avatar">${escHtml(initials(r.CustomerName))}</div>
+          <div class="flex-grow-1">
+            <div class="d-flex align-items-center justify-content-between">
+              <span class="fw-semibold" style="font-size:.9rem;">${escHtml(r.CustomerName)}</span>
+              <small class="text-muted">${formatDate(r.Timestamp)}</small>
+            </div>
+            ${renderStars(Number(r.Rating))}
+          </div>
+        </div>
+        <p class="mb-0 text-secondary" style="font-size:.87rem;line-height:1.65;">${escHtml(r.Comment)}</p>
+      </div>
+    </div>`).join('');
+    }
+
+    function setRating(val) {
+      document.getElementById('reviewRating').value = val;
+      document.querySelectorAll('#starRatingPicker i').forEach((s, i) => {
+        s.className = i < val ? 'bi bi-star-fill lit' : 'bi bi-star';
+        s.style.color = i < val ? 'var(--accent)' : 'var(--border)';
+      });
+    }
+
+    function checkReviewAccess() {
+      const trxId = (document.getElementById('reviewTransactionId').value || '').trim();
+      if (!trxId) {
+        document.getElementById('reviewFormContainer').style.display = '';
+        document.getElementById('checkReviewBtn').style.display = 'none';
+        return;
+      }
+      showLoading();
+      api('checkExistingReview', { transactionId: trxId }).then(res => {
+        hideLoading();
+        if (!res.success) { showToast(res.message, 'danger'); return; }
+        if (res.data.exists) {
+          document.getElementById('reviewFormContainer').style.display = 'none';
+          document.getElementById('checkReviewBtn').style.display = 'none';
+          showToast('Anda sudah mengirim ulasan untuk transaksi ini.', 'info');
+          const r = res.data.review;
+          document.getElementById('reviewsList').insertAdjacentHTML('afterbegin', `
+        <div class="col-12">
+          <div class="alert alert-info border-0 d-flex gap-3 align-items-start" style="border-radius:12px;">
+            <i class="bi bi-info-circle-fill mt-1"></i>
+            <div>
+              <strong class="d-block mb-1">Ulasan Anda:</strong>
+              ${renderStars(Number(r.Rating))}
+              <p class="mb-0 mt-1 small">${escHtml(r.Comment)}</p>
+            </div>
+          </div>
+        </div>`);
+        } else {
+          document.getElementById('reviewFormContainer').style.display = '';
+          document.getElementById('checkReviewBtn').style.display = 'none';
+        }
+      }).catch(e => { hideLoading(); showToast(e.message, 'danger'); });
+    }
+
+    function submitReview() {
+      const payload = {
+        TransactionID: (document.getElementById('reviewTransactionId').value || '').trim(),
+        ProductID: state.currentProduct ? state.currentProduct.ProductID : '',
+        CustomerName: (document.getElementById('reviewCustomerName').value || '').trim(),
+        Rating: Number(document.getElementById('reviewRating').value),
+        Comment: (document.getElementById('reviewComment').value || '').trim(),
+      };
+      if (!payload.TransactionID) return showToast('Masukkan ID Transaksi.', 'warning');
+      if (!payload.CustomerName) return showToast('Masukkan nama Anda.', 'warning');
+      if (!payload.Rating) return showToast('Pilih rating (1–5 bintang).', 'warning');
+
+      showLoading();
+      api('addReview', payload).then(res => {
+        hideLoading();
+        if (!res.success) { showToast(res.message, 'danger'); return; }
+        showToast('Ulasan berhasil dikirim! Terima kasih.', 'success');
+        document.getElementById('reviewFormContainer').style.display = 'none';
+        document.getElementById('checkReviewBtn').style.display = 'none';
+        if (state.currentProduct) {
+          api('getReviewsByProduct', { productId: state.currentProduct.ProductID })
+            .then(rRes => { if (rRes.success) renderReviews(rRes.data); })
+            .catch(() => { });
+        }
+      }).catch(e => { hideLoading(); showToast(e.message, 'danger'); });
+    }
+
+    /* ══════════════════════════════════════════════════════
+       ORDER
+    ══════════════════════════════════════════════════════ */
+    function placeOrder() {
+      if (!state.currentProduct) return;
+      const buyerName = (document.getElementById('buyerName').value || '').trim();
+      if (!buyerName) return showToast('Masukkan nama pembeli.', 'warning');
+      if (Number(state.currentProduct.Stock) < 1) return showToast('Stok produk habis.', 'danger');
+
+      showLoading();
+      api('processTransaction', {
+        ProductID: state.currentProduct.ProductID,
+        CustomerName: buyerName,
+        TotalAmount: state.currentProduct.Price,
+      }).then(res => {
+        hideLoading();
+        if (!res.success) { showToast(res.message, 'danger'); return; }
+        showToast('🎉 Pesanan berhasil! ID: ' + res.data.TransactionID, 'success');
+        state.currentProduct.Stock = Number(state.currentProduct.Stock) - 1;
+        const sb = document.getElementById('detailStockBadge');
+        if (state.currentProduct.Stock > 0) {
+          sb.className = 'detail-stock ok';
+          sb.innerHTML = `<i class="bi bi-check-circle-fill"></i> Tersedia (${state.currentProduct.Stock})`;
+        } else {
+          sb.className = 'detail-stock out';
+          sb.innerHTML = `<i class="bi bi-x-circle-fill"></i> Stok Habis`;
+        }
+        document.getElementById('reviewTransactionId').value = res.data.TransactionID;
+        document.getElementById('reviewCustomerName').value = buyerName;
+      }).catch(e => { hideLoading(); showToast(e.message, 'danger'); });
+    }
+
+    /* ══════════════════════════════════════════════════════
+       ADMIN
+    ══════════════════════════════════════════════════════ */
+    function adminTab(tab) {
+      document.querySelectorAll('.admin-tab-content').forEach(el => el.style.display = 'none');
+      document.querySelectorAll('.adnav').forEach(el => el.classList.remove('active'));
+      const cap = tab.charAt(0).toUpperCase() + tab.slice(1);
+      const con = document.getElementById(`admin${cap}`);
+      const nav = document.getElementById(`sidebar${cap}`);
+      if (con) con.style.display = '';
+      if (nav) nav.classList.add('active');
+      if (tab === 'dashboard') loadAdminDashboard();
+      if (tab === 'products') loadAdminProducts();
+      if (tab === 'categories') loadAdminCategories();
+      if (tab === 'transactions') loadAdminTransactions();
+      if (tab === 'config') loadAdminConfig();
+    }
+
+    function loadAdminDashboard() {
+      api('getDashboardStats').then(res => {
+        if (!res.success) { showToast(res.message, 'danger'); return; }
+        const d = res.data;
+        const fmt = n => Number(n).toLocaleString('id-ID');
+        const stats = [
+          { label: 'Total Produk', value: d.totalProducts, icon: 'box-seam', color: 'primary', bg: '#EDE9FE' },
+          { label: 'Kategori', value: d.totalCategories, icon: 'tags', color: 'info', bg: '#E0F2FE' },
+          { label: 'Transaksi', value: d.totalTransactions, icon: 'receipt-cutoff', color: 'success', bg: '#DCFCE7' },
+          { label: 'Pending', value: d.pendingOrders, icon: 'hourglass-split', color: 'warning', bg: '#FEF9C3' },
+          { label: 'Ulasan', value: d.totalReviews, icon: 'star-fill', color: 'secondary', bg: '#F1F5F9' },
+          { label: 'Total Pendapatan', value: 'Rp ' + fmt(d.totalRevenue), icon: 'cash-coin', color: 'danger', bg: '#FEE2E2' },
+        ];
+        document.getElementById('statsCards').innerHTML = stats.map(s => `
+      <div class="col-sm-6 col-xl-4">
+        <div class="stat-card">
+          <div class="stat-icon-bg" style="background:${s.bg};">
+            <i class="bi bi-${s.icon} text-${s.color}"></i>
+          </div>
+          <p class="text-secondary small mb-1 fw-500">${s.label}</p>
+          <p class="mb-0 fw-800 text-${s.color}" style="font-size:1.85rem;">${escHtml(String(s.value))}</p>
+        </div>
+      </div>`).join('');
+      }).catch(e => showToast(e.message, 'danger'));
+    }
+
+    function loadAdminProducts() {
+      api('getProducts').then(pRes => {
+        if (!pRes.success) { showToast(pRes.message, 'danger'); return; }
+        state.products = pRes.data;
+        api('getCategories').then(cRes => {
+          if (cRes.success) state.categories = cRes.data;
+          const catMap = {};
+          state.categories.forEach(c => { catMap[c.CategoryID] = c.CategoryName; });
+          const tbody = document.getElementById('adminProductsTableBody');
+          if (!state.products.length) {
+            tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted py-4 ps-4">Belum ada produk.</td></tr>';
+            return;
+          }
+          tbody.innerHTML = state.products.map(p => `
+        <tr>
+          <td class="ps-4 py-3">
+            <div class="d-flex align-items-center gap-2">
+              ${p.ImageURL
+              ? `<img src="${escHtml(p.ImageURL)}" style="width:40px;height:40px;border-radius:8px;object-fit:cover;" />`
+              : `<div style="width:40px;height:40px;border-radius:8px;background:var(--surface-3);display:flex;align-items:center;justify-content:center;"><i class="bi bi-image text-secondary"></i></div>`}
+              <span class="fw-semibold">${escHtml(p.ProductName)}</span>
+            </div>
+          </td>
+          <td><span class="badge" style="background:var(--surface-3);color:var(--text-2);font-weight:500;">${escHtml(catMap[p.CategoryID] || '—')}</span></td>
+          <td class="fw-semibold">${formatRupiah(p.Price)}</td>
+          <td>${Number(p.Stock) > 0 ? `<span class="fw-bold text-success">${p.Stock}</span>` : `<span class="fw-bold text-danger">0</span>`}</td>
+          <td class="pe-4">
+            <button class="btn btn-sm btn-outline-primary me-1" onclick="openProductModal('${escHtml(p.ProductID)}')" style="border-radius:8px;"><i class="bi bi-pencil"></i></button>
+            <button class="btn btn-sm btn-outline-danger" onclick="confirmDelete('product','${escHtml(p.ProductID)}','${escHtml(p.ProductName)}')" style="border-radius:8px;"><i class="bi bi-trash"></i></button>
+          </td>
+        </tr>`).join('');
+        }).catch(() => { });
+      }).catch(e => showToast(e.message, 'danger'));
+    }
+
+    function openProductModal(productId) {
+      const modal = new bootstrap.Modal(document.getElementById('productModal'));
+      api('getCategories').then(cRes => {
+        if (cRes.success) {
+          state.categories = cRes.data;
+          document.getElementById('pCategory').innerHTML =
+            cRes.data.map(c => `< option value = "${escHtml(c.CategoryID)}" > ${escHtml(c.CategoryName)}</option > `).join('');
+        }
+      }).catch(() => { });
+
+      if (productId) {
+        document.getElementById('productModalTitle').textContent = 'Edit Produk';
+        const p = state.products.find(x => x.ProductID === productId);
+        if (p) {
+          document.getElementById('editProductId').value = p.ProductID;
+          document.getElementById('pName').value = p.ProductName;
+          document.getElementById('pPrice').value = p.Price;
+          document.getElementById('pStock').value = p.Stock;
+          document.getElementById('pImageUrl').value = p.ImageURL || '';
+          document.getElementById('pDescription').value = p.Description || '';
+          setTimeout(() => { document.getElementById('pCategory').value = p.CategoryID; }, 320);
+        }
+      } else {
+        document.getElementById('productModalTitle').textContent = 'Tambah Produk';
+        ['editProductId', 'pName', 'pPrice', 'pStock', 'pImageUrl', 'pDescription'].forEach(id =>
+          document.getElementById(id).value = '');
+      }
+      modal.show();
+    }
+
+    function saveProduct() {
+      const editId = document.getElementById('editProductId').value;
+      const payload = {
+        CategoryID: document.getElementById('pCategory').value,
+        ProductName: document.getElementById('pName').value.trim(),
+        ImageURL: document.getElementById('pImageUrl').value.trim(),
+        Price: document.getElementById('pPrice').value,
+        Description: document.getElementById('pDescription').value.trim(),
+        Stock: document.getElementById('pStock').value,
+      };
+      if (!payload.ProductName) return showToast('Nama produk wajib diisi.', 'warning');
+      if (!payload.CategoryID) return showToast('Pilih kategori.', 'warning');
+
+      showLoading();
+      const action = editId ? 'updateProduct' : 'addProduct';
+      const p = editId ? { productId: editId, payload } : { payload };
+      api(action, p).then(res => {
+        hideLoading();
+        bootstrap.Modal.getInstance(document.getElementById('productModal')).hide();
+        if (!res.success) { showToast(res.message, 'danger'); return; }
+        showToast('Produk berhasil disimpan!', 'success');
+        loadAdminProducts();
+      }).catch(e => { hideLoading(); showToast(e.message, 'danger'); });
+    }
+
+    function loadAdminCategories() {
+      api('getCategories').then(res => {
+        if (!res.success) { showToast(res.message, 'danger'); return; }
+        state.categories = res.data;
+        const tbody = document.getElementById('adminCategoriesTableBody');
+        if (!state.categories.length) {
+          tbody.innerHTML = '<tr><td colspan="3" class="text-center text-muted py-4 ps-4">Belum ada kategori.</td></tr>';
+          return;
+        }
+        tbody.innerHTML = state.categories.map(c => `
+      < tr >
+        <td class="ps-4 text-muted py-3" style="font-size:.78rem;">${escHtml(c.CategoryID)}</td>
+        <td class="fw-semibold">${escHtml(c.CategoryName)}</td>
+        <td class="pe-4">
+          <button class="btn btn-sm btn-outline-primary me-1" onclick="openCategoryModal('${escHtml(c.CategoryID)}')" style="border-radius:8px;"><i class="bi bi-pencil"></i></button>
+          <button class="btn btn-sm btn-outline-danger" onclick="confirmDelete('category','${escHtml(c.CategoryID)}','${escHtml(c.CategoryName)}')" style="border-radius:8px;"><i class="bi bi-trash"></i></button>
+        </td>
+      </tr > `).join('');
+      }).catch(e => showToast(e.message, 'danger'));
+    }
+
+    function openCategoryModal(catId) {
+      const modal = new bootstrap.Modal(document.getElementById('categoryModal'));
+      if (catId) {
+        document.getElementById('categoryModalTitle').textContent = 'Edit Kategori';
+        const c = state.categories.find(x => x.CategoryID === catId);
+        document.getElementById('editCategoryId').value = catId;
+        document.getElementById('catName').value = c ? c.CategoryName : '';
+      } else {
+        document.getElementById('categoryModalTitle').textContent = 'Tambah Kategori';
+        document.getElementById('editCategoryId').value = '';
+        document.getElementById('catName').value = '';
+      }
+      modal.show();
+    }
+
+    function saveCategory() {
+      const editId = document.getElementById('editCategoryId').value;
+      const catName = document.getElementById('catName').value.trim();
+      if (!catName) return showToast('Nama kategori wajib diisi.', 'warning');
+
+      showLoading();
+      const action = editId ? 'updateCategory' : 'addCategory';
+      const p = editId ? { categoryId: editId, payload: { CategoryName: catName } } : { payload: { CategoryName: catName } };
+      api(action, p).then(res => {
+        hideLoading();
+        bootstrap.Modal.getInstance(document.getElementById('categoryModal')).hide();
+        if (!res.success) { showToast(res.message, 'danger'); return; }
+        showToast('Kategori berhasil disimpan!', 'success');
+        loadAdminCategories();
+      }).catch(e => { hideLoading(); showToast(e.message, 'danger'); });
+    }
+
+    function loadAdminTransactions() {
+      api('getTransactions').then(res => {
+        if (!res.success) { showToast(res.message, 'danger'); return; }
+        const tbody = document.getElementById('adminTransactionsTableBody');
+        if (!res.data.length) {
+          tbody.innerHTML = '<tr><td colspan="7" class="text-center text-muted py-4 ps-4">Belum ada transaksi.</td></tr>';
+          return;
+        }
+        const sc = { Pending: 'warning', Confirmed: 'info', Shipped: 'primary', Completed: 'success', Cancelled: 'danger' };
+        tbody.innerHTML = res.data.map(t => `
+      < tr >
+        <td class="ps-4 text-muted py-3" style="font-size:.72rem;">${escHtml(t.TransactionID)}</td>
+        <td style="font-size:.83rem;">${escHtml(t.ProductID)}</td>
+        <td class="fw-semibold">${escHtml(t.CustomerName)}</td>
+        <td class="fw-semibold">${formatRupiah(t.TotalAmount)}</td>
+        <td><span class="badge bg-${sc[t.Status] || 'secondary'} px-2" style="border-radius:6px;">${escHtml(t.Status)}</span></td>
+        <td style="font-size:.8rem;">${formatDate(t.TransactionDate)}</td>
+        <td class="pe-4">
+          <select class="form-select form-select-sm" style="width:145px;border-radius:8px;"
+            onchange="updateTrxStatus('${escHtml(t.TransactionID)}', this.value)">
+            ${['Pending', 'Confirmed', 'Shipped', 'Completed', 'Cancelled'].map(s =>
+          `<option value="${s}" ${s === t.Status ? 'selected' : ''}>${s}</option>`
+        ).join('')}
+          </select>
+        </td>
+      </tr > `).join('');
+      }).catch(e => showToast(e.message, 'danger'));
+    }
+
+    function updateTrxStatus(trxId, status) {
+      showLoading();
+      api('updateTransactionStatus', { transactionId: trxId, status }).then(res => {
+        hideLoading();
+        if (!res.success) showToast(res.message, 'danger');
+        else showToast('Status diperbarui: ' + status, 'success');
+      }).catch(e => { hideLoading(); showToast(e.message, 'danger'); });
+    }
+
+    function loadAdminConfig() {
+      api('getConfig').then(res => {
+        if (!res.success) { showToast(res.message, 'danger'); return; }
+        document.getElementById('cfgAdminEmails').value = res.data.ADMIN_EMAILS || '';
+        document.getElementById('cfgWaPhone').value = res.data.WA_PHONE || '';
+      }).catch(e => showToast(e.message, 'danger'));
+    }
+
+    function saveConfigData() {
+      showLoading();
+      api('saveConfig', {
+        ADMIN_EMAILS: document.getElementById('cfgAdminEmails').value.trim(),
+        WA_PHONE: document.getElementById('cfgWaPhone').value.trim(),
+      }).then(res => {
+        hideLoading();
+        if (!res.success) showToast(res.message, 'danger');
+        else showToast('Konfigurasi berhasil disimpan!', 'success');
+      }).catch(e => { hideLoading(); showToast(e.message, 'danger'); });
+    }
+
+    function confirmDelete(type, id, name) {
+      document.getElementById('confirmModalBody').textContent = `Hapus "${name}" ? Tindakan ini tidak dapat dibatalkan.`;
+      const btn = document.getElementById('confirmDeleteBtn');
+      btn.onclick = () => {
+        bootstrap.Modal.getInstance(document.getElementById('confirmModal')).hide();
+        showLoading();
+        const action = type === 'product' ? 'deleteProduct' : 'deleteCategory';
+        const p = type === 'product' ? { productId: id } : { categoryId: id };
+        api(action, p).then(res => {
+          hideLoading();
+          if (!res.success) showToast(res.message, 'danger');
+          else {
+            showToast('Data berhasil dihapus.', 'success');
+            if (type === 'product') loadAdminProducts();
+            if (type === 'category') loadAdminCategories();
+          }
+        }).catch(e => { hideLoading(); showToast(e.message, 'danger'); });
+      };
+      new bootstrap.Modal(document.getElementById('confirmModal')).show();
+    }
+  </script>
+</body>
+
+</html>
