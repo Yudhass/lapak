@@ -1506,7 +1506,7 @@
             const editId = document.getElementById('editPenjualanId').value;
             const customerName = document.getElementById('pjCustomerName').value.trim();
             const customerWa = document.getElementById('pjCustomerWa').value.trim();
-            const customerEmail = document.getElementById('pjCustomerEmail').value.trim();
+            const customerEmail = document.getElementById('pjCustomerEmail').value;
             const hasil = ($('#pjHasil').summernote('code') || '').trim();
             const bukti = document.getElementById('pjBukti').value.trim();
             const status = document.getElementById('pjStatus').value;
@@ -1601,7 +1601,7 @@
                 }
 
                 const baseUrl = appRes.data.BASEURL;
-                const transactionLink = `${baseUrl}transaksi.html?code=${uniqueCode}`;
+                const transactionLink = `${baseUrl}transaksi.html#${uniqueCode}`;
 
                 // Format pesan sesuai template
                 const message = `*Informasi dari Lapak Yudhas*

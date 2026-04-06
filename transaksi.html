@@ -1531,10 +1531,10 @@
     }
 
     function getUrlParam(param) {
-      const urlParams = new URLSearchParams(window.location.search);
-      return urlParams.get(param);
+      const hash = window.location.hash.replace('#', '').trim();
+      if (hash) return hash;
+      return new URLSearchParams(window.location.search).get(param);
     }
-
     /* ══════════════════════════════════════════════════════
        BOOT
     ══════════════════════════════════════════════════════ */
