@@ -1579,7 +1579,12 @@
             const btn = document.getElementById('confirmDeleteBtn');
             btn.onclick = () => {
                 bootstrap.Modal.getInstance(document.getElementById('confirmModal')).hide();
-                showToast('Hapus penjualan belum tersedia via API.', 'warning');
+                showLoading();
+                api('deletePenjualan', { penjualanId: id }).then(res => {
+                    hideLoading();
+                    if (!res.success) showToast(res.message, 'danger');
+                    else { showToast('Penjualan dihapus.', 'success'); loadPenjualan(); }
+                }).catch(e => { hideLoading(); showToast(e.message, 'danger'); });
             };
             new bootstrap.Modal(document.getElementById('confirmModal')).show();
         }
