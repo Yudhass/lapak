@@ -5,6 +5,22 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Panel — Lapak Yudhas</title>
+    <meta name="description"
+        content="Panel admin Lapak Yudhas untuk mengelola produk, transaksi, dan pengguna marketplace dengan mudah dan aman.">
+    <meta name="keywords" content="admin, panel, lapak, marketplace, kelola produk, transaksi, pengguna">
+    <link rel="canonical" href="https://lapak.yudha.top/admin.html" />
+    <meta property="og:title" content="Admin Panel — Lapak Yudhas" />
+    <meta property="og:description"
+        content="Panel admin Lapak Yudhas untuk mengelola produk, transaksi, dan pengguna marketplace dengan mudah dan aman." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://lapak.yudha.top/admin.html" />
+    <meta property="og:image" content="https://lapak.yudha.top/img/lapak.png" />
+    <meta property="og:locale" content="id_ID" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Admin Panel — Lapak Yudhas" />
+    <meta name="twitter:description"
+        content="Panel admin Lapak Yudhas untuk mengelola produk, transaksi, dan pengguna marketplace dengan mudah dan aman." />
+    <meta name="twitter:image" content="https://lapak.yudha.top/img/lapak.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
@@ -1590,21 +1606,21 @@
         }
 
         function tanggalJamIndonesia() {
-          const now = new Date();
-        
-          const tanggal = now.toLocaleDateString('id-ID', {
-            day: '2-digit',
-            month: 'long',
-            year: 'numeric'
-          });
-        
-          const jam = now.toLocaleTimeString('id-ID', {
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: false
-          });
-        
-          return `Tanggal ${tanggal} pukul ${jam}`;
+            const now = new Date();
+
+            const tanggal = now.toLocaleDateString('id-ID', {
+                day: '2-digit',
+                month: 'long',
+                year: 'numeric'
+            });
+
+            const jam = now.toLocaleTimeString('id-ID', {
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false
+            });
+
+            return `Tanggal ${tanggal} pukul ${jam}`;
         }
 
         function sendPenjualanWhatsApp(penjualanId, customerWhatsapp, uniqueCode) {
@@ -1832,14 +1848,14 @@ Terima kasih atas kepercayaan Anda 🙏`;
         });
     </script>
     <!-- Google tag (gtag.js) -->
-      <script async src="https://www.googletagmanager.com/gtag/js?id=G-8W0P7SD8S3"></script>
-      <script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8W0P7SD8S3"></script>
+    <script>
         window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
+        function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
-      
+
         gtag('config', 'G-8W0P7SD8S3');
-      </script>
+    </script>
 </body>
 
 </html>
