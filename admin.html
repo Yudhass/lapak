@@ -1589,6 +1589,24 @@
             new bootstrap.Modal(document.getElementById('confirmModal')).show();
         }
 
+        function tanggalJamIndonesia() {
+          const now = new Date();
+        
+          const tanggal = now.toLocaleDateString('id-ID', {
+            day: '2-digit',
+            month: 'long',
+            year: 'numeric'
+          });
+        
+          const jam = now.toLocaleTimeString('id-ID', {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+          });
+        
+          return `Tanggal ${tanggal} pukul ${jam}`;
+        }
+
         function sendPenjualanWhatsApp(penjualanId, customerWhatsapp, uniqueCode) {
             if (!customerWhatsapp) {
                 showToast('Nomor WhatsApp tidak tersedia untuk pelanggan ini.', 'warning');
@@ -1609,9 +1627,11 @@
                 const transactionLink = `${baseUrl}transaksi.html#${uniqueCode}`;
 
                 // Format pesan sesuai template
-                const message = `*Halo kakak👋*
+                const message = `*Informasi Pesanan – Lapak Yudhas*
+Halo Kakak👋
 
-Pesanan Anda dengan kode ${uniqueCode} telah selesai diproses oleh admin.
+Pesanan Anda dengan kode ${uniqueCode} telah selesai diproses oleh admin pada:
+${tanggalJamIndonesia()}
 
 Silakan klik tautan berikut untuk melihat detail pesanan Anda:
 ${transactionLink}
