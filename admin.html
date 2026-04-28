@@ -1609,18 +1609,16 @@
                 const transactionLink = `${baseUrl}transaksi.html#${uniqueCode}`;
 
                 // Format pesan sesuai template
-                const message = `*Informasi dari Lapak Yudhas*
+                const message = `*Halo kakak👋*
 
-Pesanan anda dengan kode ${uniqueCode}
-Sudah selesai diproses oleh admin
+Pesanan Anda dengan kode ${uniqueCode} telah selesai diproses oleh admin.
 
-Silahkan akses link berikut
+Silakan klik tautan berikut untuk melihat detail pesanan Anda:
 ${transactionLink}
 
-untuk melihat pesanan anda
-
-> Jika ada kesalahan produk atau pesanan silahkan langsung konfirmasi kepada admin
-> Mohon berikan review pada produk kami untuk memajukan layanan kami`;
+Jika terdapat kesalahan pada produk atau pesanan, mohon segera konfirmasi kepada admin agar dapat kami bantu.
+Kami juga sangat menghargai jika Anda bersedia memberikan review pada produk kami untuk meningkatkan kualitas layanan.
+Terima kasih atas kepercayaan Anda 🙏`;
 
                 // Kirim via Fonnte WhatsApp API
                 api('sendWhatsAppViaFonnte', {
