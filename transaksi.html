@@ -448,6 +448,119 @@
       margin: 0;
     }
 
+    /* Payment QR */
+    .payment-qr-section {
+      margin-bottom: 24px;
+      padding: 20px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #eef2ff 0%, #f8faff 100%);
+      border: 1px solid #dbe4ff;
+    }
+
+    .payment-qr-title {
+      margin: 0 0 14px;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-1);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .payment-qr-title i {
+      color: var(--brand);
+    }
+
+    .payment-qr-layout {
+      display: grid;
+      grid-template-columns: 132px 1fr;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .payment-qr-box {
+      width: 132px;
+      height: 132px;
+      border-radius: 10px;
+      background: #fff;
+      border: 1px solid #e8ecf8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(79, 70, 229, 0.1);
+    }
+
+    .payment-qr-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      cursor: zoom-in;
+    }
+
+    .payment-qr-info p {
+      margin: 0;
+      color: #64748b;
+      font-size: 0.9rem;
+      line-height: 1.55;
+    }
+
+    .payment-qr-amount {
+      margin-top: 8px;
+      font-size: 1.2rem;
+      color: var(--brand-dark);
+      font-weight: 800;
+      letter-spacing: 0.01em;
+    }
+
+    .payment-qr-actions {
+      margin-top: 12px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .payment-qr-btn {
+      border: none;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 0.86rem;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .payment-qr-btn.preview {
+      background: #e0e7ff;
+      color: #3730a3;
+    }
+
+    .payment-qr-btn.download {
+      background: linear-gradient(135deg, var(--brand-light) 0%, var(--brand-purple) 100%);
+      color: #fff;
+    }
+
+    .payment-qr-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 16px rgba(79, 70, 229, 0.18);
+      color: inherit;
+    }
+
+    .qr-modal-image {
+      width: min(92vw, 460px);
+      height: auto;
+      border-radius: 14px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+      display: block;
+      margin: 0 auto 16px;
+      background: #fff;
+    }
+
     /* Description */
     .description-purchase {
       margin-bottom: 24px;
@@ -1053,6 +1166,21 @@
         padding: 16px;
       }
 
+      .payment-qr-section {
+        padding: 16px;
+      }
+
+      .payment-qr-layout {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        text-align: center;
+        gap: 12px;
+      }
+
+      .payment-qr-actions {
+        justify-content: center;
+      }
+
       .download-text-display {
         padding: 16px;
       }
@@ -1134,6 +1262,11 @@
 
       .product-details {
         padding: 16px 14px;
+      }
+
+      .payment-qr-box {
+        width: 120px;
+        height: 120px;
       }
 
       .product-name-purchase {
@@ -1282,6 +1415,31 @@
                 <h3 class="price-label">Harga Pembelian</h3>
                 <h2 class="price-value-purchase" id="productPrice">Rp 0</h2>
               </div>
+
+              <!-- Payment QR -->
+              <!-- <div class="payment-qr-section" id="paymentQrSection" style="display:none;">
+                <h5 class="payment-qr-title"><i class="bi bi-qr-code-scan"></i> QR Pembayaran</h5>
+                <div class="payment-qr-layout">
+                  <div class="payment-qr-box">
+                    <img id="paymentQrImage" alt="QR Pembayaran" onclick="openQrPreview()">
+                  </div>
+                  <div class="payment-qr-info">
+                    <p>Scan QR ini untuk melakukan pembayaran sesuai nominal transaksi.</p>
+                    <div class="payment-qr-amount" id="paymentQrAmount">Rp 0</div>
+                    <div class="payment-qr-actions">
+                      <button type="button" class="payment-qr-btn preview" onclick="openQrPreview()">
+                        <i class="bi bi-zoom-in"></i>
+                        <span>Perbesar</span>
+                      </button>
+                      <a id="paymentQrDownloadBtn" class="payment-qr-btn download" href="img/qr.png"
+                        download="qris-lapak-yudhas.png">
+                        <i class="bi bi-download"></i>
+                        <span>Download QR</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div> -->
 
               <!-- Description -->
               <div class="description-purchase" id="descriptionSection" style="display:none;">
@@ -1438,6 +1596,27 @@
       <i class="bi bi-arrow-left me-2"></i>Kembali ke Beranda
     </a>
   </div>
+
+  <!-- <div class="modal fade" id="qrPreviewModal" tabindex="-1" aria-labelledby="qrPreviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content" style="border:none;border-radius:16px;overflow:hidden;">
+        <div class="modal-header" style="background:#f8faff;">
+          <h5 class="modal-title" id="qrPreviewModalLabel">QRIS Pembayaran</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" style="padding:20px;">
+          <img id="qrModalImage" class="qr-modal-image" src="img/qr.png" alt="QRIS Pembayaran">
+          <p id="qrModalAmount" style="margin:0;text-align:center;font-weight:700;color:#312E81;">Rp 0</p>
+        </div>
+        <div class="modal-footer" style="background:#f8faff;">
+          <a id="qrModalDownloadBtn" href="img/qr.png" download="qris-lapak-yudhas.png" class="btn btn-primary">
+            <i class="bi bi-download me-1"></i> Download
+          </a>
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Tutup</button>
+        </div>
+      </div>
+    </div>
+  </div> -->
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     crossorigin="anonymous"></script>
@@ -1627,6 +1806,7 @@
       // Price — VariantPrice dari backend (variant.Price di Variants sheet)
       const priceValue = Number(t.VariantPrice) || 0;
       document.getElementById('productPrice').textContent = formatRupiah(priceValue);
+      renderPaymentQr(t, priceValue);
 
       // Jika harga 0 dan varian punya nama, tampilkan pesan info
       if (priceValue === 0) {
@@ -1681,6 +1861,31 @@
 
       // Unique Code
       document.getElementById('uniqueCode').textContent = t.UniqueCode || '—';
+    }
+
+    function renderPaymentQr(transaction, amount) {
+      const section = document.getElementById('paymentQrSection');
+      const qrImage = document.getElementById('paymentQrImage');
+      const amountEl = document.getElementById('paymentQrAmount');
+      const modalAmountEl = document.getElementById('qrModalAmount');
+      if (!section || !qrImage || !amountEl) return;
+
+      if (!amount || amount <= 0) {
+        section.style.display = 'none';
+        return;
+      }
+
+      qrImage.src = 'img/qr.png';
+      amountEl.textContent = formatRupiah(amount);
+      if (modalAmountEl) modalAmountEl.textContent = formatRupiah(amount);
+      section.style.display = 'block';
+    }
+
+    function openQrPreview() {
+      const modalEl = document.getElementById('qrPreviewModal');
+      if (!modalEl || typeof bootstrap === 'undefined') return;
+      const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+      modal.show();
     }
 
     /* ══════════════════════════════════════════════════════
