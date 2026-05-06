@@ -2204,6 +2204,7 @@
       currentProduct: null,
       userEmail: '', isAdmin: false,
       searchQuery: '', activeCat: '',
+      soldCountMap: {},
     };
 
     /* ══════════════════════════════════════════════════════
@@ -2410,6 +2411,16 @@
       if (!name) return '?';
       return name.trim().split(/\s+/).slice(0, 2).map(w => w[0].toUpperCase()).join('');
     }
+    function buildSoldCountMap(penjualan) {
+      const map = {};
+      (penjualan || []).forEach(item => {
+        const status = String(item.Status || '').toLowerCase();
+        if (status === 'batal' || status === 'cancelled') return;
+        if (!item.ProductID) return;
+        map[item.ProductID] = (map[item.ProductID] || 0) + 1;
+      });
+      return map;
+    }
 
     /* ══════════════════════════════════════════════════════
        PRODUCT CARD
@@ -2427,6 +2438,7 @@
           ? `<span class="prod-price">${formatRupiah(p.minPrice)}</span>`
           : `<span class="prod-price">${formatRupiah(p.minPrice)} - ${formatRupiah(p.maxPrice)}</span>`
         : `<span class="prod-price">${formatRupiah(p.Price || 0)}</span>`;
+      const soldCount = Number(state.soldCountMap[p.ProductID] || 0);
 
       return `
     <div class="col-sm-6 col-lg-4">
@@ -2446,6 +2458,7 @@
           <div class="prod-desc">${escHtml(stripHtml(p.Description).slice(0, 90))}${stripHtml(p.Description).length > 90 ? '…' : ''}</div>
           <div class="prod-footer">
             ${priceHtml}
+            <span style="font-size:.72rem;color:var(--text-3);"><i class="bi bi-bag me-1"></i>${soldCount} terjual</span>
           </div>
         </div>
       </div>
@@ -2456,9 +2469,13 @@
        FEATURED PRODUCTS
     ══════════════════════════════════════════════════════ */
     function loadFeaturedProducts() {
-      api('getProducts').then(pRes => {
+      Promise.all([
+        api('getProducts'),
+        api('getPenjualan').catch(() => ({ success: false, data: [] }))
+      ]).then(([pRes, penjualanRes]) => {
         if (!pRes.success) { showToast(pRes.message, 'danger'); return; }
         state.products = pRes.data;
+        state.soldCountMap = penjualanRes.success ? buildSoldCountMap(penjualanRes.data) : {};
         document.getElementById('heroTotalProd').textContent = pRes.data.length;
 
         api('getCategories').then(cRes => {
@@ -2524,9 +2541,13 @@
     function loadAllProducts() {
       showLoading();
       showPage('home');
-      api('getProducts').then(pRes => {
+      Promise.all([
+        api('getProducts'),
+        api('getPenjualan').catch(() => ({ success: false, data: [] }))
+      ]).then(([pRes, penjualanRes]) => {
         if (!pRes.success) { hideLoading(); showToast(pRes.message, 'danger'); return; }
         state.products = pRes.data;
+        state.soldCountMap = penjualanRes.success ? buildSoldCountMap(penjualanRes.data) : {};
 
         api('getCategories').then(cRes => {
           if (cRes.success) state.categories = cRes.data;

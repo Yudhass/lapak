@@ -1130,6 +1130,9 @@
               </div>
               <span id="detailRatingCount" class="text-secondary" style="font-size:.82rem;"></span>
             </div>
+            <div class="mb-2">
+              <span id="detailSoldCount" class="text-secondary" style="font-size:.83rem;"><i class="bi bi-bag me-1"></i>0 terjual</span>
+            </div>
 
             <!-- Price -->
             <div class="price-block">
@@ -1429,22 +1432,26 @@
               currentVariants = vRes.data;
             }
 
-            // Get reviews
-            api('getReviewsByProduct', { productId }).then(rRes => {
+            // Get reviews and sales data
+            Promise.all([
+              api('getReviewsByProduct', { productId }),
+              api('getPenjualan').catch(() => ({ success: false, data: [] })),
+            ]).then(([rRes, penjualanRes]) => {
               hideLoading();
               const reviews = rRes.success ? rRes.data : [];
-              renderProductDetail(currentProduct, currentVariants, reviews);
+              const sales = penjualanRes.success ? penjualanRes.data : [];
+              renderProductDetail(currentProduct, currentVariants, reviews, sales);
             }).catch(e => {
               hideLoading();
-              renderProductDetail(currentProduct, currentVariants, []);
+              renderProductDetail(currentProduct, currentVariants, [], []);
             });
           }).catch(e => {
             hideLoading();
-            renderProductDetail(currentProduct, [], []);
+            renderProductDetail(currentProduct, [], [], []);
           });
         }).catch(e => {
           hideLoading();
-          renderProductDetail(currentProduct, [], []);
+          renderProductDetail(currentProduct, [], [], []);
         });
       }).catch(e => {
         hideLoading();
@@ -1498,7 +1505,7 @@
       }).join('');
     }
 
-    function renderProductDetail(product, variants, reviews) {
+    function renderProductDetail(product, variants, reviews, salesData = []) {
       document.getElementById('breadcrumbProduct').textContent = product.ProductName;
       document.getElementById('detailName').textContent = product.ProductName;
 
@@ -1526,6 +1533,14 @@
         document.getElementById('detailRatingCount').textContent = reviews.length + ' ulasan';
         document.getElementById('ratingRow').style.display = '';
       }
+
+      // Sold count from sales data
+      const soldCount = (salesData || []).filter(s => {
+        const status = String(s.Status || '').toLowerCase();
+        if (status === 'batal' || status === 'cancelled') return false;
+        return s.ProductID === product.ProductID;
+      }).length;
+      document.getElementById('detailSoldCount').innerHTML = `<i class="bi bi-bag me-1"></i>${soldCount} terjual`;
 
       // Render variants
       const varContainer = document.getElementById('variantsContainer');

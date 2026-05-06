@@ -1082,6 +1082,7 @@
       products: [],
       categories: [],
       allReviews: [],
+      soldCountMap: {},
       searchQuery: '',
       activeCat: '',
       userEmail: '',
@@ -1131,6 +1132,16 @@
       const n = Math.max(0, Math.min(5, Math.floor(count)));
       return Array(n).fill('<i class="bi bi-star-fill" style="color:var(--accent);font-size:.82rem;"></i>').join('') +
         Array(5 - n).fill('<i class="bi bi-star" style="color:var(--text-3);font-size:.82rem;"></i>').join('');
+    }
+    function buildSoldCountMap(penjualan) {
+      const map = {};
+      (penjualan || []).forEach(item => {
+        const status = String(item.Status || '').toLowerCase();
+        if (status === 'batal' || status === 'cancelled') return;
+        if (!item.ProductID) return;
+        map[item.ProductID] = (map[item.ProductID] || 0) + 1;
+      });
+      return map;
     }
 
     /* ═══════════════════════════════════════════════════════════════
@@ -1284,7 +1295,7 @@
             <div class="prod-desc">${escHtml(stripHtml(p.Description).slice(0, 90))}${stripHtml(p.Description).length > 90 ? '…' : ''}</div>
             <div class="prod-footer">
               ${priceHtml}
-              <span style="font-size:.72rem;color:var(--text-3);"><i class="bi bi-bag me-1"></i>${rev.length} terjual</span>
+              <span style="font-size:.72rem;color:var(--text-3);"><i class="bi bi-bag me-1"></i>${Number(state.soldCountMap[p.ProductID] || 0)} terjual</span>
             </div>
           </div>
         </div>
@@ -1300,11 +1311,13 @@
       Promise.all([
         api('getProducts'),
         api('getCategories'),
-      ]).then(([pRes, cRes]) => {
+        api('getPenjualan').catch(() => ({ success: false, data: [] })),
+      ]).then(([pRes, cRes, penjualanRes]) => {
         if (!pRes.success) { hideLoading(); showToast(pRes.message || 'Gagal memuat produk.', 'danger'); return; }
 
         state.products = pRes.data;
         state.categories = cRes.success ? cRes.data : [];
+        state.soldCountMap = penjualanRes.success ? buildSoldCountMap(penjualanRes.data) : {};
 
         const catMap = Object.fromEntries(state.categories.map(c => [c.CategoryID, c.CategoryName]));
         state.products.forEach(p => { p.CategoryName = catMap[p.CategoryID] || ''; });

@@ -964,6 +964,7 @@
                             <select id="pjStatus" class="form-select">
                                 <option value="aktif">Aktif</option>
                                 <option value="selesai">Selesai</option>
+                                <option value="garansi">Garansi</option>
                                 <option value="batal">Batal</option>
                             </select>
                         </div>
@@ -1433,7 +1434,7 @@
                 if (!res.data.length) {
                     tbody.innerHTML = '<tr><td colspan="9" class="text-center text-muted py-4 ps-4">Belum ada data penjualan.</td></tr>'; return;
                 }
-                const scColor = { aktif: 'warning', selesai: 'success', batal: 'danger' };
+                const scColor = { aktif: 'warning', selesai: 'success', garansi: 'info', batal: 'danger' };
                 tbody.innerHTML = res.data.map(t => {
                     const hasVariantName = t.VariantName && !t.VariantName.startsWith('VAR-');
                     const variantDisplay = hasVariantName ? escHtml(t.VariantName) : 'Default';
@@ -1468,6 +1469,14 @@
             api('getProducts').then(pRes => {
                 hideLoading();
                 if (!pRes.success) { showToast(pRes.message, 'danger'); return; }
+                // Safety guard: pastikan opsi status "garansi" selalu tersedia
+                const statusSelect = document.getElementById('pjStatus');
+                if (statusSelect && !Array.from(statusSelect.options).some(opt => opt.value === 'garansi')) {
+                    const opt = document.createElement('option');
+                    opt.value = 'garansi';
+                    opt.textContent = 'Garansi';
+                    statusSelect.appendChild(opt);
+                }
                 state.products = pRes.data;
                 const pjProduct = document.getElementById('pjProduct');
                 pjProduct.innerHTML = '<option value="">Pilih produk…</option>' +
